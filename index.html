@@ -1,32 +1,50 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Currchi Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-color: #111;
+      --text-color: #fff;
+      --card-bg: #1c1c1c;
+      --highlight: #f0c75e;
+    }
+    .light-mode {
+      --bg-color: #fff;
+      --text-color: #000;
+      --card-bg: #f4f4f4;
+      --highlight: #c18f00;
+    }
+
     body {
       margin: 0;
       padding: 0;
-      background-color: #111;
-      color: #fff;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Roboto', sans-serif;
     }
+
     header {
       background-color: #000;
       text-align: center;
       padding: 1.5rem;
-      border-bottom: 3px solid #f0c75e;
+      border-bottom: 3px solid var(--highlight);
     }
+
     header img {
       max-width: 220px;
     }
+
     .toggle-buttons {
       text-align: center;
       margin: 1.5rem 0 0.5rem;
     }
+
     .toggle-buttons button {
-      background: #f0c75e;
+      background: var(--highlight);
       border: none;
       padding: 0.5rem 1rem;
       margin: 0.3rem;
@@ -34,9 +52,27 @@
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
-      color: #000;
+      color: var(--text-color);
       box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
     }
+
+    .order-buttons {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .order-buttons a {
+      display: inline-block;
+      background: var(--highlight);
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      margin: 0.3rem;
+      font-weight: bold;
+      border-radius: 20px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+
     .menu-container {
       display: flex;
       flex-wrap: wrap;
@@ -46,64 +82,92 @@
       max-width: 1200px;
       margin: auto;
     }
+
     .menu-column {
-      background-color: #1c1c1c;
+      background-color: var(--card-bg);
       border-radius: 8px;
       padding: 1rem;
       width: 300px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
+
     .menu-column h2 {
       text-align: center;
       font-size: 1.5rem;
-      color: #f0c75e;
-      border-bottom: 2px dashed #f0c75e;
+      color: var(--highlight);
+      border-bottom: 2px dashed var(--highlight);
       padding-bottom: 0.5rem;
       margin-bottom: 1rem;
       font-family: 'Playfair Display', serif;
     }
+
     .menu-item {
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid #333;
       padding: 0.5rem 0;
     }
+
     .menu-item span {
-      color: #fff;
+      color: var(--text-color);
     }
+
     .footer {
       background: #000;
       text-align: center;
       padding: 1rem;
-      color: #f0c75e;
+      color: var(--highlight);
       font-size: 0.9rem;
     }
-    .back-to-top {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #f0c75e;
-      color: #000;
-      padding: 0.5rem 1rem;
-      border-radius: 25px;
-      font-weight: bold;
-      text-decoration: none;
-      display: none;
-      z-index: 1000;
+
+    @media print {
+      .toggle-buttons, .order-buttons, .footer {
+        display: none !important;
+      }
+      body {
+        background-color: #fff;
+        color: #000;
+      }
+      .menu-column {
+        box-shadow: none;
+        background-color: #fff;
+        color: #000;
+      }
+      .menu-column h2 {
+        color: #000;
+        border-color: #000;
+      }
+      .menu-item span {
+        color: #000;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Currchi Logo">
-  </header>  <div class="toggle-buttons">
+    <img src="logo.png" alt="Currchi Restaurant Logo">
+  </header>
+
+  <div style="text-align:right; padding: 0.5rem 1rem;">
+    <button onclick="toggleTheme()" id="themeBtn">☀️ Light Mode</button>
+  </div>
+
+  <div class="toggle-buttons">
     <button onclick="scrollToSection('starters')">🍢 Starters</button>
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
     <button onclick="scrollToSection('soups')">🥣 Soups</button>
     <button onclick="scrollToSection('combos')">🍛 Combos</button>
     <button onclick="scrollToSection('maincourse')">🍗 Main</button>
     <button onclick="scrollToSection('rice')">🍜 Rice & Noodles</button>
-  </div>  <div class="menu-container">
+    <button onclick="downloadMenu()">📄 Download Menu (PDF)</button>
+  </div>
+
+  <div class="order-buttons">
+    <a href="tel:+919999999999">📞 Call to Order</a>
+    <a href="https://wa.me/919999999999" target="_blank">💬 WhatsApp Order</a>
+  </div>
+
+  <div class="menu-container">
     <div class="menu-column" id="starters">
       <h2>🍢 Starters</h2>
       <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
@@ -111,56 +175,69 @@
       <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
       <div class="menu-item"><span>Golden Fried Chicken Momos</span><span>₹125 / ₹195</span></div>
       <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
-    </div><div class="menu-column" id="rolls">
-  <h2>🌯 Rolls</h2>
-  <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
-  <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
-  <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
-</div>
+    </div>
 
-<div class="menu-column" id="soups">
-  <h2>🥣 Soups</h2>
-  <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
-  <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
-  <div class="menu-item"><span>Manchow (Chicken)</span><span>₹--</span></div>
-  <div class="menu-item"><span>Talumein (Chicken)</span><span>₹--</span></div>
-</div>
+    <div class="menu-column" id="rolls">
+      <h2>🌯 Rolls</h2>
+      <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
+      <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
+      <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
+    </div>
 
-<div class="menu-column" id="combos">
-  <h2>🍛 Combos</h2>
-  <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
-  <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
-  <div class="menu-item"><span>Butter Chicken Combo</span><span>₹--</span></div>
-  <div class="menu-item"><span>Rogan Josh Combo</span><span>₹--</span></div>
-</div>
+    <div class="menu-column" id="soups">
+      <h2>🥣 Soups</h2>
+      <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
+      <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
+      <div class="menu-item"><span>Manchow (Chicken)</span><span>₹--</span></div>
+      <div class="menu-item"><span>Talumein (Chicken)</span><span>₹--</span></div>
+    </div>
 
-<div class="menu-column" id="maincourse">
-  <h2>🍗 Main Course</h2>
-  <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
-  <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
-</div>
+    <div class="menu-column" id="combos">
+      <h2>🍛 Combos</h2>
+      <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
+      <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
+      <div class="menu-item"><span>Butter Chicken Combo</span><span>₹--</span></div>
+      <div class="menu-item"><span>Rogan Josh Combo</span><span>₹--</span></div>
+    </div>
 
-<div class="menu-column" id="rice">
-  <h2>🍜 Rice & Noodles</h2>
-  <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
-  <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
-</div>
+    <div class="menu-column" id="maincourse">
+      <h2>🍗 Main Course</h2>
+      <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
+      <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
+    </div>
 
-  </div>  <div class="footer">
+    <div class="menu-column" id="rice">
+      <h2>🍜 Rice & Noodles</h2>
+      <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
+      <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
+    </div>
+  </div>
+
+  <div class="footer">
     📍 Ramesh Nagar | 📞 Call/WhatsApp: +91 99999 99999<br>
     ⏰ Open Daily: 2:00 PM – 12:00 AM<br>
     &copy; 2025 CURRCHI – Full on Desi
-  </div><a href="#" class="back-to-top" id="backToTop">⬆ Back to Top</a>
+  </div>
 
   <script>
-    window.addEventListener('scroll', () => {
-      const btn = document.getElementById('backToTop');
-      btn.style.display = window.scrollY > 200 ? 'block' : 'none';
-    });
-
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
-  </script></body>
+
+    function downloadMenu() {
+      window.print();
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+      const btn = document.getElementById("themeBtn");
+      if (document.body.classList.contains("light-mode")) {
+        btn.textContent = "🌙 Dark Mode";
+      } else {
+        btn.textContent = "☀️ Light Mode";
+      }
+    }
+  </script>
+</body>
 </html>
