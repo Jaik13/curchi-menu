@@ -15,30 +15,6 @@
       font-family: 'Roboto', sans-serif;
     }
 
-    body.light {
-      background-color: #fff;
-      color: #000;
-    }
-
-    body.light .menu-column {
-      background-color: #f9f9f9;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    body.light .menu-column h2 {
-      color: #d48300;
-      border-bottom-color: #d48300;
-    }
-
-    body.light .menu-item span {
-      color: #000;
-    }
-
-    body.light .footer {
-      background: #f0f0f0;
-      color: #444;
-    }
-
     header {
       background-color: #fff2c7;
       text-align: center;
@@ -50,22 +26,29 @@
       height: auto;
     }
 
-    .toggle-buttons {
-      text-align: center;
-      margin: 1.5rem 0 0.5rem;
+    .nav-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: #111;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .toggle-buttons button {
+    .nav-bar button,
+    .nav-bar a button {
       background: #f0c75e;
       border: none;
       padding: 0.5rem 1rem;
-      margin: 0.3rem;
       font-size: 1rem;
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
       color: #000;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
     }
 
     .menu-container {
@@ -99,24 +82,16 @@
     .menu-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       border-bottom: 1px solid #333;
       padding: 0.5rem 0;
-      text-align: left;
-    }
-
-    .menu-item span {
-      color: #fff;
     }
 
     .section-image {
       width: 100%;
-      height: auto;
       border-radius: 8px;
       margin-bottom: 1rem;
       object-fit: cover;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-      display: block;
     }
 
     .footer {
@@ -127,29 +102,25 @@
       font-size: 0.9rem;
     }
 
-    .sticky-buttons {
-  position: fixed;
-  top: 40%;
-  right: 15px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  z-index: 1000;
-}
-    .sticky-buttons a button {
+    .floating-call-buttons {
+      position: fixed;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      gap: 1rem;
+      z-index: 2000;
+    }
+
+    .floating-call-buttons a button {
       background: #28a745;
-      color: #fff;
+      color: white;
       border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 30px;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    }
-
-    .sticky-buttons a button:hover {
-      background-color: #218838;
     }
 
     .back-to-top {
@@ -168,21 +139,6 @@
       cursor: pointer;
       z-index: 1001;
     }
-
-    @media (max-width: 600px) {
-      .menu-column {
-        width: 100%;
-      }
-
-      .menu-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .menu-item span:last-child {
-        align-self: flex-end;
-      }
-    }
   </style>
 </head>
 <body>
@@ -190,22 +146,30 @@
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
 
-  <div class="toggle-buttons">
+  <!-- Top Nav: All Buttons -->
+  <div class="nav-bar">
     <button onclick="scrollToSection('starters')">🍢 Starters</button>
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
     <button onclick="scrollToSection('soups')">🥣 Soups</button>
     <button onclick="scrollToSection('combos')">🍛 Combos</button>
     <button onclick="scrollToSection('maincourse')">🍗 Main</button>
     <button onclick="scrollToSection('rice')">🍜 Rice & Noodles</button>
-    <button onclick="toggleTheme()">🌓 Toggle Theme</button>
-    <button onclick="generatePDF()">📄 Download PDF</button>
+    <button onclick="generatePDF()">📄 PDF</button>
+    <a href="tel:+919999999999"><button>📞 Call</button></a>
+    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
   </div>
 
+  <!-- Floating Call Buttons (appear on scroll) -->
+  <div class="floating-call-buttons" id="floatingCallButtons">
+    <a href="tel:+919999999999"><button>📞 Call</button></a>
+    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
+  </div>
+
+  <!-- Menu -->
   <div class="menu-container" id="menu">
-    <!-- 🍢 Starters -->
     <div class="menu-column" id="starters">
       <h2>🍢 Starters</h2>
-      <img src="starters.jpg" alt="Starters" class="section-image">
+      <img src="starters.jpg" class="section-image" alt="Starters">
       <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
       <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
       <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
@@ -213,47 +177,42 @@
       <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
     </div>
 
-    <!-- 🌯 Rolls -->
     <div class="menu-column" id="rolls">
       <h2>🌯 Rolls</h2>
-      <img src="rolls.jpg" alt="Rolls" class="section-image">
+      <img src="rolls.jpg" class="section-image" alt="Rolls">
       <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
       <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
       <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
     </div>
 
-    <!-- 🥣 Soups -->
     <div class="menu-column" id="soups">
       <h2>🥣 Soups</h2>
-      <img src="soups.jpg" alt="Soups" class="section-image">
+      <img src="soups.jpg" class="section-image" alt="Soups">
       <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
       <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
       <div class="menu-item"><span>Manchow (Chicken)</span><span>₹--</span></div>
       <div class="menu-item"><span>Talumein (Chicken)</span><span>₹--</span></div>
     </div>
 
-    <!-- 🍛 Combos -->
     <div class="menu-column" id="combos">
       <h2>🍛 Combos</h2>
-      <img src="combos.jpg" alt="Combos" class="section-image">
+      <img src="combos.jpg" class="section-image" alt="Combos">
       <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Butter Chicken Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Rogan Josh Combo</span><span>₹--</span></div>
     </div>
 
-    <!-- 🍗 Main Course -->
     <div class="menu-column" id="maincourse">
       <h2>🍗 Main Course</h2>
-      <img src="maincourse.jpg" alt="Main Course" class="section-image">
+      <img src="maincourse.jpg" class="section-image" alt="Main Course">
       <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
       <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
     </div>
 
-    <!-- 🍜 Rice & Noodles -->
     <div class="menu-column" id="rice">
       <h2>🍜 Rice & Noodles</h2>
-      <img src="rice.jpg" alt="Rice and Noodles" class="section-image">
+      <img src="rice.jpg" class="section-image" alt="Rice and Noodles">
       <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
       <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
     </div>
@@ -265,12 +224,6 @@
     &copy; 2025 CURRCHI – Full on Desi
   </div>
 
-  <!-- Sticky Call/WhatsApp Buttons Only -->
-  <div class="sticky-buttons">
-    <a href="tel:+919999999999"><button>📞 Call</button></a>
-    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
-  </div>
-
   <!-- Back to Top -->
   <button class="back-to-top" onclick="scrollToSection('top')">🔝</button>
 
@@ -280,13 +233,9 @@
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function toggleTheme() {
-      document.body.classList.toggle('light');
-    }
-
     function generatePDF() {
       const element = document.body.cloneNode(true);
-      const extras = element.querySelectorAll('.toggle-buttons, .sticky-buttons, .back-to-top');
+      const extras = element.querySelectorAll('.nav-bar, .floating-call-buttons, .back-to-top');
       extras.forEach(e => e.remove());
       html2pdf().set({
         margin: 0.5,
@@ -296,6 +245,17 @@
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       }).from(element).save();
     }
+
+    // Show/hide floating buttons on scroll
+    window.addEventListener('scroll', () => {
+      const navBar = document.querySelector('.nav-bar');
+      const floatBtns = document.getElementById('floatingCallButtons');
+      if (window.scrollY > navBar.offsetHeight + 100) {
+        floatBtns.style.display = 'flex';
+      } else {
+        floatBtns.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
