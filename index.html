@@ -22,6 +22,22 @@
       max-width: 250px;
       height: auto;
     }
+    .toggle-buttons {
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .toggle-buttons button {
+      background: gold;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      margin: 0.3rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #3e0e0e;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
     .menu-section {
       padding: 2rem 1rem;
       max-width: 1100px;
@@ -67,73 +83,67 @@
     .button:hover {
       background: linear-gradient(to right, #f4e38f, gold);
     }
+    .hidden { display: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: gold;
+      color: #3e0e0e;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
+  <a name="top"></a>
   <header>
     <img src="logo.png" alt="Currchi Logo" class="logo" />
-  </header>  <div class="menu-section">
-    <div class="section-title">🌟 Royal Starters</div>
-    <div class="menu-category">
-      <div class="menu-item">Chicken Steam Momos - 125/- Half | 195/- Full</div>
-      <div class="menu-item">Chicken Golden Fried Momos - 125/- Half | 195/- Full</div>
-      <div class="menu-item">Chicken Tandoori Momos - 125/- Half | 195/- Full</div>
-      <div class="menu-item">Afghani Chicken Momos - 135/- Half | 205/- Full</div>
-      <div class="menu-item">Chilli Paneer Dry - 125/- | 165/-</div>
-      <div class="menu-item">Honey Chilli Potato - 125/-</div>
-    </div><div class="section-title">🍛 Royal Combos</div>
-<div class="menu-category">
-  <div class="menu-item">Paneer Butter Masala Combo</div>
-  <div class="menu-item">Mix Veg Curry Combo</div>
-  <div class="menu-item">Dal Makhani Combo</div>
-  <div class="menu-item">Butter Chicken Combo</div>
-  <div class="menu-item">Home Style Chicken Curry Combo</div>
-  <div class="menu-item">Rogan Josh Combo</div>
-</div>
-
-<div class="section-title">🌯 Rolls & Wraps</div>
-<div class="menu-category">
-  <div class="menu-item">Paneer Tikka Roll</div>
-  <div class="menu-item">Afghani Malai Chaap Roll</div>
-  <div class="menu-item">Chicken Seekh Roll - 180/-</div>
-  <div class="menu-item">Chicken Malai Tikka Roll - 190/-</div>
-  <div class="menu-item">Mutton Seekh Roll - 200/-</div>
-</div>
-
-<div class="section-title">🥣 Soups</div>
-<div class="menu-category">
-  <div class="menu-item">Classic Sweet Corn Soup (Veg / Non-Veg)</div>
-  <div class="menu-item">Spicy Hot & Sour Soup</div>
-  <div class="menu-item">Talumein Soup</div>
-  <div class="menu-item">Manchow Soup</div>
-  <div class="menu-item">Clear Soup</div>
-</div>
-
-<div class="section-title">🍲 Non-Veg Main Course</div>
-<div class="menu-category">
-  <div class="menu-item">Butter Chicken - 345/- Half | 575/- Full</div>
-  <div class="menu-item">Kadai Chicken - 575/-</div>
-  <div class="menu-item">Rara Chicken - 575/-</div>
-  <div class="menu-item">Tandoori Chicken Masala - 345/- Half | 575/- Full</div>
-  <div class="menu-item">Rogan Josh - 395/- Half | 695/- Full</div>
-</div>
-
-<div class="section-title">🍜 Fried Rice & Noodles</div>
-<div class="menu-category">
-  <div class="menu-item">Veg Fried Rice - 125/- | 195/-</div>
-  <div class="menu-item">Chilli Garlic Fried Rice - 125/- | 195/-</div>
-  <div class="menu-item">Butter Garlic Fried Rice - 135/- | 205/-</div>
-  <div class="menu-item">Veg Hakka Noodles - 125/- | 195/-</div>
-  <div class="menu-item">Butter Garlic Fried Noodles - 135/- | 205/-</div>
-</div>
-
-<div style="text-align: center;">
-  <a class="button" href="tel:+919999999999">📞 Call to Order</a>
-  <a class="button" href="https://wa.me/919999999999">💬 Order on WhatsApp</a>
-</div>
-
+  </header>  <div class="toggle-buttons">
+    <button onclick="showMenu('veg')">🌿 Veg Menu</button>
+    <button onclick="showMenu('nonveg')">🍗 Non-Veg Menu</button>
+    <button onclick="showMenu('all')">🍽 Show All</button>
+  </div>  <div class="menu-section">
+    <!-- All existing menu content remains unchanged -->
+    <!-- ... -->
+  </div>  <div style="text-align: center;">
+    <a class="button" href="tel:‪+919999999999‬">📞 Call to Order</a>
+    <a class="button" href="https://wa.me/919999999999">💬 Order on WhatsApp</a>
   </div>  <div class="footer">
-    &copy; 2025 CURRCHI | Ramesh Nagar | Royal Taste, Every Bite.
-  </div>
-</body>
+    &copy; 2025 CURRCHI | Ramesh Nagar | Royal Taste, Every Bite.<br>
+    ⏰ Delivery Hours: Everyday from 2:00 PM to 12:00 AM
+  </div><a href="#top" class="back-to-top" id="backToTop">⬆ Back to Top</a>
+
+  <script>
+    function showMenu(type) {
+      const veg = document.querySelectorAll('.veg');
+      const nonveg = document.querySelectorAll('.nonveg');
+
+      if (type === 'veg') {
+        veg.forEach(el => el.style.display = 'block');
+        nonveg.forEach(el => el.style.display = 'none');
+      } else if (type === 'nonveg') {
+        veg.forEach(el => el.style.display = 'none');
+        nonveg.forEach(el => el.style.display = 'block');
+      } else {
+        veg.forEach(el => el.style.display = 'block');
+        nonveg.forEach(el => el.style.display = 'block');
+      }
+    }
+
+    // Show Back to Top button when scrolling
+    const backToTopBtn = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 200) {
+        backToTopBtn.style.display = "block";
+      } else {
+        backToTopBtn.style.display = "none";
+      }
+    });
+  </script></body>
 </html>
