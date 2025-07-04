@@ -33,8 +33,7 @@
       gap: 0.5rem;
       background-color: #111;
       padding: 1rem;
-      position: sticky;
-      top: 0;
+      position: relative; /* Not sticky */
       z-index: 1000;
     }
 
@@ -104,7 +103,7 @@
 
     .floating-call-buttons {
       position: fixed;
-      top: 15px;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
       display: none;
@@ -146,7 +145,7 @@
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
 
-  <!-- Top Nav: All Buttons -->
+  <!-- Navigation Bar -->
   <div class="nav-bar">
     <button onclick="scrollToSection('starters')">🍢 Starters</button>
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
@@ -159,13 +158,13 @@
     <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
   </div>
 
-  <!-- Floating Call Buttons (appear on scroll) -->
+  <!-- Floating Call Buttons -->
   <div class="floating-call-buttons" id="floatingCallButtons">
     <a href="tel:+919999999999"><button>📞 Call</button></a>
     <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
   </div>
 
-  <!-- Menu -->
+  <!-- Menu Sections -->
   <div class="menu-container" id="menu">
     <div class="menu-column" id="starters">
       <h2>🍢 Starters</h2>
@@ -218,6 +217,7 @@
     </div>
   </div>
 
+  <!-- Footer -->
   <div class="footer">
     📍 Ramesh Nagar | 📞 Call/WhatsApp: +91 99999 99999<br>
     ⏰ Open Daily: 2:00 PM – 12:00 AM<br>
@@ -246,11 +246,11 @@
       }).from(element).save();
     }
 
-    // Show/hide floating buttons on scroll
+    // Show only call buttons when scrolled past nav
     window.addEventListener('scroll', () => {
-      const navBar = document.querySelector('.nav-bar');
+      const nav = document.querySelector('.nav-bar');
       const floatBtns = document.getElementById('floatingCallButtons');
-      if (window.scrollY > navBar.offsetHeight + 100) {
+      if (window.scrollY > nav.offsetTop + nav.offsetHeight) {
         floatBtns.style.display = 'flex';
       } else {
         floatBtns.style.display = 'none';
