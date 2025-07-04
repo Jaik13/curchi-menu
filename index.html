@@ -4,21 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Currchi Menu</title>
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- SEO & Social Sharing -->
-  <meta name="description" content="Currchi Restaurant Menu - Starters, Main Course, Combos & More. Order via Call or WhatsApp!">
-  <meta property="og:title" content="Currchi Restaurant Menu" />
-  <meta property="og:description" content="View and order from Currchi's mouth-watering menu. Available via call or WhatsApp!" />
-  <meta property="og:image" content="logo.png" />
-  <meta property="og:url" content="https://currchi.com/menu" />
-  <meta property="og:type" content="website" />
-
-  <!-- PDF Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <style>
     body {
       margin: 0;
@@ -65,17 +52,12 @@
       display: inline-block;
     }
 
-    .sticky-nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background-color: inherit;
-      padding: 1rem 0.5rem 0.5rem;
+    .toggle-buttons {
       text-align: center;
+      margin: 1.5rem 0 0.5rem;
     }
 
-    .sticky-nav button,
-    .sticky-nav a button {
+    .toggle-buttons button {
       background: #f0c75e;
       border: none;
       padding: 0.5rem 1rem;
@@ -88,12 +70,12 @@
       box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
     }
 
-    .sticky-nav a button {
+    .toggle-buttons a button {
       background: #28a745;
       color: white;
     }
 
-    .sticky-nav a button:hover {
+    .toggle-buttons a button:hover {
       background: #218838;
     }
 
@@ -156,80 +138,26 @@
       font-size: 0.9rem;
     }
 
-    #backToTop {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background-color: #f0c75e;
-      color: #000;
-      padding: 10px 15px;
-      border-radius: 50px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: none;
-      z-index: 1002;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-    }
-
-    .sticky-footer {
-      display: none;
-    }
-
     @media (max-width: 600px) {
       .menu-column {
         width: 100%;
       }
-
       .menu-item {
         flex-direction: column;
         align-items: flex-start;
       }
-
       .menu-item span:last-child {
         align-self: flex-end;
       }
-
-      .sticky-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #fff2c7;
-        display: flex;
-        justify-content: space-around;
-        padding: 0.5rem 0;
-        z-index: 1001;
-      }
-
-      .sticky-footer a button {
-        font-size: 0.9rem;
-        padding: 0.5rem 1rem;
-        border-radius: 30px;
-        background: #28a745;
-        color: white;
-        border: none;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
-      }
-
-      .sticky-footer a button:hover {
-        background: #218838;
-      }
-    }
-
-    body.light .menu-item span[style*="color:#888"] {
-      color: #666 !important;
     }
   </style>
 </head>
 <body>
-
-<div id="full-menu">
-
   <header>
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
 
-  <div class="sticky-nav">
+  <div class="toggle-buttons">
     <button onclick="scrollToSection('starters')">🍢 Starters</button>
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
     <button onclick="scrollToSection('soups')">🥣 Soups</button>
@@ -238,6 +166,9 @@
     <button onclick="scrollToSection('rice')">🍜 Rice & Noodles</button>
     <button onclick="toggleTheme()">🌓 Toggle Theme</button>
     <button onclick="generatePDF()">📄 Download PDF</button>
+  </div>
+
+  <div class="toggle-buttons">
     <a href="tel:+919999999999" style="text-decoration: none;">
       <button>📞 Call to Order</button>
     </a>
@@ -247,56 +178,83 @@
   </div>
 
   <div class="menu-container">
-    <!-- All your menu sections here (unchanged)... -->
-    <!-- Paste your <div class="menu-column" ... > here (as in your original code) -->
-    <!-- For brevity, skipping content that remains unchanged -->
+    <div class="menu-column" id="starters">
+      <h2>🍢 Starters</h2>
+      <img src="starters.jpg" alt="Starters" class="section-image">
+      <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
+      <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
+      <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
+      <div class="menu-item"><span>Golden Fried Chicken Momos</span><span>₹125 / ₹195</span></div>
+      <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
+    </div>
+
+    <div class="menu-column" id="rolls">
+      <h2>🌯 Rolls</h2>
+      <img src="rolls.jpg" alt="Rolls" class="section-image">
+      <div class="menu-item"><span>Paneer Tikka Roll</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
+      <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
+    </div>
+
+    <div class="menu-column" id="soups">
+      <h2>🥣 Soups</h2>
+      <img src="soups.jpg" alt="Soups" class="section-image">
+      <div class="menu-item"><span>Sweet Corn (Veg)</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Hot & Sour (Veg)</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Manchow (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Talumein (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
+    </div>
+
+    <div class="menu-column" id="combos">
+      <h2>🍛 Combos</h2>
+      <img src="combos.jpg" alt="Combos" class="section-image">
+      <div class="menu-item"><span>Paneer Butter Masala Combo</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Dal Makhani Combo</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Butter Chicken Combo</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Rogan Josh Combo</span><span style="color:#888;">Coming Soon</span></div>
+    </div>
+
+    <div class="menu-column" id="maincourse">
+      <h2>🍗 Main Course</h2>
+      <img src="maincourse.jpg" alt="Main Course" class="section-image">
+      <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
+      <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
+    </div>
+
+    <div class="menu-column" id="rice">
+      <h2>🍜 Rice & Noodles</h2>
+      <img src="rice.jpg" alt="Rice and Noodles" class="section-image">
+      <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
+      <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
+    </div>
   </div>
 
   <div class="footer">
-    📍 CURRCHI || Ramesh Nagar || <br>
+    📍 Ramesh Nagar | 📞 Call/WhatsApp: +91 99999 99999<br>
     ⏰ Open Daily: 2:00 PM – 12:00 AM<br>
-    &#174; 2025 CURRCHI – Full on Desi
+    &copy; 2025 CURRCHI – Full on Desi
   </div>
-</div>
 
-<!-- 🔼 Back to Top Button -->
-<div id="backToTop" onclick="scrollToTop()">🔝</div>
+  <script>
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
 
-<!-- 🧲 Sticky Footer for Mobile -->
-<div class="sticky-footer">
-  <a href="tel:+919999999999"><button>📞 Call</button></a>
-  <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!"><button>📱 WhatsApp</button></a>
-</div>
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+    }
 
-<script>
-  function scrollToSection(id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }
-
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  window.addEventListener("scroll", () => {
-    document.getElementById("backToTop").style.display = window.scrollY > 300 ? "block" : "none";
-  });
-
-  function toggleTheme() {
-    document.body.classList.toggle('light');
-  }
-
-  function generatePDF() {
-    const element = document.getElementById('full-menu');
-    html2pdf().set({
-      margin: 0.5,
-      filename: 'Currchi_Menu.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    }).from(element).save();
-  }
-</script>
-
+    function generatePDF() {
+      const element = document.body;
+      html2pdf().set({
+        margin: 0.5,
+        filename: 'Currchi_Menu.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      }).from(element).save();
+    }
+  </script>
 </body>
 </html>
