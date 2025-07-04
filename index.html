@@ -70,15 +70,6 @@
       box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
     }
 
-    .toggle-buttons a button {
-      background: #28a745;
-      color: white;
-    }
-
-    .toggle-buttons a button:hover {
-      background: #218838;
-    }
-
     .menu-container {
       display: flex;
       flex-wrap: wrap;
@@ -138,14 +129,58 @@
       font-size: 0.9rem;
     }
 
+    .sticky-buttons {
+      position: fixed;
+      bottom: 80px;
+      right: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 1000;
+    }
+
+    .sticky-buttons a button {
+      background: #28a745;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    .sticky-buttons a button:hover {
+      background-color: #218838;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 15px;
+      background: #f0c75e;
+      color: #000;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 1001;
+    }
+
     @media (max-width: 600px) {
       .menu-column {
         width: 100%;
       }
+
       .menu-item {
         flex-direction: column;
         align-items: flex-start;
       }
+
       .menu-item span:last-child {
         align-self: flex-end;
       }
@@ -153,7 +188,7 @@
   </style>
 </head>
 <body>
-  <header>
+  <header id="top">
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
 
@@ -168,16 +203,8 @@
     <button onclick="generatePDF()">📄 Download PDF</button>
   </div>
 
-  <div class="toggle-buttons">
-    <a href="tel:+919999999999" style="text-decoration: none;">
-      <button>📞 Call to Order</button>
-    </a>
-    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank" style="text-decoration: none;">
-      <button>📱 WhatsApp to Order</button>
-    </a>
-  </div>
-
-  <div class="menu-container">
+  <div class="menu-container" id="menu">
+    <!-- STARTERS -->
     <div class="menu-column" id="starters">
       <h2>🍢 Starters</h2>
       <img src="starters.jpg" alt="Starters" class="section-image">
@@ -188,6 +215,7 @@
       <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
     </div>
 
+    <!-- ROLLS -->
     <div class="menu-column" id="rolls">
       <h2>🌯 Rolls</h2>
       <img src="rolls.jpg" alt="Rolls" class="section-image">
@@ -196,6 +224,7 @@
       <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
     </div>
 
+    <!-- SOUPS -->
     <div class="menu-column" id="soups">
       <h2>🥣 Soups</h2>
       <img src="soups.jpg" alt="Soups" class="section-image">
@@ -205,6 +234,7 @@
       <div class="menu-item"><span>Talumein (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
     </div>
 
+    <!-- COMBOS -->
     <div class="menu-column" id="combos">
       <h2>🍛 Combos</h2>
       <img src="combos.jpg" alt="Combos" class="section-image">
@@ -214,6 +244,7 @@
       <div class="menu-item"><span>Rogan Josh Combo</span><span style="color:#888;">Coming Soon</span></div>
     </div>
 
+    <!-- MAIN COURSE -->
     <div class="menu-column" id="maincourse">
       <h2>🍗 Main Course</h2>
       <img src="maincourse.jpg" alt="Main Course" class="section-image">
@@ -221,6 +252,7 @@
       <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
     </div>
 
+    <!-- RICE & NOODLES -->
     <div class="menu-column" id="rice">
       <h2>🍜 Rice & Noodles</h2>
       <img src="rice.jpg" alt="Rice and Noodles" class="section-image">
@@ -235,6 +267,15 @@
     &copy; 2025 CURRCHI – Full on Desi
   </div>
 
+  <!-- Sticky Call/WhatsApp Buttons -->
+  <div class="sticky-buttons">
+    <a href="tel:+919999999999"><button>📞 Call</button></a>
+    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
+  </div>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" onclick="scrollToSection('top')">🔝</button>
+
   <script>
     function scrollToSection(id) {
       const el = document.getElementById(id);
@@ -246,7 +287,9 @@
     }
 
     function generatePDF() {
-      const element = document.body;
+      const element = document.body.cloneNode(true);
+      const buttons = element.querySelectorAll('.toggle-buttons, .sticky-buttons, .back-to-top');
+      buttons.forEach(b => b.remove());
       html2pdf().set({
         margin: 0.5,
         filename: 'Currchi_Menu.pdf',
