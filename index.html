@@ -4,8 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Currchi Menu</title>
+
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- SEO & Social Sharing -->
+  <meta name="description" content="Currchi Restaurant Menu - Starters, Main Course, Combos & More. Order via Call or WhatsApp!">
+  <meta property="og:title" content="Currchi Restaurant Menu" />
+  <meta property="og:description" content="View and order from Currchi's mouth-watering menu. Available via call or WhatsApp!" />
+  <meta property="og:image" content="logo.png" />
+  <meta property="og:url" content="https://currchi.com/menu" />
+  <meta property="og:type" content="website" />
+
+  <!-- PDF Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -54,7 +67,12 @@
 
     .toggle-buttons {
       text-align: center;
-      margin: 1.5rem 0 0.5rem;
+      margin: 1rem 0;
+      position: sticky;
+      top: 0;
+      background-color: inherit;
+      padding: 0.8rem 0.5rem;
+      z-index: 1000;
     }
 
     .toggle-buttons button {
@@ -150,6 +168,10 @@
         align-self: flex-end;
       }
     }
+
+    body.light .menu-item span[style*="color:#888"] {
+      color: #666 !important;
+    }
   </style>
 </head>
 <body>
@@ -177,55 +199,58 @@
     </a>
   </div>
 
-  <div class="menu-container">
-    <div class="menu-column" id="starters">
-      <h2>🍢 Starters</h2>
-      <img src="starters.jpg" alt="Starters" class="section-image">
-      <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
-      <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
-      <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
-      <div class="menu-item"><span>Golden Fried Chicken Momos</span><span>₹125 / ₹195</span></div>
-      <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
-    </div>
+  <!-- Menu Section for PDF Export -->
+  <div id="menu-content">
+    <div class="menu-container">
+      <div class="menu-column" id="starters">
+        <h2>🍢 Starters</h2>
+        <img src="starters.jpg" alt="Tasty Indian Starters from Currchi" class="section-image">
+        <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
+        <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
+        <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
+        <div class="menu-item"><span>Golden Fried Chicken Momos</span><span>₹125 / ₹195</span></div>
+        <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
+      </div>
 
-    <div class="menu-column" id="rolls">
-      <h2>🌯 Rolls</h2>
-      <img src="rolls.jpg" alt="Rolls" class="section-image">
-      <div class="menu-item"><span>Paneer Tikka Roll</span><span style="color:#888;">Coming Soon</span></div>
-      <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
-      <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
-    </div>
+      <div class="menu-column" id="rolls">
+        <h2>🌯 Rolls</h2>
+        <img src="rolls.jpg" alt="Delicious Wraps and Rolls" class="section-image">
+        <div class="menu-item"><span>Paneer Tikka Roll</span><span style="color:#888;">Coming Soon</span></div>
+        <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
+        <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
+      </div>
 
-    <div class="menu-column" id="soups">
-      <h2>🥣 Soups</h2>
-      <img src="soups.jpg" alt="Soups" class="section-image">
-      <div class="menu-item"><span>Sweet Corn (Veg)</span><span style="color:#888;">Coming Soon</span></div>
-      <div class="menu-item"><span>Hot & Sour (Veg)</span><span style="color:#888;">Coming Soon</span></div>
-      <div class="menu-item"><span>Manchow (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
-      <div class="menu-item"><span>Talumein (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
-    </div>
+      <div class="menu-column" id="soups">
+        <h2>🥣 Soups</h2>
+        <img src="soups.jpg" alt="Currchi's Hot and Spicy Soups" class="section-image">
+        <div class="menu-item"><span>Sweet Corn (Veg)</span><span style="color:#888;">Coming Soon</span></div>
+        <div class="menu-item"><span>Hot & Sour (Veg)</span><span style="color:#888;">Coming Soon</span></div>
+        <div class="menu-item"><span>Manchow (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
+        <div class="menu-item"><span>Talumein (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
+      </div>
 
-    <div class="menu-column" id="combos">
-      <h2>🍛 Combos</h2>
-      <img src="combos.jpg" alt="Combos" class="section-image">
-      <div class="menu-item"><span>Paneer Butter Masala Combo</span><span style="color:#888;">Coming Soon</span></div>
-      <div class="menu-item"><span>Dal Makhani Combo</span><span style="color:#888;">Coming Soon</span></div>
-      <div class="menu-item"><span>Butter Chicken Combo</span><span style="color:#888;">Coming Soon</span></div>
-      <div class="menu-item"><span>Rogan Josh Combo</span><span style="color:#888;">Coming Soon</span></div>
-    </div>
+      <div class="menu-column" id="combos">
+        <h2>🍛 Combos</h2>
+        <img src="combos.jpg" alt="Currchi Combo Meals" class="section-image">
+        <div class="menu-item"><span>Paneer Butter Masala Combo</span><span style="color:#888;">Coming Soon</span></div>
+        <div class="menu-item"><span>Dal Makhani Combo</span><span style="color:#888;">Coming Soon</span></div>
+        <div class="menu-item"><span>Butter Chicken Combo</span><span style="color:#888;">Coming Soon</span></div>
+        <div class="menu-item"><span>Rogan Josh Combo</span><span style="color:#888;">Coming Soon</span></div>
+      </div>
 
-    <div class="menu-column" id="maincourse">
-      <h2>🍗 Main Course</h2>
-      <img src="maincourse.jpg" alt="Main Course" class="section-image">
-      <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
-      <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
-    </div>
+      <div class="menu-column" id="maincourse">
+        <h2>🍗 Main Course</h2>
+        <img src="maincourse.jpg" alt="Currchi's Indian Main Course Dishes" class="section-image">
+        <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
+        <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
+      </div>
 
-    <div class="menu-column" id="rice">
-      <h2>🍜 Rice & Noodles</h2>
-      <img src="rice.jpg" alt="Rice and Noodles" class="section-image">
-      <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
-      <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
+      <div class="menu-column" id="rice">
+        <h2>🍜 Rice & Noodles</h2>
+        <img src="rice.jpg" alt="Fried Rice and Hakka Noodles" class="section-image">
+        <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
+        <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
+      </div>
     </div>
   </div>
 
@@ -246,7 +271,7 @@
     }
 
     function generatePDF() {
-      const element = document.body;
+      const element = document.getElementById('menu-content');
       html2pdf().set({
         margin: 0.5,
         filename: 'Currchi_Menu.pdf',
