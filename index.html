@@ -2,183 +2,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Currchi Royal Menu</title>
+  <title>Currchi Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Roboto', sans-serif;
+      padding: 0;
       background-color: #111;
-      background-image: url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
-      color: #f0c75e;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
     }
     header {
       background-color: #000;
       text-align: center;
-      padding: 1.5rem 1rem;
-      border-bottom: 4px solid #f0c75e;
+      padding: 1.5rem;
+      border-bottom: 3px solid #f0c75e;
     }
-    .logo {
-      max-width: 240px;
-      height: auto;
+    header img {
+      max-width: 220px;
     }
-    .toggle-buttons {
-      text-align: center;
-      margin: 1rem 0;
-    }
-    .toggle-buttons button {
-      background: #f0c75e;
-      border: none;
-      padding: 0.6rem 1.5rem;
-      margin: 0.3rem;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 25px;
-      cursor: pointer;
-      color: #000;
-    }
-    .menu-section {
-      padding: 2rem 1rem;
-      max-width: 1100px;
+    .menu-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
       margin: auto;
     }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
+    .menu-column {
+      background-color: #1c1c1c;
+      border-radius: 8px;
+      padding: 1rem;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .menu-column h2 {
+      text-align: center;
+      font-size: 1.5rem;
       color: #f0c75e;
       border-bottom: 2px dashed #f0c75e;
-      padding-bottom: 0.3rem;
-      margin-bottom: 1.2rem;
-      text-align: center;
-    }
-    .menu-category {
-      margin-bottom: 2rem;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
     }
     .menu-item {
-      margin: 0.5rem 0;
-      padding: 0.5rem 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-left: 4px solid #f0c75e;
-      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #333;
+      padding: 0.5rem 0;
+    }
+    .menu-item span {
       color: #fff;
     }
     .footer {
-      background-color: #000;
-      color: #f0c75e;
+      background: #000;
       text-align: center;
       padding: 1rem;
-      margin-top: 3rem;
-      font-size: 0.95rem;
-    }
-    .button {
-      display: inline-block;
-      background: #f0c75e;
-      color: #000;
-      padding: 0.8rem 1.6rem;
-      border-radius: 25px;
-      margin: 1.5rem 0.5rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .back-to-top {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #f0c75e;
-      color: #000;
-      padding: 0.5rem 1rem;
-      border-radius: 25px;
-      font-weight: bold;
-      text-decoration: none;
-      display: none;
-      z-index: 1000;
+      color: #f0c75e;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Currchi Logo" class="logo">
-  </header>  <div class="toggle-buttons">
-    <button onclick="showMenu('veg')">🌿 Veg Menu</button>
-    <button onclick="showMenu('nonveg')">🍗 Non-Veg Menu</button>
-    <button onclick="showMenu('all')">🍽 Show All</button>
-  </div>  <div class="menu-section">
-    <div class="section-title">Starters</div>
-    <div class="menu-category veg">
-      <div class="menu-item">Chilli Paneer Dry - ₹125 / ₹165</div>
-      <div class="menu-item">Honey Chilli Potato - ₹125</div>
-    </div>
-    <div class="menu-category nonveg">
-      <div class="menu-item">Chicken Steam Momos - ₹125 Half / ₹195 Full</div>
-      <div class="menu-item">Golden Fried Chicken Momos - ₹125 Half / ₹195 Full</div>
-      <div class="menu-item">Afghani Chicken Momos - ₹135 Half / ₹205 Full</div>
-    </div><div class="section-title">Combos</div>
-<div class="menu-category veg">
-  <div class="menu-item">Paneer Butter Masala Combo</div>
-  <div class="menu-item">Dal Makhani Combo</div>
-</div>
-<div class="menu-category nonveg">
-  <div class="menu-item">Butter Chicken Combo</div>
-  <div class="menu-item">Rogan Josh Combo</div>
+    <img src="logo.png" alt="Currchi Logo">
+  </header>  <div class="menu-container">
+    <div class="menu-column">
+      <h2>🍢 Starters</h2>
+      <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
+      <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
+      <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
+      <div class="menu-item"><span>Golden Fried Chicken Momos</span><span>₹125 / ₹195</span></div>
+      <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
+    </div><div class="menu-column">
+  <h2>🌯 Rolls</h2>
+  <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
+  <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
+  <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
 </div>
 
-<div class="section-title">Rolls & Wraps</div>
-<div class="menu-category veg">
-  <div class="menu-item">Paneer Tikka Roll</div>
-</div>
-<div class="menu-category nonveg">
-  <div class="menu-item">Chicken Seekh Roll - ₹180</div>
-  <div class="menu-item">Mutton Seekh Roll - ₹200</div>
-</div>
-
-<div class="section-title">Soups</div>
-<div class="menu-category veg">
-  <div class="menu-item">Sweet Corn Soup</div>
-  <div class="menu-item">Hot & Sour Soup</div>
-</div>
-<div class="menu-category nonveg">
-  <div class="menu-item">Chicken Manchow Soup</div>
-  <div class="menu-item">Chicken Talumein Soup</div>
+<div class="menu-column">
+  <h2>🥣 Soups</h2>
+  <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
+  <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
+  <div class="menu-item"><span>Manchow (Chicken)</span><span>₹--</span></div>
+  <div class="menu-item"><span>Talumein (Chicken)</span><span>₹--</span></div>
 </div>
 
-<div class="section-title">Main Course</div>
-<div class="menu-category nonveg">
-  <div class="menu-item">Butter Chicken - ₹345 Half / ₹575 Full</div>
-  <div class="menu-item">Rogan Josh - ₹395 Half / ₹695 Full</div>
+<div class="menu-column">
+  <h2>🍛 Combos</h2>
+  <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
+  <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
+  <div class="menu-item"><span>Butter Chicken Combo</span><span>₹--</span></div>
+  <div class="menu-item"><span>Rogan Josh Combo</span><span>₹--</span></div>
 </div>
 
-<div class="section-title">Rice & Noodles</div>
-<div class="menu-category veg">
-  <div class="menu-item">Veg Fried Rice - ₹125 / ₹195</div>
-  <div class="menu-item">Veg Hakka Noodles - ₹125 / ₹195</div>
+<div class="menu-column">
+  <h2>🍗 Main Course</h2>
+  <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
+  <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
 </div>
 
-  </div>  <div style="text-align:center;">
-    <a class="button" href="tel:+919999999999">📞 Call to Order</a>
-    <a class="button" href="https://wa.me/919999999999">💬 WhatsApp Order</a>
+<div class="menu-column">
+  <h2>🍜 Rice & Noodles</h2>
+  <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
+  <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
+</div>
+
   </div>  <div class="footer">
-    &copy; 2025 CURRCHI | Ramesh Nagar<br>
-    ⏰ Delivery Hours: Everyday 2:00 PM - 12:00 AM
-  </div><a href="#top" class="back-to-top" id="backToTop">⬆ Back to Top</a>
-
-  <script>
-    function showMenu(type) {
-      const veg = document.querySelectorAll('.veg');
-      const nonveg = document.querySelectorAll('.nonveg');
-      if (type === 'veg') {
-        veg.forEach(el => el.style.display = 'block');
-        nonveg.forEach(el => el.style.display = 'none');
-      } else if (type === 'nonveg') {
-        veg.forEach(el => el.style.display = 'none');
-        nonveg.forEach(el => el.style.display = 'block');
-      } else {
-        veg.forEach(el => el.style.display = 'block');
-        nonveg.forEach(el => el.style.display = 'block');
-      }
-    }
-    window.addEventListener('scroll', () => {
-      const btn = document.getElementById('backToTop');
-      btn.style.display = window.scrollY > 200 ? 'block' : 'none';
-    });
-  </script></body>
+    📍 Ramesh Nagar | 📞 Call/WhatsApp: ‪+91 99999 99999‬<br>
+    ⏰ Open Daily: 2:00 PM – 12:00 AM<br>
+    &copy; 2025 CURRCHI – Full on Desi
+  </div>
+</body>
 </html>
