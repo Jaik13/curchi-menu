@@ -21,6 +21,22 @@
     header img {
       max-width: 220px;
     }
+    .toggle-buttons {
+      text-align: center;
+      margin: 1.5rem 0 0.5rem;
+    }
+    .toggle-buttons button {
+      background: #f0c75e;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.3rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      color: #000;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
     .menu-container {
       display: flex;
       flex-wrap: wrap;
@@ -62,27 +78,47 @@
       color: #f0c75e;
       font-size: 0.9rem;
     }
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #f0c75e;
+      color: #000;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: bold;
+      text-decoration: none;
+      display: none;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Currchi Logo">
-  </header>  <div class="menu-container">
-    <div class="menu-column">
+  </header>  <div class="toggle-buttons">
+    <button onclick="scrollToSection('starters')">🍢 Starters</button>
+    <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
+    <button onclick="scrollToSection('soups')">🥣 Soups</button>
+    <button onclick="scrollToSection('combos')">🍛 Combos</button>
+    <button onclick="scrollToSection('maincourse')">🍗 Main</button>
+    <button onclick="scrollToSection('rice')">🍜 Rice & Noodles</button>
+  </div>  <div class="menu-container">
+    <div class="menu-column" id="starters">
       <h2>🍢 Starters</h2>
       <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
       <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
       <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
       <div class="menu-item"><span>Golden Fried Chicken Momos</span><span>₹125 / ₹195</span></div>
       <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
-    </div><div class="menu-column">
+    </div><div class="menu-column" id="rolls">
   <h2>🌯 Rolls</h2>
   <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
   <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
   <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
 </div>
 
-<div class="menu-column">
+<div class="menu-column" id="soups">
   <h2>🥣 Soups</h2>
   <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
   <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
@@ -90,7 +126,7 @@
   <div class="menu-item"><span>Talumein (Chicken)</span><span>₹--</span></div>
 </div>
 
-<div class="menu-column">
+<div class="menu-column" id="combos">
   <h2>🍛 Combos</h2>
   <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
   <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
@@ -98,22 +134,33 @@
   <div class="menu-item"><span>Rogan Josh Combo</span><span>₹--</span></div>
 </div>
 
-<div class="menu-column">
+<div class="menu-column" id="maincourse">
   <h2>🍗 Main Course</h2>
   <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
   <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
 </div>
 
-<div class="menu-column">
+<div class="menu-column" id="rice">
   <h2>🍜 Rice & Noodles</h2>
   <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
   <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
 </div>
 
   </div>  <div class="footer">
-    📍 Ramesh Nagar | 📞 Call/WhatsApp: ‪+91 99999 99999‬<br>
+    📍 Ramesh Nagar | 📞 Call/WhatsApp: +91 99999 99999<br>
     ⏰ Open Daily: 2:00 PM – 12:00 AM<br>
     &copy; 2025 CURRCHI – Full on Desi
-  </div>
-</body>
+  </div><a href="#" class="back-to-top" id="backToTop">⬆ Back to Top</a>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const btn = document.getElementById('backToTop');
+      btn.style.display = window.scrollY > 200 ? 'block' : 'none';
+    });
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script></body>
 </html>
