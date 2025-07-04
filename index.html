@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Currchi Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -14,18 +15,42 @@
       font-family: 'Roboto', sans-serif;
     }
 
-   header {
-  background-color: #fff2c7;
-  text-align: center;
-  padding: 1rem 0;
-}
+    body.light {
+      background-color: #fff;
+      color: #000;
+    }
 
-header img {
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  display: inline-block;
-}
+    body.light .menu-column {
+      background-color: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    body.light .menu-column h2 {
+      color: #d48300;
+      border-bottom-color: #d48300;
+    }
+
+    body.light .menu-item span {
+      color: #000;
+    }
+
+    body.light .footer {
+      background: #f0f0f0;
+      color: #444;
+    }
+
+    header {
+      background-color: #fff2c7;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    header img {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
 
     .toggle-buttons {
       text-align: center;
@@ -43,6 +68,15 @@ header img {
       cursor: pointer;
       color: #000;
       box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .toggle-buttons a button {
+      background: #28a745;
+      color: white;
+    }
+
+    .toggle-buttons a button:hover {
+      background: #218838;
     }
 
     .menu-container {
@@ -103,6 +137,19 @@ header img {
       color: #f0c75e;
       font-size: 0.9rem;
     }
+
+    @media (max-width: 600px) {
+      .menu-column {
+        width: 100%;
+      }
+      .menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .menu-item span:last-child {
+        align-self: flex-end;
+      }
+    }
   </style>
 </head>
 <body>
@@ -117,6 +164,17 @@ header img {
     <button onclick="scrollToSection('combos')">🍛 Combos</button>
     <button onclick="scrollToSection('maincourse')">🍗 Main</button>
     <button onclick="scrollToSection('rice')">🍜 Rice & Noodles</button>
+    <button onclick="toggleTheme()">🌓 Toggle Theme</button>
+    <button onclick="generatePDF()">📄 Download PDF</button>
+  </div>
+
+  <div class="toggle-buttons">
+    <a href="tel:+919999999999" style="text-decoration: none;">
+      <button>📞 Call to Order</button>
+    </a>
+    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank" style="text-decoration: none;">
+      <button>📱 WhatsApp to Order</button>
+    </a>
   </div>
 
   <div class="menu-container">
@@ -133,7 +191,7 @@ header img {
     <div class="menu-column" id="rolls">
       <h2>🌯 Rolls</h2>
       <img src="rolls.jpg" alt="Rolls" class="section-image">
-      <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
+      <div class="menu-item"><span>Paneer Tikka Roll</span><span style="color:#888;">Coming Soon</span></div>
       <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
       <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
     </div>
@@ -141,19 +199,19 @@ header img {
     <div class="menu-column" id="soups">
       <h2>🥣 Soups</h2>
       <img src="soups.jpg" alt="Soups" class="section-image">
-      <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
-      <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
-      <div class="menu-item"><span>Manchow (Chicken)</span><span>₹--</span></div>
-      <div class="menu-item"><span>Talumein (Chicken)</span><span>₹--</span></div>
+      <div class="menu-item"><span>Sweet Corn (Veg)</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Hot & Sour (Veg)</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Manchow (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Talumein (Chicken)</span><span style="color:#888;">Coming Soon</span></div>
     </div>
 
     <div class="menu-column" id="combos">
       <h2>🍛 Combos</h2>
       <img src="combos.jpg" alt="Combos" class="section-image">
-      <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
-      <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
-      <div class="menu-item"><span>Butter Chicken Combo</span><span>₹--</span></div>
-      <div class="menu-item"><span>Rogan Josh Combo</span><span>₹--</span></div>
+      <div class="menu-item"><span>Paneer Butter Masala Combo</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Dal Makhani Combo</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Butter Chicken Combo</span><span style="color:#888;">Coming Soon</span></div>
+      <div class="menu-item"><span>Rogan Josh Combo</span><span style="color:#888;">Coming Soon</span></div>
     </div>
 
     <div class="menu-column" id="maincourse">
@@ -181,6 +239,21 @@ header img {
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+    }
+
+    function generatePDF() {
+      const element = document.body;
+      html2pdf().set({
+        margin: 0.5,
+        filename: 'Currchi_Menu.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      }).from(element).save();
     }
   </script>
 </body>
