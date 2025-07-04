@@ -6,47 +6,23 @@
   <title>Currchi Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: #111;
-      --text-color: #fff;
-      --card-bg: #1c1c1c;
-      --highlight: #f0c75e;
-    }
-    .section-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  object-fit: cover;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-}
-    .light-mode {
-      --bg-color: #fff;
-      --text-color: #000;
-      --card-bg: #f4f4f4;
-      --highlight: #c18f00;
-    }
-
     body {
       margin: 0;
       padding: 0;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      background-color: #111;
+      color: #fff;
       font-family: 'Roboto', sans-serif;
     }
 
     header {
-  background-color: #fff2c7;
-  text-align: center;
-  padding: 1rem 0;
-}
+      background-color: #fff2c7;
+      text-align: center;
+      padding: 0.5rem 0;
+    }
 
-header img {
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  display: inline-block;
-}
+    header img {
+      height: 100px;
+      width: auto;
     }
 
     .toggle-buttons {
@@ -55,7 +31,7 @@ header img {
     }
 
     .toggle-buttons button {
-      background: var(--highlight);
+      background: #f0c75e;
       border: none;
       padding: 0.5rem 1rem;
       margin: 0.3rem;
@@ -63,24 +39,7 @@ header img {
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
-      color: var(--text-color);
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .order-buttons {
-      text-align: center;
-      margin: 1rem 0;
-    }
-
-    .order-buttons a {
-      display: inline-block;
-      background: var(--highlight);
-      color: var(--text-color);
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      margin: 0.3rem;
-      font-weight: bold;
-      border-radius: 20px;
+      color: #000;
       box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
     }
 
@@ -95,18 +54,18 @@ header img {
     }
 
     .menu-column {
-      background-color: var(--card-bg);
+      background-color: #1c1c1c;
       border-radius: 8px;
       padding: 1rem;
       width: 300px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      text-align: center;
     }
 
     .menu-column h2 {
-      text-align: center;
       font-size: 1.5rem;
-      color: var(--highlight);
-      border-bottom: 2px dashed var(--highlight);
+      color: #f0c75e;
+      border-bottom: 2px dashed #f0c75e;
       padding-bottom: 0.5rem;
       margin-bottom: 1rem;
       font-family: 'Playfair Display', serif;
@@ -115,42 +74,32 @@ header img {
     .menu-item {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid #333;
       padding: 0.5rem 0;
+      text-align: left;
     }
 
     .menu-item span {
-      color: var(--text-color);
+      color: #fff;
+    }
+
+    .section-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      object-fit: cover;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+      display: block;
     }
 
     .footer {
       background: #000;
       text-align: center;
       padding: 1rem;
-      color: var(--highlight);
+      color: #f0c75e;
       font-size: 0.9rem;
-    }
-
-    @media print {
-      .toggle-buttons, .order-buttons, .footer {
-        display: none !important;
-      }
-      body {
-        background-color: #fff;
-        color: #000;
-      }
-      .menu-column {
-        box-shadow: none;
-        background-color: #fff;
-        color: #000;
-      }
-      .menu-column h2 {
-        color: #000;
-        border-color: #000;
-      }
-      .menu-item span {
-        color: #000;
-      }
     }
   </style>
 </head>
@@ -159,10 +108,6 @@ header img {
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
 
-  <div style="text-align:right; padding: 0.5rem 1rem;">
-    <button onclick="toggleTheme()" id="themeBtn">☀️ Light Mode</button>
-  </div>
-
   <div class="toggle-buttons">
     <button onclick="scrollToSection('starters')">🍢 Starters</button>
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
@@ -170,17 +115,12 @@ header img {
     <button onclick="scrollToSection('combos')">🍛 Combos</button>
     <button onclick="scrollToSection('maincourse')">🍗 Main</button>
     <button onclick="scrollToSection('rice')">🍜 Rice & Noodles</button>
-    <button onclick="downloadMenu()">📄 Download Menu (PDF)</button>
   </div>
 
-  <div class="order-buttons">
-    <a href="tel:+919999999999">📞 Call to Order</a>
-    <a href="https://wa.me/919999999999" target="_blank">💬 WhatsApp Order</a>
-  </div>
-
- <div class="menu-column" id="starters">
-  <h2>🍢 Starters</h2>
-  <img src="starters.jpg" alt="Starters" class="section-image">
+  <div class="menu-container">
+    <div class="menu-column" id="starters">
+      <h2>🍢 Starters</h2>
+      <img src="starters.jpg" alt="Starters" class="section-image">
       <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
       <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
       <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
@@ -190,6 +130,7 @@ header img {
 
     <div class="menu-column" id="rolls">
       <h2>🌯 Rolls</h2>
+      <img src="rolls.jpg" alt="Rolls" class="section-image">
       <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
       <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
       <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
@@ -197,6 +138,7 @@ header img {
 
     <div class="menu-column" id="soups">
       <h2>🥣 Soups</h2>
+      <img src="soups.jpg" alt="Soups" class="section-image">
       <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
       <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
       <div class="menu-item"><span>Manchow (Chicken)</span><span>₹--</span></div>
@@ -205,6 +147,7 @@ header img {
 
     <div class="menu-column" id="combos">
       <h2>🍛 Combos</h2>
+      <img src="combos.jpg" alt="Combos" class="section-image">
       <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Butter Chicken Combo</span><span>₹--</span></div>
@@ -213,12 +156,14 @@ header img {
 
     <div class="menu-column" id="maincourse">
       <h2>🍗 Main Course</h2>
+      <img src="maincourse.jpg" alt="Main Course" class="section-image">
       <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
       <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
     </div>
 
     <div class="menu-column" id="rice">
       <h2>🍜 Rice & Noodles</h2>
+      <img src="rice.jpg" alt="Rice and Noodles" class="section-image">
       <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
       <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
     </div>
@@ -234,20 +179,6 @@ header img {
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function downloadMenu() {
-      window.print();
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle("light-mode");
-      const btn = document.getElementById("themeBtn");
-      if (document.body.classList.contains("light-mode")) {
-        btn.textContent = "🌙 Dark Mode";
-      } else {
-        btn.textContent = "☀️ Light Mode";
-      }
     }
   </script>
 </body>
