@@ -109,10 +109,73 @@
     <button onclick="showMenu('nonveg')">🍗 Non-Veg Menu</button>
     <button onclick="showMenu('all')">🍽 Show All</button>
   </div>  <div class="menu-section">
-    <!-- All existing menu content remains unchanged -->
-    <!-- ... -->
+    <div class="section-title">🌟 Starters</div>
+    <div class="menu-category veg">
+      <div class="menu-item">Chilli Paneer Dry - 125/- | 165/-</div>
+      <div class="menu-item">Honey Chilli Potato - 125/-</div>
+    </div>
+    <div class="menu-category nonveg">
+      <div class="menu-item">Chicken Steam Momos - 125/- Half | 195/- Full</div>
+      <div class="menu-item">Chicken Golden Fried Momos - 125/- Half | 195/- Full</div>
+      <div class="menu-item">Chicken Tandoori Momos - 125/- Half | 195/- Full</div>
+      <div class="menu-item">Afghani Chicken Momos - 135/- Half | 205/- Full</div>
+    </div><div class="section-title">🍛 Combos</div>
+<div class="menu-category veg">
+  <div class="menu-item">Paneer Butter Masala Combo</div>
+  <div class="menu-item">Mix Veg Curry Combo</div>
+  <div class="menu-item">Dal Makhani Combo</div>
+</div>
+<div class="menu-category nonveg">
+  <div class="menu-item">Butter Chicken Combo</div>
+  <div class="menu-item">Home Style Chicken Curry Combo</div>
+  <div class="menu-item">Rogan Josh Combo</div>
+</div>
+
+<div class="section-title">🌯 Rolls & Wraps</div>
+<div class="menu-category veg">
+  <div class="menu-item">Paneer Tikka Roll</div>
+  <div class="menu-item">Afghani Malai Chaap Roll</div>
+</div>
+<div class="menu-category nonveg">
+  <div class="menu-item">Chicken Seekh Roll - 180/-</div>
+  <div class="menu-item">Chicken Malai Tikka Roll - 190/-</div>
+  <div class="menu-item">Mutton Seekh Roll - 200/-</div>
+</div>
+
+<div class="section-title">🥣 Soups</div>
+<div class="menu-category veg">
+  <div class="menu-item">Classic Sweet Corn Soup (Veg)</div>
+  <div class="menu-item">Spicy Hot & Sour Soup (Veg)</div>
+  <div class="menu-item">Talumein Soup (Veg)</div>
+  <div class="menu-item">Manchow Soup (Veg)</div>
+  <div class="menu-item">Clear Soup (Veg)</div>
+</div>
+<div class="menu-category nonveg">
+  <div class="menu-item">Classic Sweet Corn Soup (Chicken)</div>
+  <div class="menu-item">Hot & Sour Soup (Chicken)</div>
+  <div class="menu-item">Talumein Soup (Chicken)</div>
+</div>
+
+<div class="section-title">🍲 Main Course</div>
+<div class="menu-category nonveg">
+  <div class="menu-item">Butter Chicken - 345/- Half | 575/- Full</div>
+  <div class="menu-item">Kadai Chicken - 575/-</div>
+  <div class="menu-item">Rara Chicken - 575/-</div>
+  <div class="menu-item">Tandoori Chicken Masala - 345/- Half | 575/- Full</div>
+  <div class="menu-item">Rogan Josh - 395/- Half | 695/- Full</div>
+</div>
+
+<div class="section-title">🍜 Fried Rice & Noodles</div>
+<div class="menu-category veg">
+  <div class="menu-item">Veg Fried Rice - 125/- | 195/-</div>
+  <div class="menu-item">Chilli Garlic Fried Rice - 125/- | 195/-</div>
+  <div class="menu-item">Butter Garlic Fried Rice - 135/- | 205/-</div>
+  <div class="menu-item">Veg Hakka Noodles - 125/- | 195/-</div>
+  <div class="menu-item">Butter Garlic Fried Noodles - 135/- | 205/-</div>
+</div>
+
   </div>  <div style="text-align: center;">
-    <a class="button" href="tel:‪+919999999999‬">📞 Call to Order</a>
+    <a class="button" href="tel:+919999999999">📞 Call to Order</a>
     <a class="button" href="https://wa.me/919999999999">💬 Order on WhatsApp</a>
   </div>  <div class="footer">
     &copy; 2025 CURRCHI | Ramesh Nagar | Royal Taste, Every Bite.<br>
@@ -136,7 +199,6 @@
       }
     }
 
-    // Show Back to Top button when scrolling
     const backToTopBtn = document.getElementById("backToTop");
     window.addEventListener("scroll", () => {
       if (window.scrollY > 200) {
