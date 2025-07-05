@@ -14,21 +14,24 @@
       color: #fff;
       font-family: 'Roboto', sans-serif;
     }
-header {
-  background-color: #FFF9DC;
-  text-align: center;
-  padding: 0.5rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 110px; /* increased from 80px */
-  overflow: hidden;
-}
-header img {
-  height: 160px;
-  width: 500px;
-  object-fit: contain;
-}
+
+    header {
+      background-color: #FFF9DC;
+      text-align: center;
+      padding: 0.5rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 110px;
+      overflow: hidden;
+    }
+
+    header img {
+      height: 160px;
+      width: 500px;
+      object-fit: contain;
+    }
+
     .nav-bar {
       display: flex;
       flex-wrap: wrap;
@@ -36,7 +39,8 @@ header img {
       gap: 0.5rem;
       background-color: #111;
       padding: 1rem;
-      position: relative; /* Not sticky */
+      position: sticky;
+      top: 0;
       z-index: 1000;
     }
 
@@ -51,6 +55,11 @@ header img {
       cursor: pointer;
       color: #000;
       box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-bar button.active {
+      background: #fff;
+      color: #000;
     }
 
     .menu-container {
@@ -86,6 +95,10 @@ header img {
       justify-content: space-between;
       border-bottom: 1px solid #333;
       padding: 0.5rem 0;
+    }
+
+    .menu-item span:last-child:contains('₹--') {
+      color: #888;
     }
 
     .section-image {
@@ -141,6 +154,26 @@ header img {
       cursor: pointer;
       z-index: 1001;
     }
+
+    @media (max-width: 600px) {
+      .nav-bar button,
+      .floating-call-buttons a button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .menu-column {
+        background: none !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+    }
   </style>
 </head>
 <body>
@@ -148,7 +181,6 @@ header img {
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
 
-  <!-- Navigation Bar -->
   <div class="nav-bar">
     <button onclick="scrollToSection('starters')">🍢 Starters</button>
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
@@ -161,17 +193,16 @@ header img {
     <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
   </div>
 
-  <!-- Floating Call Buttons -->
   <div class="floating-call-buttons" id="floatingCallButtons">
     <a href="tel:+919999999999"><button>📞 Call</button></a>
     <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button>📱 WhatsApp</button></a>
   </div>
 
-  <!-- Menu Sections -->
   <div class="menu-container" id="menu">
+    <!-- STARTERS -->
     <div class="menu-column" id="starters">
       <h2>🍢 Starters</h2>
-      <img src="starters.jpg" class="section-image" alt="Starters">
+      <img src="starters.jpg" class="section-image" alt="Indian Starters - Currchi" loading="lazy">
       <div class="menu-item"><span>Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
       <div class="menu-item"><span>Honey Chilli Potato</span><span>₹125</span></div>
       <div class="menu-item"><span>Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
@@ -179,55 +210,58 @@ header img {
       <div class="menu-item"><span>Afghani Chicken Momos</span><span>₹135 / ₹205</span></div>
     </div>
 
+    <!-- ROLLS -->
     <div class="menu-column" id="rolls">
       <h2>🌯 Rolls</h2>
-      <img src="rolls.jpg" class="section-image" alt="Rolls">
+      <img src="rolls.jpg" class="section-image" alt="Tandoori Rolls - Currchi" loading="lazy">
       <div class="menu-item"><span>Paneer Tikka Roll</span><span>₹--</span></div>
       <div class="menu-item"><span>Chicken Seekh Roll</span><span>₹180</span></div>
       <div class="menu-item"><span>Mutton Seekh Roll</span><span>₹200</span></div>
     </div>
 
+    <!-- SOUPS -->
     <div class="menu-column" id="soups">
       <h2>🥣 Soups</h2>
-      <img src="soups.jpg" class="section-image" alt="Soups">
+      <img src="soups.jpg" class="section-image" alt="Soups at Currchi" loading="lazy">
       <div class="menu-item"><span>Sweet Corn (Veg)</span><span>₹--</span></div>
       <div class="menu-item"><span>Hot & Sour (Veg)</span><span>₹--</span></div>
       <div class="menu-item"><span>Manchow (Chicken)</span><span>₹--</span></div>
       <div class="menu-item"><span>Talumein (Chicken)</span><span>₹--</span></div>
     </div>
 
+    <!-- COMBOS -->
     <div class="menu-column" id="combos">
       <h2>🍛 Combos</h2>
-      <img src="combos.jpg" class="section-image" alt="Combos">
+      <img src="combos.jpg" class="section-image" alt="Indian Meal Combos - Currchi" loading="lazy">
       <div class="menu-item"><span>Paneer Butter Masala Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Dal Makhani Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Butter Chicken Combo</span><span>₹--</span></div>
       <div class="menu-item"><span>Rogan Josh Combo</span><span>₹--</span></div>
     </div>
 
+    <!-- MAIN COURSE -->
     <div class="menu-column" id="maincourse">
       <h2>🍗 Main Course</h2>
-      <img src="maincourse.jpg" class="section-image" alt="Main Course">
+      <img src="maincourse.jpg" class="section-image" alt="North Indian Main Course - Currchi" loading="lazy">
       <div class="menu-item"><span>Butter Chicken</span><span>₹345 / ₹575</span></div>
       <div class="menu-item"><span>Rogan Josh</span><span>₹395 / ₹695</span></div>
     </div>
 
+    <!-- RICE & NOODLES -->
     <div class="menu-column" id="rice">
       <h2>🍜 Rice & Noodles</h2>
-      <img src="rice.jpg" class="section-image" alt="Rice and Noodles">
+      <img src="rice.jpg" class="section-image" alt="Rice & Noodle Dishes - Currchi" loading="lazy">
       <div class="menu-item"><span>Veg Fried Rice</span><span>₹125 / ₹195</span></div>
       <div class="menu-item"><span>Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
     </div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     📍 CURRCHI || Ramesh Nagar || <br>
     ⏰ Open Daily: 2:00 PM – 12:00 AM<br>
     &#174; 2025 CURRCHI – Full on Desi
   </div>
 
-  <!-- Back to Top -->
   <button class="back-to-top" onclick="scrollToSection('top')">🔝</button>
 
   <script>
@@ -249,7 +283,6 @@ header img {
       }).from(element).save();
     }
 
-    // Show only call buttons when scrolled past nav
     window.addEventListener('scroll', () => {
       const nav = document.querySelector('.nav-bar');
       const floatBtns = document.getElementById('floatingCallButtons');
@@ -258,6 +291,21 @@ header img {
       } else {
         floatBtns.style.display = 'none';
       }
+
+      // Highlight active nav button
+      const sections = document.querySelectorAll('.menu-column');
+      const navButtons = document.querySelectorAll('.nav-bar button');
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 120;
+        if (scrollY >= top) current = section.id;
+      });
+      navButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.innerText.toLowerCase().includes(current)) {
+          btn.classList.add('active');
+        }
+      });
     });
   </script>
 </body>
