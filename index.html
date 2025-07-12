@@ -870,69 +870,57 @@ function launchBalloon() {
 
   updateCartDisplay();
 }
-  function addToCart(item) {
-    const qty = parseInt(document.getElementById(item + "-qty").textContent);
-    if (qty > 0) {
-      cart[item] = qty;
-    } else {
-      delete cart[item];
-    }
-    updateCartDisplay();
+  function addToCart(itemName) {
+  const itemDiv = [...document.querySelectorAll('.menu-item')].find(i =>
+    i.getAttribute('data-name') === itemName
+  );
+
+  const qty = parseInt(document.getElementById(itemName + "-qty").textContent);
+  if (qty <= 0) return;
+
+  let price = 0;
+  let label = "";
+
+  const select = itemDiv.querySelector('select');
+  if (select) {
+    // Half/Full variant selected
+    price = parseInt(select.value);
+    label = select.options[select.selectedIndex].text.split(' - ')[0];
+  } else {
+    price = parseInt(itemDiv.getAttribute('data-price')) || 0;
   }
 
-  function removeFromCart(item) {
-    delete cart[item];
-    document.getElementById(item + "-qty").textContent = 0;
-    updateCartDisplay();
-  }
+  cart[itemName] = { qty, price, label };
+  updateCartDisplay();
+}
 
- function updateCartDisplay() {
-    const cartList = document.getElementById('cart-items');
-    const whatsappLink = document.getElementById('whatsapp-order-btn');
+function updateCartDisplay() {
+  const cartList = document.getElementById('cart-items');
+  const whatsappLink = document.getElementById('whatsapp-order-btn');
 
-    cartList.innerHTML = '';
-    let message = 'Hi Currchi! I want to order:\n';
-    let totalCartAmount = 0;
+  cartList.innerHTML = '';
+  let message = 'Hi Currchi! I want to order:\n';
+  let total = 0;
 
-    Object.entries(cart).forEach(([item, qty]) => {
-      // Extract price from the menu
-      const itemRow = [...document.querySelectorAll('.menu-item')].find(el => el.innerText.includes(item));
-      let priceText = itemRow ? itemRow.querySelector('span').innerText.trim() : '';
-      let price = 0;
+  Object.entries(cart).forEach(([item, details]) => {
+    const { qty, price, label } = details;
+    const variant = label ? ` (${label})` : '';
+    const itemTotal = qty * price;
+    total += itemTotal;
 
-      // Extract ₹price or ₹half/₹full format
-      const match = priceText.match(/₹(\d+)/);
-      if (match) price = parseInt(match[1]);
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${item}${variant} × ${qty} = ₹${itemTotal}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
+    cartList.appendChild(li);
 
-      const itemTotal = price * qty;
-      totalCartAmount += itemTotal;
+    message += `• ${item}${variant} × ${qty} = ₹${itemTotal}\n`;
+  });
 
-      // Create cart list display
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${item} × ${qty} = ₹${itemTotal}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
-      cartList.appendChild(li);
-
-      // Add to WhatsApp message
-      message += `• ${item} × ${qty} = ₹${itemTotal}\n`;
-    });
-
-    // Add total
-    message += `\nTotal: ₹${totalCartAmount}\nPlease confirm order ASAP`;
-    const encodedMsg = encodeURIComponent(message);
-    whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
-
-    // Show total below cart items
-    if (Object.keys(cart).length > 0) {
-      const totalLine = document.createElement('li');
-      totalLine.style.fontWeight = 'bold';
-      totalLine.style.borderTop = '1px solid #777';
-      totalLine.style.paddingTop = '0.5rem';
-      totalLine.innerHTML = `<span>Total: ₹${totalCartAmount}</span>`;
-      cartList.appendChild(totalLine);
-    }
-  }
+  message += `\nTotal = ₹${total}\nPlease confirm order ASAP`;
+  const encodedMsg = encodeURIComponent(message);
+  whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
+}
 </script>
-   <script>
+    <script>
 document.querySelectorAll('.menu-item').forEach(item => {
   const spans = item.querySelectorAll('span');
   if (spans.length < 2) return; // skip if not enough content
@@ -982,6 +970,38 @@ document.querySelectorAll('.menu-item').forEach(item => {
 
   // Replace second span with the new control block
   spans[1].replaceWith(controlDiv);
+});
+</script>
+    <script>
+// Auto-add data-name, variant selector, and price to every menu-item
+document.querySelectorAll('.menu-item').forEach(item => {
+  const text = item.innerText || item.textContent;
+
+  const priceMatch = text.match(/₹\s?(\d+)\s?\/\s?₹\s?(\d+)/);
+  const singlePriceMatch = text.match(/₹\s?(\d+)/);
+  const itemName = text.split("₹")[0].trim();
+
+  if (priceMatch) {
+    const halfPrice = parseInt(priceMatch[1]);
+    const fullPrice = parseInt(priceMatch[2]);
+
+    // Create dropdown selector
+    const select = document.createElement('select');
+    select.innerHTML = `
+      <option value="${halfPrice}">Half - ₹${halfPrice}</option>
+      <option value="${fullPrice}">Full - ₹${fullPrice}</option>
+    `;
+    select.classList.add('variant-selector');
+    item.appendChild(select);
+
+    item.setAttribute('data-name', itemName);
+    item.setAttribute('data-half', halfPrice);
+    item.setAttribute('data-full', fullPrice);
+  } else if (singlePriceMatch) {
+    const price = parseInt(singlePriceMatch[1]);
+    item.setAttribute('data-name', itemName);
+    item.setAttribute('data-price', price);
+  }
 });
 </script>
 </body>
