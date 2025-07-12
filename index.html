@@ -960,9 +960,13 @@ function updateCartDisplay() {
   const cartList = document.getElementById('cart-items');
   const cartTotal = document.getElementById('cart-total');
   const whatsappLink = document.getElementById('whatsapp-link') || document.getElementById('whatsapp-order-btn');
+  const cartPanel = document.getElementById('cart-panel');
 
   if (cartList) cartList.innerHTML = '';
-  let message = '*Please confirm order ASAP*%0A';
+
+  // ✅ Structured WhatsApp message
+  let message = `Hi Currchi - Full on Desi!!%0A`;
+  message += `I want to place the orders for below items:%0A%0A`;
 
   Object.entries(cart).forEach(([key, qty]) => {
     if (qty > 0) {
@@ -980,11 +984,12 @@ function updateCartDisplay() {
     }
   });
 
-  if (cartTotal) cartTotal.textContent = `Total: ₹${total}`;
-  if (whatsappLink) whatsappLink.href = `https://wa.me/919899427503?text=${message}Total: ₹${total}`;
+  message += `%0A🧾 Total: ₹${total}%0A%0APlease confirm the order.`;
 
-  // ✅ Toggle cart visibility
-  const cartPanel = document.getElementById('cart-panel');
+  if (cartTotal) cartTotal.textContent = `Total: ₹${total}`;
+  if (whatsappLink) whatsappLink.href = `https://wa.me/919899427503?text=${message}`;
+
+  // ✅ Show or hide cart panel
   if (Object.values(cart).some(qty => qty > 0)) {
     cartPanel.style.display = 'block';
   } else {
