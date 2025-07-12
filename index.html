@@ -857,14 +857,19 @@ function launchBalloon() {
   const cart = {};
 
   function updateQty(item, change) {
-    const span = document.getElementById(item + "-qty");
-    if (!span) return;
-    let qty = parseInt(span.textContent) || 0;
-    qty += change;
-    if (qty < 0) qty = 0;
-    span.textContent = qty;
+  const qtySpan = document.getElementById(`${item}-qty`);
+  let qty = parseInt(qtySpan.textContent || '0');
+  qty = Math.max(0, qty + change); // prevent negative
+  qtySpan.textContent = qty;
+
+  if (qty === 0) {
+    delete cart[item];
+  } else {
+    cart[item] = qty;
   }
 
+  updateCartDisplay();
+}
   function addToCart(item) {
     const qty = parseInt(document.getElementById(item + "-qty").textContent);
     if (qty > 0) {
