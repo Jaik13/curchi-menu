@@ -440,8 +440,27 @@ input:checked + .slider:before {
   <span>Items</span>
   <span>Price</span>
 </div>
-  <div class="menu-item"><span>🌿 Soya Chaap Tikka Roll</span><span>₹145</span></div>
-  <div class="menu-item"><span>🌿 Paneer Tikka Roll</span><span>₹145</span></div>
+<div class="menu-item">
+  <span>🌿 Soya Chaap Tikka Roll</span>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <span>₹145</span>
+    <button onclick="updateQty('🌿 Soya Chaap Tikka Roll', -1)">➖</button>
+    <span id="🌿 Soya Chaap Tikka Roll-qty">0</span>
+    <button onclick="updateQty('🌿 Soya Chaap Tikka Roll', 1)">➕</button>
+    <button onclick="addToCart('🌿 Soya Chaap Tikka Roll')">🛒</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <span>🌿 Paneer Tikka Roll</span>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <span>₹145</span>
+    <button onclick="updateQty('🌿 Paneer Tikka Roll', -1)">➖</button>
+    <span id="🌿 Paneer Tikka Roll-qty">0</span>
+    <button onclick="updateQty('🌿 Paneer Tikka Roll', 1)">➕</button>
+    <button onclick="addToCart('🌿 Paneer Tikka Roll')">🛒</button>
+  </div>
+</div>
   <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Malai Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Chilli Paneer Roll</span><span>₹155</span></div>
