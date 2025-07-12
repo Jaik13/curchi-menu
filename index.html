@@ -385,6 +385,16 @@ input:checked + .slider:before {
   transform: scale(0.8); /* Shrinks the checkbox */
   cursor: pointer;
 }
+    .menu-item button {
+  border: none;
+  background: transparent;
+  color: #f0c75e;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.menu-item span {
+  color: inherit;
+}
   </style>
  </head>
 <body>
@@ -449,12 +459,10 @@ input:checked + .slider:before {
   <span>Items</span>
   <span>Half (6 Pcs) / Full (10 Pcs) Price</span>
 </div>
-  <div class="menu-item">
+<div class="menu-item">
   <span>🌿 Veg Steam Momos</span>
-  <span>₹75 / ₹125</span>
-</div>
-<div class="qty-cart-box">
-  <div style="display:flex; justify-content:center; align-items:center; gap:0.5rem;">
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <span>₹75 / ₹125</span>
     <button onclick="updateQty('🌿 Veg Steam Momos', -1)">➖</button>
     <span id="🌿 Veg Steam Momos-qty">0</span>
     <button onclick="updateQty('🌿 Veg Steam Momos', 1)">➕</button>
