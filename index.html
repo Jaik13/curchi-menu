@@ -41,13 +41,16 @@
 
 /* Cart Panel Styling */
 .cart-panel {
-  background-color: #1c1c1c;
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  background: #1c1c1c;
   color: #fff;
   padding: 1rem;
-  margin: 2rem auto 4rem;
-  border-radius: 8px;
-  max-width: 700px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 999;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.5);
+  font-size: 0.95rem;
 }
 
 .cart-panel ul {
@@ -59,30 +62,29 @@
 .cart-panel li {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed #444;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.cart-panel li button {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .floating-order-button {
   display: inline-block;
-  margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
-  background-color: #f0c75e;
-  color: #000;
+  margin-top: 10px;
+  padding: 0.5rem 1rem;
+  background-color: #25d366;
+  color: white;
   font-weight: bold;
-  border-radius: 20px;
   text-decoration: none;
-  text-align: center;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-}
-
-.floating-order-button:hover {
-  background-color: #ffc107;
-}
-
-/* Prevent content being covered */
-#raita-salad {
-  margin-bottom: 200px;
+  border-radius: 20px;
 }
 
     body {
@@ -724,12 +726,6 @@ input:checked + .slider:before {
 
     
   <!-- Footer -->
-  <div id="cart-panel" class="cart-panel" style="display: none;">
-  <h3>Your Cart 🛒</h3>
-  <ul id="cart-items"></ul>
-  <p id="cart-total" style="margin-top: 0.5rem;">Total: ₹0</p>
-  <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
-</div>
 <div class="footer">
   <p>📍 <strong>CURRCHI</strong> || Ramesh Nagar, New Delhi ||</p>
   <p>⏰ <strong>Open Daily:</strong> 2:00 PM – 12:00 AM</p>
@@ -882,82 +878,6 @@ function launchBalloon() {
     message += `\nPlease confirm order ASAP`;
     const encodedMsg = encodeURIComponent(message);
     whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
-  }
-</script>
-    <script>
-  const cart = {};
-  const prices = {
-    '🌿 Veg Steam Momos': 125,
-    '🌿 Veg Tandoori Momos': 125,
-    '🍖 Chicken Malai Tikka Roll': 190,
-    '🍖 Chicken Seekh Roll': 180,
-    '🌿 Paneer Tikka Roll': 145,
-    '🍖 Mutton Biryani': 675,
-    '🌿 Rajma Masala': 235,
-    // ✅ Add all full names from menu here with exact prices (full rate)
-  };
-
-  function updateQty(item, change) {
-    const qtySpan = document.getElementById(item + '-qty');
-    if (!qtySpan) return;
-    let qty = parseInt(qtySpan.textContent) || 0;
-    qty += change;
-    if (qty < 0) qty = 0;
-    qtySpan.textContent = qty;
-  }
-
-  function addToCart(item) {
-    const qty = parseInt(document.getElementById(item + '-qty').textContent);
-    if (qty > 0) {
-      cart[item] = qty;
-    } else {
-      delete cart[item];
-    }
-    updateCartDisplay();
-  }
-
-  function removeFromCart(item) {
-    delete cart[item];
-    document.getElementById(item + '-qty').textContent = 0;
-    updateCartDisplay();
-  }
-
-  function updateCartDisplay() {
-    const cartPanel = document.getElementById('cart-panel');
-    const cartList = document.getElementById('cart-items');
-    const totalElem = document.getElementById('cart-total');
-    const whatsappLink = document.getElementById('whatsapp-order-btn');
-
-    cartList.innerHTML = '';
-    let message = 'Hi Currchi! I want to order:\n';
-    let total = 0;
-    let itemCount = 0;
-
-    for (const [item, qty] of Object.entries(cart)) {
-      const price = prices[item] || 0;
-      const itemTotal = price * qty;
-      total += itemTotal;
-      itemCount += qty;
-
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <span>${item} × ${qty} = ₹${itemTotal}</span>
-        <button onclick="removeFromCart('${item}')">Remove</button>
-      `;
-      cartList.appendChild(li);
-
-      message += `• ${item} × ${qty} = ₹${itemTotal}\n`;
-    }
-
-    if (itemCount === 0) {
-      cartPanel.style.display = 'none';
-      return;
-    }
-
-    message += `\nTotal: ₹${total}\nPlease confirm order ASAP`;
-    totalElem.textContent = `Total: ₹${total}`;
-    whatsappLink.href = `https://wa.me/919899427503?text=${encodeURIComponent(message)}`;
-    cartPanel.style.display = 'block';
   }
 </script>
 </body>
