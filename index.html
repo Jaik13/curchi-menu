@@ -968,8 +968,7 @@ function launchBalloon() {
       cartPanel.style.display = total > 0 ? 'block' : 'none';
       cartTotal.textContent = total;
       message += `\nTotal: ₹${total}\n\nPlease confirm order.`;
-      whatsappLink.href = `https://wa.me/919899427503?text=${encodeURIComponent(message)}`;
-      <button onclick="clearCart()">🗑️ Clear Cart</button>
+      whatsappLink.href = `https://wa.me/919899427503?text=${encodeURIComponent(message)}`;    
     }
 
     function removeItem(item) {
