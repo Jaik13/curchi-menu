@@ -442,35 +442,16 @@ input:checked + .slider:before {
   <span>Items</span>
   <span>Price</span>
 </div>
-<div class="menu-item">
-  <span>🌿 Soya Chaap Tikka Roll</span>
-  <div style="display: flex; align-items: center; gap: 0.5rem;">
-    <span>₹145</span>
-    <button onclick="updateQty('🌿 Soya Chaap Tikka Roll', -1)">➖</button>
-    <span id="🌿 Soya Chaap Tikka Roll-qty">0</span>
-    <button onclick="updateQty('🌿 Soya Chaap Tikka Roll', 1)">➕</button>
-    <button onclick="addToCart('🌿 Soya Chaap Tikka Roll')">🛒</button>
-  </div>
-</div>
-
-<div class="menu-item">
-  <span>🌿 Paneer Tikka Roll</span>
-  <div style="display: flex; align-items: center; gap: 0.5rem;">
-    <span>₹145</span>
-    <button onclick="updateQty('🌿 Paneer Tikka Roll', -1)">➖</button>
-    <span id="🌿 Paneer Tikka Roll-qty">0</span>
-    <button onclick="updateQty('🌿 Paneer Tikka Roll', 1)">➕</button>
-    <button onclick="addToCart('🌿 Paneer Tikka Roll')">🛒</button>
-  </div>
-</div>
-  <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
-  <div class="menu-item"><span>🌿 Malai Paneer Roll</span><span>₹155</span></div>
-  <div class="menu-item"><span>🌿 Chilli Paneer Roll</span><span>₹155</span></div>
-  <div class="menu-item"><span>🍖 Spicy Chicken Tikka Roll</span><span>₹180</span></div>
-  <div class="menu-item"><span>🍖 Kali Mirch Chicken Tikka Roll</span><span>₹180</span></div>
-  <div class="menu-item"><span>🍖 Chilli Chicken Roll</span><span>₹180</span></div>
-  <div class="menu-item"><span>🍖 Chicken Seekh Roll</span><span>₹180</span></div>
-  <div class="menu-item"><span>🍖 Chicken Malai Tikka Roll</span><span>₹190</span></div>
+<div class="menu-item" data-name="🌿 Soya Chaap Tikka Roll" data-price="145"></div>
+<div class="menu-item" data-name="🌿 Paneer Tikka Roll" data-price="145"></div>
+<div class="menu-item" data-name="🌿 Afghani Malai Chaap Roll" data-price="155"></div>
+<div class="menu-item" data-name="🌿 Malai Paneer Roll" data-price="155"></div>
+<div class="menu-item" data-name="🌿 Chilli Paneer Roll" data-price="155"></div>
+<div class="menu-item" data-name="🍖 Spicy Chicken Tikka Roll" data-price="180"></div>
+<div class="menu-item" data-name="🍖 Kali Mirch Chicken Tikka Roll" data-price="180"></div>
+<div class="menu-item" data-name="🍖 Chilli Chicken Roll" data-price="180"></div>
+<div class="menu-item" data-name="🍖 Chicken Seekh Roll" data-price="180"></div>
+<div class="menu-item" data-name="🍖 Chicken Malai Tikka Roll" data-price="190"></div>
   <div class="menu-item"><span>🍖 Mutton Seekh Roll</span><span>₹200</span></div>
 </div>
   <div class="menu-column" id="momos">
@@ -854,155 +835,116 @@ function launchBalloon() {
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
 </div>
 <script>
-  const cart = {};
+ document.querySelectorAll('.menu-item').forEach(item => {
+  const name = item.dataset.name;
+  const price = parseInt(item.dataset.price);
 
-  function updateQty(item, change) {
-  const qtySpan = document.getElementById(`${item}-qty`);
-  let qty = parseInt(qtySpan.textContent || '0');
-  qty = Math.max(0, qty + change); // prevent negative
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = name;
+
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'flex';
+  wrapper.style.alignItems = 'center';
+  wrapper.style.gap = '0.5rem';
+
+  const priceSpan = document.createElement('span');
+  priceSpan.textContent = `₹${price}`;
+
+  const minus = document.createElement('button');
+  minus.textContent = '➖';
+  minus.onclick = () => changeQty(item, -1);
+
+  const qty = document.createElement('span');
+  qty.classList.add('item-qty');
+  qty.textContent = '0';
+
+  const plus = document.createElement('button');
+  plus.textContent = '➕';
+  plus.onclick = () => changeQty(item, 1);
+
+  const cartBtn = document.createElement('button');
+  cartBtn.textContent = '🛒';
+  cartBtn.onclick = () => addToCart(name);
+
+  const total = document.createElement('span');
+  total.classList.add('item-total');
+  total.textContent = '₹0';
+
+  wrapper.append(priceSpan, minus, qty, plus, cartBtn, total);
+  item.append(nameSpan, wrapper);
+});
+
+const cart = {};
+
+function changeQty(item, delta) {
+  const qtySpan = item.querySelector('.item-qty');
+  let qty = parseInt(qtySpan.textContent);
+  qty = Math.max(0, qty + delta);
   qtySpan.textContent = qty;
 
-  if (qty === 0) {
-    delete cart[item];
+  updateItemTotal(item);
+}
+
+function updateItemTotal(item) {
+  const name = item.dataset.name;
+  const price = parseInt(item.dataset.price);
+  const qty = parseInt(item.querySelector('.item-qty').textContent);
+  const itemTotal = price * qty;
+
+  item.querySelector('.item-total').textContent = `₹${itemTotal}`;
+
+  if (qty > 0) {
+    cart[name] = { qty, price, total: itemTotal };
   } else {
-    cart[item] = qty;
+    delete cart[name];
   }
 
   updateCartDisplay();
 }
-  function addToCart(itemName) {
-  const itemDiv = [...document.querySelectorAll('.menu-item')].find(i =>
-    i.getAttribute('data-name') === itemName
-  );
 
-  const qty = parseInt(document.getElementById(itemName + "-qty").textContent);
-  if (qty <= 0) return;
-
-  let price = 0;
-  let label = "";
-
-  const select = itemDiv.querySelector('select');
-  if (select) {
-    // Half/Full variant selected
-    price = parseInt(select.value);
-    label = select.options[select.selectedIndex].text.split(' - ')[0];
-  } else {
-    price = parseInt(itemDiv.getAttribute('data-price')) || 0;
-  }
-
-  cart[itemName] = { qty, price, label };
-  updateCartDisplay();
+function addToCart(itemName) {
+  const item = [...document.querySelectorAll('.menu-item')].find(el => el.dataset.name === itemName);
+  updateItemTotal(item);
 }
 
 function updateCartDisplay() {
   const cartList = document.getElementById('cart-items');
   const whatsappLink = document.getElementById('whatsapp-order-btn');
-
   cartList.innerHTML = '';
+
+  let cartTotal = 0;
   let message = 'Hi Currchi! I want to order:\n';
-  let total = 0;
 
-  Object.entries(cart).forEach(([item, details]) => {
-    const { qty, price, label } = details;
-    const variant = label ? ` (${label})` : '';
-    const itemTotal = qty * price;
-    total += itemTotal;
-
+  for (const [name, data] of Object.entries(cart)) {
+    cartTotal += data.total;
     const li = document.createElement('li');
-    li.innerHTML = `<span>${item}${variant} × ${qty} = ₹${itemTotal}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
+    li.innerHTML = `<span>${name} × ${data.qty} = ₹${data.total}</span>
+                    <button onclick="removeFromCart('${name}')">Remove</button>`;
     cartList.appendChild(li);
+    message += `• ${name} × ${data.qty} = ₹${data.total}\n`;
+  }
 
-    message += `• ${item}${variant} × ${qty} = ₹${itemTotal}\n`;
-  });
-
-  message += `\nTotal = ₹${total}\nPlease confirm order ASAP`;
+  message += `\nTotal: ₹${cartTotal}\nPlease confirm order ASAP`;
   const encodedMsg = encodeURIComponent(message);
   whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
-}
-</script>
-    <script>
-document.querySelectorAll('.menu-item').forEach(item => {
-  const spans = item.querySelectorAll('span');
-  if (spans.length < 2) return; // skip if not enough content
 
-  const itemName = spans[0].innerText.trim();
-
-  // ❌ Skip header rows (like "Items | Price" or "Items | Half / Full")
-  const isHeader = /items|price|half|full/i.test(itemName);
-  if (isHeader) return;
-
-  // ❌ Skip if buttons already exist
-  if (item.querySelector('button')) return;
-
-  const priceText = spans[1].innerText.trim();
-
-  // ✅ Create new control group
-  const controlDiv = document.createElement('div');
-  controlDiv.style.display = 'flex';
-  controlDiv.style.alignItems = 'center';
-  controlDiv.style.gap = '0.5rem';
-
-  const priceSpan = document.createElement('span');
-  priceSpan.textContent = priceText;
-
-  const minusBtn = document.createElement('button');
-  minusBtn.textContent = '➖';
-  minusBtn.onclick = () => updateQty(itemName, -1);
-
-  const qtySpan = document.createElement('span');
-  qtySpan.id = `${itemName}-qty`;
-  qtySpan.textContent = '0';
-
-  const plusBtn = document.createElement('button');
-  plusBtn.textContent = '➕';
-  plusBtn.onclick = () => updateQty(itemName, 1);
-
-  const cartBtn = document.createElement('button');
-  cartBtn.textContent = '🛒';
-  cartBtn.onclick = () => addToCart(itemName);
-
-  // Assemble buttons
-  controlDiv.appendChild(priceSpan);
-  controlDiv.appendChild(minusBtn);
-  controlDiv.appendChild(qtySpan);
-  controlDiv.appendChild(plusBtn);
-  controlDiv.appendChild(cartBtn);
-
-  // Replace second span with the new control block
-  spans[1].replaceWith(controlDiv);
-});
-</script>
-    <script>
-// Auto-add data-name, variant selector, and price to every menu-item
-document.querySelectorAll('.menu-item').forEach(item => {
-  const text = item.innerText || item.textContent;
-
-  const priceMatch = text.match(/₹\s?(\d+)\s?\/\s?₹\s?(\d+)/);
-  const singlePriceMatch = text.match(/₹\s?(\d+)/);
-  const itemName = text.split("₹")[0].trim();
-
-  if (priceMatch) {
-    const halfPrice = parseInt(priceMatch[1]);
-    const fullPrice = parseInt(priceMatch[2]);
-
-    // Create dropdown selector
-    const select = document.createElement('select');
-    select.innerHTML = `
-      <option value="${halfPrice}">Half - ₹${halfPrice}</option>
-      <option value="${fullPrice}">Full - ₹${fullPrice}</option>
-    `;
-    select.classList.add('variant-selector');
-    item.appendChild(select);
-
-    item.setAttribute('data-name', itemName);
-    item.setAttribute('data-half', halfPrice);
-    item.setAttribute('data-full', fullPrice);
-  } else if (singlePriceMatch) {
-    const price = parseInt(singlePriceMatch[1]);
-    item.setAttribute('data-name', itemName);
-    item.setAttribute('data-price', price);
+  if (!document.getElementById('cart-total-line')) {
+    const totalLine = document.createElement('li');
+    totalLine.id = 'cart-total-line';
+    cartList.appendChild(totalLine);
   }
-});
+  document.getElementById('cart-total-line').innerHTML = `<strong>Total: ₹${cartTotal}</strong>`;
+}
+
+function removeFromCart(itemName) {
+  const item = [...document.querySelectorAll('.menu-item')].find(el => el.dataset.name === itemName);
+  if (item) {
+    item.querySelector('.item-qty').textContent = "0";
+    item.querySelector('.item-total').textContent = "₹0";
+  }
+  delete cart[itemName];
+  updateCartDisplay();
+}
 </script>
 </body>
 </html>
