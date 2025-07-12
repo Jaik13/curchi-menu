@@ -9,6 +9,84 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
+    .qty-cart-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #f0c75e;
+}
+
+.qty-cart-box button {
+  background: #f0c75e;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.qty-cart-box span {
+  min-width: 18px;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Cart Panel Styling */
+.cart-panel {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  background: #1c1c1c;
+  color: #fff;
+  padding: 1rem;
+  z-index: 999;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.5);
+  font-size: 0.95rem;
+}
+
+.cart-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-panel li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.cart-panel li button {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.floating-order-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 0.5rem 1rem;
+  background-color: #25d366;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 20px;
+}
+
     body {
       margin: 0;
       padding: 0;
@@ -382,7 +460,16 @@ input:checked + .slider:before {
   <span>Items</span>
   <span>Half (6 Pcs) / Full (10 Pcs) Price</span>
 </div>
-  <div class="menu-item"><span>🌿 Veg Steam Momos</span><span>₹75 / ₹125</span></div>
+  <div class="menu-item">
+  <span>🌿 Veg Steam Momos</span>
+  <span>₹75 / ₹125</span>
+  <div class="qty-cart-box">
+    <button onclick="updateQty('Veg Steam Momos', -1)">➖</button>
+    <span id="Veg Steam Momos-qty">0</span>
+    <button onclick="updateQty('Veg Steam Momos', 1)">➕</button>
+    <button onclick="addToCart('Veg Steam Momos')">🛒</button>
+  </div>
+</div>
   <div class="menu-item"><span>🌿 Veg Tandoori Momos</span><span>₹75 / ₹125</span></div>
   <div class="menu-item"><span>🌿 Veg Golden Fries Momos</span><span>₹75 / ₹125</span></div>
   <div class="menu-item"><span>🌿 Veg Afghani Momos</span><span>₹85 / ₹135</span></div>
@@ -738,6 +825,59 @@ function launchBalloon() {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+</script>
+    <!-- Cart Panel -->
+<div id="cart-panel" class="cart-panel">
+  <h3>Your Cart 🛒</h3>
+  <ul id="cart-items"></ul>
+  <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
+</div>
+<script>
+  const cart = {};
+
+  function updateQty(item, change) {
+    const span = document.getElementById(item + "-qty");
+    if (!span) return;
+    let qty = parseInt(span.textContent) || 0;
+    qty += change;
+    if (qty < 0) qty = 0;
+    span.textContent = qty;
+  }
+
+  function addToCart(item) {
+    const qty = parseInt(document.getElementById(item + "-qty").textContent);
+    if (qty > 0) {
+      cart[item] = qty;
+    } else {
+      delete cart[item];
+    }
+    updateCartDisplay();
+  }
+
+  function removeFromCart(item) {
+    delete cart[item];
+    document.getElementById(item + "-qty").textContent = 0;
+    updateCartDisplay();
+  }
+
+  function updateCartDisplay() {
+    const cartList = document.getElementById('cart-items');
+    const whatsappLink = document.getElementById('whatsapp-order-btn');
+
+    cartList.innerHTML = '';
+    let message = 'Hi Currchi! I want to order:\n';
+
+    Object.entries(cart).forEach(([item, qty]) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${item} × ${qty}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
+      cartList.appendChild(li);
+      message += `• ${item} × ${qty}\n`;
+    });
+
+    message += `\nPlease confirm order ASAP`;
+    const encodedMsg = encodeURIComponent(message);
+    whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
   }
 </script>
 </body>
