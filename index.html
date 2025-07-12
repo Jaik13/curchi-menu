@@ -890,13 +890,14 @@ document.addEventListener('DOMContentLoaded', () => {
         updateQtyDisplay(name, selectedPrice);
       });
 
-      item.appendChild(selector);
+      if (selector) {
+  item.appendChild(selector);
 } else {
-  // Wrap price and controls in a vertical layout
+  // Create wrapper to hold price and cart controls vertically
   const priceCartWrapper = document.createElement('div');
   priceCartWrapper.style.display = 'flex';
   priceCartWrapper.style.flexDirection = 'column';
-  priceCartWrapper.style.alignItems = 'flex-start'; // or 'center' if preferred
+  priceCartWrapper.style.alignItems = 'flex-start'; // or 'center' based on style
   priceCartWrapper.style.marginTop = '4px';
 
   // Price
@@ -905,11 +906,10 @@ document.addEventListener('DOMContentLoaded', () => {
   selectedPrice = price;
   priceCartWrapper.appendChild(priceSpan);
 
-  // Cart controls
+  // Cart controls (➖ 0 ➕ 🛒)
   const controlDiv = document.createElement('div');
   controlDiv.style.display = 'flex';
   controlDiv.style.alignItems = 'center';
-  controlDiv.style.justifyContent = 'start';
   controlDiv.style.gap = '0.5rem';
   controlDiv.style.marginTop = '4px';
 
@@ -932,7 +932,6 @@ document.addEventListener('DOMContentLoaded', () => {
   controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
   priceCartWrapper.appendChild(controlDiv);
 
-  // Finally append the wrapper to the item
   item.appendChild(priceCartWrapper);
 }
 
