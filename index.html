@@ -951,22 +951,46 @@ function removeFromCart(itemName) {
     qty = Math.max(0, qty + delta);
     qtySpan.textContent = qty;
 
-    const price = parseInt(itemDiv.dataset.price);
+    updateItemTotal(itemDiv);
+    updateCart();
+  }
+
+  function updateItemTotal(itemDiv) {
+    const qty = parseInt(itemDiv.querySelector('.item-qty').textContent);
+    let price = parseFloat(itemDiv.dataset.price);
+    
+    const selector = itemDiv.querySelector('.size-select');
+    if (selector) {
+      const selectedSize = selector.value;
+      price = parseFloat(itemDiv.dataset[`price${selectedSize}`.toLowerCase()]);
+    }
+
     const totalSpan = itemDiv.querySelector('.item-total');
     totalSpan.textContent = `₹${qty * price}`;
-
-    updateCart();
   }
 
   function addToCart(name) {
     const itemDiv = [...document.querySelectorAll('.menu-item')].find(div => div.dataset.name === name);
     const qty = parseInt(itemDiv.querySelector('.item-qty').textContent);
     if (qty > 0) {
-      const price = parseInt(itemDiv.dataset.price);
-      cart[name] = { qty, price };
+      let price = parseFloat(itemDiv.dataset.price);
+      let label = name;
+
+      const selector = itemDiv.querySelector('.size-select');
+      if (selector) {
+        const selectedSize = selector.value;
+        price = parseFloat(itemDiv.dataset[`price${selectedSize}`.toLowerCase()]);
+        label += ` (${selectedSize})`;
+      }
+
+      cart[label] = { qty, price };
     } else {
-      delete cart[name];
+      // remove any size variations from cart
+      Object.keys(cart).forEach(key => {
+        if (key.startsWith(name)) delete cart[key];
+      });
     }
+
     updateCart();
   }
 
@@ -989,48 +1013,83 @@ function removeFromCart(itemName) {
     }
   }
 
-  // Enhance items on load
-  document.querySelectorAll('.menu-item:not(.menu-header)').forEach(item => {
-    const name = item.dataset.name;
-    const price = parseInt(item.dataset.price);
-    if (!name || !price) return;
+  // Enhance items on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.menu-item:not(.menu-header)').forEach(item => {
+      const name = item.dataset.name;
+      const price = parseFloat(item.dataset.price);
+      const priceHalf = parseFloat(item.dataset.priceHalf);
+      const priceFull = parseFloat(item.dataset.priceFull);
 
-    item.innerHTML = ''; // Clear any previous content
+      if (!name || (isNaN(price) && isNaN(priceHalf))) return;
 
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = name;
+      item.innerHTML = '';
 
-    const wrapper = document.createElement('div');
-    wrapper.style.display = 'flex';
-    wrapper.style.alignItems = 'center';
-    wrapper.style.gap = '0.5rem';
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = name;
 
-    const priceSpan = document.createElement('span');
-    priceSpan.textContent = `₹${price}`;
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.alignItems = 'center';
+      wrapper.style.gap = '0.5rem';
 
-    const minus = document.createElement('button');
-    minus.textContent = '➖';
-    minus.onclick = () => changeQty(item, -1);
+      let priceSpan;
+      let selector;
 
-    const qty = document.createElement('span');
-    qty.classList.add('item-qty');
-    qty.textContent = '0';
+      if (!isNaN(priceHalf) && !isNaN(priceFull)) {
+        // Half/Full logic
+        item.dataset.pricehalf = priceHalf;
+        item.dataset.pricefull = priceFull;
 
-    const plus = document.createElement('button');
-    plus.textContent = '➕';
-    plus.onclick = () => changeQty(item, 1);
+        selector = document.createElement('select');
+        selector.classList.add('size-select');
+        ['Half', 'Full'].forEach(optionText => {
+          const opt = document.createElement('option');
+          opt.value = optionText;
+          opt.text = optionText;
+          selector.appendChild(opt);
+        });
+        selector.onchange = () => {
+          updateItemTotal(item);
+          updateCart();
+        };
 
-    const cartBtn = document.createElement('button');
-    cartBtn.textContent = '🛒';
-    cartBtn.onclick = () => addToCart(name);
+        priceSpan = document.createElement('span');
+        priceSpan.textContent = `₹${priceHalf} / ₹${priceFull}`;
+      } else {
+        item.dataset.price = price;
+        priceSpan = document.createElement('span');
+        priceSpan.textContent = `₹${price}`;
+      }
 
-    const total = document.createElement('span');
-    total.classList.add('item-total');
-    total.textContent = '₹0';
+      const minus = document.createElement('button');
+      minus.textContent = '➖';
+      minus.onclick = () => changeQty(item, -1);
 
-    wrapper.append(priceSpan, minus, qty, plus, cartBtn, total);
-    item.append(nameSpan, wrapper);
+      const qty = document.createElement('span');
+      qty.classList.add('item-qty');
+      qty.textContent = '0';
+
+      const plus = document.createElement('button');
+      plus.textContent = '➕';
+      plus.onclick = () => changeQty(item, 1);
+
+      const cartBtn = document.createElement('button');
+      cartBtn.textContent = '🛒';
+      cartBtn.onclick = () => addToCart(name);
+
+      const total = document.createElement('span');
+      total.classList.add('item-total');
+      total.textContent = '₹0';
+
+      wrapper.append(priceSpan);
+      if (selector) wrapper.append(selector);
+      wrapper.append(minus, qty, plus, cartBtn, total);
+
+      item.append(nameSpan, wrapper);
+    });
   });
 </script>
+
 </body>
 </html>
