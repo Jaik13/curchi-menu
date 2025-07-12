@@ -9,47 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-  .menu-item {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+   .qty-cart-box {
+  text-align: center;
   margin-bottom: 1rem;
 }
-
-.menu-buttons {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-.qty-cart-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.15rem;  /* Or try 2px */
-}
 .qty-cart-box button {
-  font-size: 0.65rem;     /* Smaller text */
-  padding: 1px 4px;         /* Tighter button */
-  border-radius: 4px;
-  background: #f0c75e;   /* Optional: match theme */
-  color: #000;
   border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  color: #f0c75e;
   cursor: pointer;
 }
 
 .qty-cart-box span {
-  font-size: 0.7rem; /* Or even smaller like 0.7rem */
-  min-width: 16px;
+  min-width: 18px;
   text-align: center;
   font-weight: bold;
   color: #fff;
-}
-  .add-to-cart-btn {
-  font-size: 0.65rem;
-  padding: 1px 4px;
-  background-color: #ffd966;
-  border-radius: 4px;
-  box-shadow: none;
 }
 
 /* Cart Panel Styling */
@@ -152,7 +128,7 @@ header img {
       justify-content: center;
       gap: 2rem;
       padding: 2rem;
-      max-width: 1300px;
+      max-width: 1200px;
       margin: auto;
     }
 
@@ -467,12 +443,19 @@ input:checked + .slider:before {
   <span>Price</span>
 </div>
 <div class="menu-item">
-  <span class="item-name">🌿 Soya Chaap Tikka Roll</span>
-  <span class="item-price">₹145</span>
+  <span>🌿 Soya Chaap Tikka Roll</span>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <span>₹145</span>
+    <button onclick="updateQty('🌿 Soya Chaap Tikka Roll', -1)">➖</button>
+    <span id="🌿 Soya Chaap Tikka Roll-qty">0</span>
+    <button onclick="updateQty('🌿 Soya Chaap Tikka Roll', 1)">➕</button>
+    <button onclick="addToCart('🌿 Soya Chaap Tikka Roll')">🛒</button>
+  </div>
 </div>
+
 <div class="menu-item">
   <span>🌿 Paneer Tikka Roll</span>
-  <div style="display: flex; align-items: center; gap: 0.25rem;">
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
     <span>₹145</span>
     <button onclick="updateQty('🌿 Paneer Tikka Roll', -1)">➖</button>
     <span id="🌿 Paneer Tikka Roll-qty">0</span>
@@ -480,11 +463,6 @@ input:checked + .slider:before {
     <button onclick="addToCart('🌿 Paneer Tikka Roll')">🛒</button>
   </div>
 </div>
-  <div class="menu-item"><span class="item-name">🌿 Afghani Malai Chaap Roll</span><span class="item-price" id="🌿 Afghani Malai Chaap Roll-price">₹155</span></div>
-  <div class="menu-item"><span class="item-name">🌿 Malai Paneer Roll</span><span class="item-price" id="🌿 Malai Paneer Roll-price">₹155</span></div>
-  <div class="menu-item"><span class="item-name">🌿 Chilli Paneer Roll</span><span class="item-price" id="🌿 Chilli Paneer Roll-price">₹155</span></div>
-  <div class="menu-item"><span class="item-name">🍖 Spicy Chicken Tikka Roll</span><span class="item-price" id="🍖 Spicy Chicken Tikka Roll-price">₹180</span></div>
-  <div class="menu-item"><span class="item-name">🍖 Kali Mirch Chicken Tikka Roll</span><span class="item-price" id="🍖 Kali Mirch Chicken Tikka Roll-price">₹180</span></div>
   <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Malai Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Chilli Paneer Roll</span><span>₹155</span></div>
@@ -871,137 +849,56 @@ function launchBalloon() {
 </script>
     <!-- Cart Panel -->
 <div id="cart-panel" class="cart-panel">
-  <h3>Your Cart   🛒</h3>
+  <h3>Your Cart 🛒</h3>
   <ul id="cart-items"></ul>
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
 </div>
 <script>
   const cart = {};
 
-  function updateQty(itemName, change) {
-    const qtySpan = document.getElementById(`${itemName}-qty`);
-    let qty = parseInt(qtySpan.innerText || '0');
-    qty = Math.max(0, qty + change);
-    qtySpan.innerText = qty;
+  function updateQty(item, change) {
+    const span = document.getElementById(item + "-qty");
+    if (!span) return;
+    let qty = parseInt(span.textContent) || 0;
+    qty += change;
+    if (qty < 0) qty = 0;
+    span.textContent = qty;
+  }
 
-    // Auto-add or remove from cart based on quantity
+  function addToCart(item) {
+    const qty = parseInt(document.getElementById(item + "-qty").textContent);
     if (qty > 0) {
-      cart[itemName] = qty;
+      cart[item] = qty;
     } else {
-      delete cart[itemName];
-    }
-
-    updateCartDisplay();
-  }
-
-  function addToCart(itemName) {
-    const qtySpan = document.getElementById(`${itemName}-qty`);
-    const qty = parseInt(qtySpan.innerText || '0');
-    if (qty > 0) {
-      cart[itemName] = qty;
+      delete cart[item];
     }
     updateCartDisplay();
   }
 
-  function removeFromCart(itemName) {
-    delete cart[itemName];
-    const qtySpan = document.getElementById(`${itemName}-qty`);
-    if (qtySpan) qtySpan.innerText = '0';
+  function removeFromCart(item) {
+    delete cart[item];
+    document.getElementById(item + "-qty").textContent = 0;
     updateCartDisplay();
   }
 
   function updateCartDisplay() {
-    const cartPanel = document.getElementById('cart-panel');
-    const cartItemsContainer = document.getElementById('cart-items');
-    const cartTotalEl = document.getElementById('cart-total');
-    const whatsappLink = document.getElementById('whatsapp-link');
+    const cartList = document.getElementById('cart-items');
+    const whatsappLink = document.getElementById('whatsapp-order-btn');
 
-    if (Object.keys(cart).length === 0) {
-      cartPanel.style.display = 'none';
-      return;
-    } else {
-      cartPanel.style.display = 'block';
-    }
+    cartList.innerHTML = '';
+    let message = 'Hi Currchi! I want to order:\n';
 
-    cartItemsContainer.innerHTML = '';
-    let total = 0;
-    let message = '*Order Details:*\n';
+    Object.entries(cart).forEach(([item, qty]) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${item} × ${qty}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
+      cartList.appendChild(li);
+      message += `• ${item} × ${qty} = ₹${itemTotal}\n`;
+    });
 
-    for (let item in cart) {
-      const qty = cart[item];
-      const itemElem = document.querySelector(`span.item-name:contains("${item}")`);
-      const priceElem = document.querySelector(`span#${item}-price`);
-      let price = 0;
-
-      // Try getting price from the UI
-      const priceText = priceElem?.innerText || '';
-      if (priceText.includes('₹')) {
-        price = parseInt(priceText.replace('₹', '').trim());
-      }
-
-      const itemTotal = qty * price;
-      total += itemTotal;
-
-      const li = document.createElement('div');
-      li.innerHTML = `${item} x ${qty} = ₹${itemTotal} <button onclick="removeFromCart('${item}')">❌</button>`;
-      cartItemsContainer.appendChild(li);
-
-      message += `${item} x ${qty} = ₹${itemTotal}\n`;
-    }
-
-    message += `\n*Total:* ₹${total}\n\nPlease confirm order ASAP`;
-    cartTotalEl.innerText = `₹${total}`;
-
+    message += `\nPlease confirm order ASAP`;
     const encodedMsg = encodeURIComponent(message);
-    whatsappLink.href = `https://wa.me/?text=${encodedMsg}`;
+    whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
   }
 </script>
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const items = document.querySelectorAll(".menu-item");
-
-  items.forEach(item => {
-    const nameSpan = item.querySelector(".item-name");
-    const priceSpan = item.querySelector(".item-price");
-
-    if (!nameSpan || !priceSpan) return;
-
-    const itemName = nameSpan.innerText;
-    const itemIdSafe = itemName.replace(/[^a-zA-Z0-9]/g, ""); // sanitized ID
-
-    // Avoid duplicating if buttons already exist
-    if (item.innerHTML.includes("addToCart")) return;
-
-    // Create controls
-    const controls = document.createElement("div");
-    controls.style.display = "flex";
-    controls.style.alignItems = "center";
-    controls.style.gap = "0.25rem";
-
-    priceSpan.id = `${itemName}-price`;
-
-    controls.innerHTML = `
-      <span id="${itemName}-price">${priceSpan.innerText}</span>
-      <button onclick="updateQty('${itemName}', -1)">➖</button>
-      <span id="${itemName}-qty">0</span>
-      <button onclick="updateQty('${itemName}', 1)">➕</button>
-      <button onclick="addToCart('${itemName}')">🛒</button>
-    `;
-
-    // Replace priceSpan with the control group
-    priceSpan.replaceWith(controls);
-  });
-});
-</script>
-<script>
-  // Automatically fix inline quantity & cart boxes to use the class
-  document.querySelectorAll('.menu-item div[style*="display: flex"]').forEach(div => {
-    const hasCart = div.innerHTML.includes("🛒") && div.innerHTML.includes("➕") && div.innerHTML.includes("➖");
-    if (hasCart) {
-      div.className = "qty-cart-box";
-      div.removeAttribute("style");
-    }
-  });
-</script>
-  </body>
+</body>
 </html>
