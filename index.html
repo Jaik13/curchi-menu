@@ -993,6 +993,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
+<script>
+  // Automatically fix inline quantity & cart boxes to use the class
+  document.querySelectorAll('.menu-item div[style*="display: flex"]').forEach(div => {
+    const hasCart = div.innerHTML.includes("🛒") && div.innerHTML.includes("➕") && div.innerHTML.includes("➖");
+    if (hasCart) {
+      div.className = "qty-cart-box";
+      div.removeAttribute("style");
+    }
+  });
+</script>
   </body>
 </html>
