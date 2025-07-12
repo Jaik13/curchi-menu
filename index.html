@@ -10,115 +10,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
-  margin: 0;
-  padding: 0;
-  background-color: #111;
-  color: #fff;
-  font-family: 'Roboto', sans-serif;
-  padding-bottom: 300px; /* space for cart */
-}
- #cart-panel {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff8dc;
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
-  padding: 1rem;
-  z-index: 999;
-  max-width: 400px;
-  margin: 0 auto;
-  max-height: 250px;
-  overflow-y: auto;
-  display: none;
-  transition: all 0.3s ease-in-out;
-}
-
-#cart-panel::-webkit-scrollbar-thumb {
-  background: #bbb;
-  border-radius: 6px;
-}
-.qty-cart-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.qty-cart-box button,
-.qty-cart-box .qty-display {
-  background: transparent;
-  border: none;
-  font-size: 1.1rem;
-  padding: 4px 8px;
-  cursor: pointer;
-  color: black; /* Light mode default */
-  font-weight: bold;
-}
-
-/* For dark mode */
-body.dark-mode .qty-cart-box button,
-body.dark-mode .qty-cart-box .qty-display {
-  color: white;
-}
-.qty-cart-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 2px 6px;
-  background: transparent;
-  font-size: 0.8rem;
-}
-
-.qty-cart-group button,
-.qty-cart-group .qty-display {
-  background: none;
-  border: none;
-  color: #000;
-  font-size: 0.9rem;
-  cursor: pointer;
-  min-width: 20px;
-  text-align: center;
-  padding: 2px;
-}
-
-/* Make qty white in dark mode */
-body.dark-mode .qty-cart-group button,
-body.dark-mode .qty-cart-group .qty-display {
-  color: #fff;
-}
-button {
-  cursor: pointer;
-}
-.remove-btn {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-}
-.clear-btn {
-  background: #f44336;
-  color: white;
-  width: 100%;
-  padding: 0.7rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-.whatsapp-btn {
-  background: green;
-  color: white;
-  width: 100%;
-  padding: 0.7rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-   header {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+header {
   background-color: #FFF7D6;
   text-align: center;
   padding: 0.5rem 0;
@@ -465,26 +363,9 @@ input:checked + .slider:before {
   <span>Items</span>
   <span>Price</span>
 </div>
-<div class="menu-item">
-  <span>🌿 Soya Chaap Tikka Roll</span>
-  <span>₹145</span>
-  <div class="qty-cart-group">
-    <button onclick="decreaseQty(this)">➖</button>
-    <span class="qty-display">1</span>
-    <button onclick="increaseQty(this)">➕</button>
-    <button onclick="addToCart(this)">🛒</button>
-  </div>
-</div>
-     <div class="menu-item">
-  <span>🌿 Paneer Tikka Roll</span>
-  <span class="qty-controls">
-    ₹145
-    <div class="qty-cart-group">
-    <button onclick="addToCart(this)">Add to Cart</button>
-    <button onclick="addToCart(this)">🛒</button>
-  </span>
-</div>
-   <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
+  <div class="menu-item"><span>🌿 Soya Chaap Tikka Roll</span><span>₹145</span></div>
+  <div class="menu-item"><span>🌿 Paneer Tikka Roll</span><span>₹145</span></div>
+  <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Malai Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Chilli Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🍖 Spicy Chicken Tikka Roll</span><span>₹180</span></div>
@@ -859,137 +740,5 @@ function launchBalloon() {
     }
   }
 </script>
-    <!-- Cart Panel (Hidden by default) -->
-<div id="cart-panel" style="
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 280px;
-  max-height: 380px;
-  overflow-y: auto;
-  background: #fff7d6;
-  color: #000;
-  padding: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  border-radius: 12px;
-  z-index: 9999;
-  font-size: 0.95rem;
-  scrollbar-width: thin;
-  scrollbar-color: #ccc #fff7d6;
-">
-  <strong>🛒 Your Cart:</strong>
-  <ul id="cart-items" style="margin: 0.5rem 0; padding: 0; list-style: none;"></ul>
-  <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
-
-<button onclick="clearCart()" style="
-  background: #ff4d4d;
-  color: #fff;
-  border: none;
-  padding: 0.4rem 0.7rem;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 0.5rem;
-">🧹 Clear Cart</button>
-
-<a id="whatsapp-link" target="_blank">
-  <button style="
-    background: #28a745;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-  ">Place Order on WhatsApp</button>
-</a>
-</div>
-    <script>
-    const cart = {};
-
-  function decreaseQty(btn) {
-  const container = btn.closest('.qty-cart-group');
-  const qtyDisplay = container.querySelector('.qty-display');
-  let qty = parseInt(qtyDisplay.textContent);
-
-  if (qty > 1) {
-    qty--;
-    qtyDisplay.textContent = qty;
-    updateQtyInCart(container, qty);
-  }
-}
-
-function increaseQty(btn) {
-  const container = btn.closest('.qty-cart-group');
-  const qtyDisplay = container.querySelector('.qty-display');
-  let qty = parseInt(qtyDisplay.textContent);
-  qty++;
-  qtyDisplay.textContent = qty;
-  updateQtyInCart(container, qty);
-}
-
-function addToCart(btn) {
-  const menuItem = btn.closest('.menu-item');
-  const itemName = menuItem.querySelector('span').textContent.trim();
-  const priceText = menuItem.innerHTML.match(/₹(\d+)/);
-  const price = priceText ? parseInt(priceText[1]) : 0;
-  const qtyDisplay = menuItem.querySelector('.qty-display');
-  const qty = parseInt(qtyDisplay.textContent);
-
-  cart[itemName] = { price, qty };
-  updateCartDisplay();
-}
-
-function updateQtyInCart(container, qty) {
-  const menuItem = container.closest('.menu-item');
-  const itemName = menuItem.querySelector('span').textContent.trim();
-  if (cart[itemName]) {
-    cart[itemName].qty = qty;
-    updateCartDisplay();
-  }
-}
-
-    function updateCartDisplay() {
-      const cartList = document.getElementById('cart-items');
-      const cartTotal = document.getElementById('cart-total');
-      const whatsappLink = document.getElementById('whatsapp-link');
-      const cartPanel = document.getElementById('cart-panel');
-
-      cartList.innerHTML = '';
-      let total = 0;
-      let message = `Hi Currchi - Full on Desi!! I want to place the following order:\n\n`;
-
-      for (let item in cart) {
-        const { price, qty } = cart[item];
-        const lineTotal = price * qty;
-        total += lineTotal;
-        message += `• ${item} x ${qty} = ₹${lineTotal}\n`;
-
-        const li = document.createElement('li');
-        li.innerHTML = `${item} x ${qty} = ₹${lineTotal} <button class="remove-btn" onclick="removeItem('${item}')">❌</button>`;
-        cartList.appendChild(li);
-      }
-
-      cartPanel.style.display = total > 0 ? 'block' : 'none';
-      cartTotal.textContent = total;
-      message += `\nTotal: ₹${total}\n\nPlease confirm order.`;
-      whatsappLink.href = `https://wa.me/919899427503?text=${encodeURIComponent(message)}`;    
-    }
-
-    function removeItem(item) {
-      delete cart[item];
-      updateCartDisplay();
-    }
-      function clearCart() {
-  for (let item in cart) {
-    delete cart[item];
-  }
-  updateCartDisplay();
-}
-  </script>
-       
 </body>
 </html>
