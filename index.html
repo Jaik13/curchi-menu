@@ -904,32 +904,41 @@ document.addEventListener('DOMContentLoaded', () => {
       item.appendChild(priceSpan);
     }
 
-    // Cart controls (bottom row)
-    const controlDiv = document.createElement('div');
-    controlDiv.style.display = 'flex';
-    controlDiv.style.alignItems = 'center';
-    controlDiv.style.justifyContent = 'start';
-    controlDiv.style.gap = '0.5rem';
-    controlDiv.style.marginTop = '5px';
+    // Cart controls (new line below price)
+const controlDiv = document.createElement('div');
+controlDiv.style.display = 'flex';
+controlDiv.style.alignItems = 'center';
+controlDiv.style.justifyContent = 'center';
+controlDiv.style.gap = '0.5rem';
+controlDiv.style.marginTop = '6px';
+controlDiv.style.width = '100%';
 
-    const minusBtn = document.createElement('button');
-    minusBtn.textContent = '➖';
-    minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
+// Buttons
+const minusBtn = document.createElement('button');
+minusBtn.textContent = '➖';
+minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
 
-    const qtySpan = document.createElement('span');
-    qtySpan.id = `${name}-${selectedPrice}-qty`;
-    qtySpan.textContent = '0';
+const qtySpan = document.createElement('span');
+qtySpan.id = `${name.replace(/[^a-zA-Z0-9]/g, '')}-${selectedPrice}-qty`;
+qtySpan.textContent = '0';
 
-    const plusBtn = document.createElement('button');
-    plusBtn.textContent = '➕';
-    plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
+const plusBtn = document.createElement('button');
+plusBtn.textContent = '➕';
+plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
 
-    const cartBtn = document.createElement('button');
-    cartBtn.textContent = '🛒';
-    cartBtn.onclick = () => addToCart(name, selectedPrice);
+const cartBtn = document.createElement('button');
+cartBtn.textContent = '🛒';
+cartBtn.onclick = () => addToCart(name, selectedPrice);
 
-    controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
-    item.appendChild(controlDiv);
+controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
+
+// ✅ This wrapper ensures it's on the next line
+const bottomRow = document.createElement('div');
+bottomRow.style.width = '100%';
+bottomRow.appendChild(controlDiv);
+
+// 👇 Add this new row to the item
+item.appendChild(bottomRow);
   });
 });
 
