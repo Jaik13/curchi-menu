@@ -886,23 +886,50 @@ function launchBalloon() {
     updateCartDisplay();
   }
 
-  function updateCartDisplay() {
+ function updateCartDisplay() {
     const cartList = document.getElementById('cart-items');
     const whatsappLink = document.getElementById('whatsapp-order-btn');
 
     cartList.innerHTML = '';
     let message = 'Hi Currchi! I want to order:\n';
+    let totalCartAmount = 0;
 
     Object.entries(cart).forEach(([item, qty]) => {
+      // Extract price from the menu
+      const itemRow = [...document.querySelectorAll('.menu-item')].find(el => el.innerText.includes(item));
+      let priceText = itemRow ? itemRow.querySelector('span').innerText.trim() : '';
+      let price = 0;
+
+      // Extract ₹price or ₹half/₹full format
+      const match = priceText.match(/₹(\d+)/);
+      if (match) price = parseInt(match[1]);
+
+      const itemTotal = price * qty;
+      totalCartAmount += itemTotal;
+
+      // Create cart list display
       const li = document.createElement('li');
-      li.innerHTML = `<span>${item} × ${qty}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
+      li.innerHTML = `<span>${item} × ${qty} = ₹${itemTotal}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
       cartList.appendChild(li);
+
+      // Add to WhatsApp message
       message += `• ${item} × ${qty} = ₹${itemTotal}\n`;
     });
 
-    message += `\nPlease confirm order ASAP`;
+    // Add total
+    message += `\nTotal: ₹${totalCartAmount}\nPlease confirm order ASAP`;
     const encodedMsg = encodeURIComponent(message);
     whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
+
+    // Show total below cart items
+    if (Object.keys(cart).length > 0) {
+      const totalLine = document.createElement('li');
+      totalLine.style.fontWeight = 'bold';
+      totalLine.style.borderTop = '1px solid #777';
+      totalLine.style.paddingTop = '0.5rem';
+      totalLine.innerHTML = `<span>Total: ₹${totalCartAmount}</span>`;
+      cartList.appendChild(totalLine);
+    }
   }
 </script>
    <script>
