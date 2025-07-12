@@ -836,9 +836,13 @@ function launchBalloon() {
 </div>
 <script>
  document.querySelectorAll('.menu-item').forEach(item => {
+  // ✅ Step 1: Skip if item has no dataset.name or dataset.price (i.e., headers)
   const name = item.dataset.name;
   const price = parseInt(item.dataset.price);
 
+  if (!name || isNaN(price)) return; // ⛔ Skip rows like "Items | Price"
+
+  // ✅ Step 2: Proceed with logic for valid menu items only
   const nameSpan = document.createElement('span');
   nameSpan.textContent = name;
 
