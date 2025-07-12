@@ -43,25 +43,27 @@
   border-radius: 6px;
 }
 .qty-cart-box {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 18px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .qty-cart-box button,
 .qty-cart-box .qty-display {
   background: transparent;
   border: none;
-  padding: 0;
-  color: #000;
-  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 4px 8px;
   cursor: pointer;
+  color: black; /* Light mode default */
+  font-weight: bold;
 }
 
-.qty-display {
-  min-width: 20px;
-  text-align: center;
+/* For dark mode */
+body.dark-mode .qty-cart-box button,
+body.dark-mode .qty-cart-box .qty-display {
+  color: white;
 }
 
 button {
@@ -440,15 +442,13 @@ input:checked + .slider:before {
   <span>Price</span>
 </div>
 <div class="menu-item">
-  <div class="item-name-price">
-    <span>🌿 Soya Chaap Tikka Roll</span>
-    <span class="item-price">₹145</span>
-  </div>
+  <span>🌿 Soya Chaap Tikka Roll</span>
+  <span class="price">₹145</span>
   <div class="qty-cart-box">
     <button onclick="decreaseQty(this)">➖</button>
     <span class="qty-display">1</span>
     <button onclick="increaseQty(this)">➕</button>
-    <button class="cart-btn" onclick="addToCart(this)">🛒</button>
+    <button onclick="addToCart(this)">🛒</button>
   </div>
 </div>
       <div class="menu-item">
@@ -887,12 +887,13 @@ function launchBalloon() {
   ">Place Order on WhatsApp</button>
 </a>
 </div>
-    <div id="cart-panel" class="cart-panel">
-    <strong>🛒 Cart:</strong>
-    <ul id="cart-items"></ul>
-    <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
-    <a id="whatsapp-link" target="_blank">📲 Send Order on WhatsApp</a>
-  </div>
+  <div id="cart-panel" class="cart-panel">
+  <strong>🛒 Cart:</strong>
+  <ul id="cart-items"></ul>
+  <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
+  <button onclick="clearCart()">🗑️ Clear Cart</button>
+  <a id="whatsapp-link" target="_blank">📲 Send Order on WhatsApp</a>
+</div>
     <script>
     const cart = {};
 
@@ -968,12 +969,19 @@ function launchBalloon() {
       cartTotal.textContent = total;
       message += `\nTotal: ₹${total}\n\nPlease confirm order.`;
       whatsappLink.href = `https://wa.me/919899427503?text=${encodeURIComponent(message)}`;
+      <button onclick="clearCart()">🗑️ Clear Cart</button>
     }
 
     function removeItem(item) {
       delete cart[item];
       updateCartDisplay();
     }
+      function clearCart() {
+  for (let item in cart) {
+    delete cart[item];
+  }
+  updateCartDisplay();
+}
   </script>
        
 </body>
