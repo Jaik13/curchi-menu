@@ -42,6 +42,7 @@
 
 /* Cart Panel Styling */
 .cart-panel {
+  display: none; /* <-- hide by default */
   position: fixed;
   bottom: 60px;
   left: 0;
@@ -981,6 +982,14 @@ function updateCartDisplay() {
 
   if (cartTotal) cartTotal.textContent = `Total: ₹${total}`;
   if (whatsappLink) whatsappLink.href = `https://wa.me/919899427503?text=${message}Total: ₹${total}`;
+
+  // ✅ Toggle cart visibility
+  const cartPanel = document.getElementById('cart-panel');
+  if (Object.values(cart).some(qty => qty > 0)) {
+    cartPanel.style.display = 'block';
+  } else {
+    cartPanel.style.display = 'none';
+  }
 }
 
 function removeFromCart(key) {
