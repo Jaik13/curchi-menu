@@ -858,75 +858,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
   menuItems.forEach(item => {
     const name = item.dataset.name;
-    const half = item.dataset.half;
-    const full = item.dataset.full;
     const price = item.dataset.price;
+    const halfPrice = item.dataset.half;
+    const fullPrice = item.dataset.full;
 
-    item.innerHTML = ''; // Clear existing content
+    // Skip header rows
+    if (!name || (!price && (!halfPrice || !fullPrice))) return;
 
+    // Clear default content
+    item.innerHTML = '';
+
+    // Dish name
     const nameSpan = document.createElement('span');
     nameSpan.textContent = name;
+    nameSpan.style.fontWeight = '600';
     item.appendChild(nameSpan);
 
-    const controlDiv = document.createElement('div');
-    controlDiv.style.display = 'flex';
-    controlDiv.style.alignItems = 'center';
-    controlDiv.style.gap = '0.5rem';
+    let selectedPrice = price;
 
-    let selectedPrice;
-    let selector;
-
-    if (half && full) {
-      // Dual price
-      selector = document.createElement('select');
+    // Price section (top row)
+    if (halfPrice && fullPrice) {
+      const selector = document.createElement('select');
       selector.innerHTML = `
-        <option value="${half}">Half ₹${half}</option>
-        <option value="${full}">Full ₹${full}</option>
+        <option value="${halfPrice}">Half ₹${halfPrice}</option>
+        <option value="${fullPrice}">Full ₹${fullPrice}</option>
       `;
-      selectedPrice = half;
+      selectedPrice = halfPrice;
 
       selector.addEventListener('change', () => {
         selectedPrice = selector.value;
         updateQtyDisplay(name, selectedPrice);
       });
 
-      controlDiv.appendChild(selector);
-    } else if (price) {
-      // Single price
-      selectedPrice = price;
+      item.appendChild(selector);
+    } else {
       const priceSpan = document.createElement('span');
       priceSpan.textContent = `₹${price}`;
-      controlDiv.appendChild(priceSpan);
+      selectedPrice = price;
+      item.appendChild(priceSpan);
     }
 
-    // ➖
+    // Cart controls (bottom row)
+    const controlDiv = document.createElement('div');
+    controlDiv.style.display = 'flex';
+    controlDiv.style.alignItems = 'center';
+    controlDiv.style.justifyContent = 'start';
+    controlDiv.style.gap = '0.5rem';
+    controlDiv.style.marginTop = '5px';
+
     const minusBtn = document.createElement('button');
     minusBtn.textContent = '➖';
     minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
-    controlDiv.appendChild(minusBtn);
 
-    // Qty
     const qtySpan = document.createElement('span');
     qtySpan.id = `${name}-${selectedPrice}-qty`;
     qtySpan.textContent = '0';
-    controlDiv.appendChild(qtySpan);
 
-    // ➕
     const plusBtn = document.createElement('button');
     plusBtn.textContent = '➕';
     plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
-    controlDiv.appendChild(plusBtn);
 
-    // 🛒
     const cartBtn = document.createElement('button');
     cartBtn.textContent = '🛒';
     cartBtn.onclick = () => addToCart(name, selectedPrice);
-    controlDiv.appendChild(cartBtn);
 
+    controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
     item.appendChild(controlDiv);
   });
 });
 
+// Global cart object
 const cart = {};
 
 function updateQty(name, price, delta) {
@@ -934,14 +935,10 @@ function updateQty(name, price, delta) {
   cart[key] = (cart[key] || 0) + delta;
   if (cart[key] < 0) cart[key] = 0;
 
-  document.getElementById(`${name}-${price}-qty`).textContent = cart[key];
-  updateCartDisplay();
-}
+  const qtySpan = document.getElementById(`${name}-${price}-qty`);
+  if (qtySpan) qtySpan.textContent = cart[key];
 
-function updateQtyDisplay(name, price) {
-  const key = `${name}__₹${price}`;
-  const qty = cart[key] || 0;
-  document.getElementById(`${name}-${price}-qty`).textContent = qty;
+  updateCartDisplay();
 }
 
 function addToCart(name, price) {
@@ -950,14 +947,20 @@ function addToCart(name, price) {
   updateCartDisplay();
 }
 
+function updateQtyDisplay(name, price) {
+  const qtySpan = document.getElementById(`${name}-${price}-qty`);
+  if (qtySpan) {
+    qtySpan.textContent = cart[`${name}__₹${price}`] || 0;
+  }
+}
+
 function updateCartDisplay() {
   let total = 0;
   const cartList = document.getElementById('cart-items');
   const cartTotal = document.getElementById('cart-total');
-  const whatsappLink = document.getElementById('whatsapp-link');
+  const whatsappLink = document.getElementById('whatsapp-link') || document.getElementById('whatsapp-order-btn');
 
   if (cartList) cartList.innerHTML = '';
-
   let message = '*Please confirm order ASAP*%0A';
 
   Object.entries(cart).forEach(([key, qty]) => {
@@ -966,18 +969,27 @@ function updateCartDisplay() {
       const price = parseInt(priceText);
       const itemTotal = price * qty;
       total += itemTotal;
-      message += `${name} - ₹${price} x ${qty} = ₹${itemTotal}%0A`;
 
-      if (cartList) {
-        const li = document.createElement('li');
-        li.textContent = `${name} - ₹${price} x ${qty} = ₹${itemTotal}`;
-        cartList.appendChild(li);
-      }
+      const li = document.createElement('li');
+      li.innerHTML = `${name} - ₹${price} x ${qty} = ₹${itemTotal}
+        <button onclick="removeFromCart('${key}')">Remove</button>`;
+      if (cartList) cartList.appendChild(li);
+
+      message += `${name} - ₹${price} x ${qty} = ₹${itemTotal}%0A`;
     }
   });
 
   if (cartTotal) cartTotal.textContent = `Total: ₹${total}`;
   if (whatsappLink) whatsappLink.href = `https://wa.me/919899427503?text=${message}Total: ₹${total}`;
+}
+
+function removeFromCart(key) {
+  delete cart[key];
+  updateCartDisplay();
+
+  const [name, priceText] = key.split('__₹');
+  const qtySpan = document.getElementById(`${name}-${priceText}-qty`);
+  if (qtySpan) qtySpan.textContent = '0';
 }
 </script>
 </body>
