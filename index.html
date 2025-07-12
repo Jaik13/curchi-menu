@@ -477,8 +477,8 @@ input:checked + .slider:before {
     <span>Items</span>
     <span>Half (6 Pcs) / Full (10 Pcs)</span>
   </div>
-
-  <div class="menu-item" data-name="🌿 Veg Steam Momos" data-half="75" data-full="125"></div>
+<!-- Dual price items (like Momos) -->
+<div class="menu-item" data-name="🌿 Veg Steam Momos" data-half="75" data-full="125"></div>
 <div class="menu-item" data-name="🌿 Veg Tandoori Momos" data-half="75" data-full="125"></div>
 <div class="menu-item" data-name="🌿 Veg Golden Fries Momos" data-half="75" data-full="125"></div>
 <div class="menu-item" data-name="🌿 Veg Afghani Momos" data-half="85" data-full="135"></div>
@@ -956,117 +956,130 @@ function removeFromCart(itemName) {
   updateCartDisplay();
 }
 </script>
-  <script>
-const cart = {};
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const menuItems = document.querySelectorAll('.menu-item');
 
-function createMenuUI() {
-  const items = document.querySelectorAll('.menu-item');
-  items.forEach(item => {
+  menuItems.forEach(item => {
     const name = item.dataset.name;
     const price = item.dataset.price;
-    const half = item.dataset.half;
-    const full = item.dataset.full;
+    const halfPrice = item.dataset.half;
+    const fullPrice = item.dataset.full;
 
-    // Create item display
+    // Clear existing content
+    item.innerHTML = '';
+
+    // Item name
     const nameSpan = document.createElement('span');
     nameSpan.textContent = name;
+    item.appendChild(nameSpan);
 
+    // Price and controls container
     const controlDiv = document.createElement('div');
     controlDiv.style.display = 'flex';
     controlDiv.style.alignItems = 'center';
-    controlDiv.style.gap = '0.4rem';
+    controlDiv.style.gap = '0.5rem';
 
-    let selectedType = 'Full';
-    let priceValue = price;
-
-    // If half/full prices available
-    if (half && full) {
-      const selector = document.createElement('select');
+    // Dual pricing dropdown (if applicable)
+    let selectedPrice = price;
+    let selector;
+    if (halfPrice && fullPrice) {
+      selector = document.createElement('select');
       selector.innerHTML = `
-        <option value="Half">Half - ₹${half}</option>
-        <option value="Full">Full - ₹${full}</option>
+        <option value="${halfPrice}">Half ₹${halfPrice}</option>
+        <option value="${fullPrice}">Full ₹${fullPrice}</option>
       `;
-      selector.onchange = () => {
-        selectedType = selector.value;
-        priceValue = selector.value === 'Half' ? half : full;
-        qtySpan.innerText = getCartQty(name, selectedType);
-        updateCartDisplay();
-      };
+      selectedPrice = halfPrice;
+
+      selector.addEventListener('change', () => {
+        selectedPrice = selector.value;
+        updateQtyDisplay(name, selectedPrice);
+      });
+
       controlDiv.appendChild(selector);
-      priceValue = full; // Default to full
     } else {
-      const priceTag = document.createElement('span');
-      priceTag.textContent = `₹${price}`;
-      controlDiv.appendChild(priceTag);
+      // Single price
+      const priceSpan = document.createElement('span');
+      priceSpan.textContent = `₹${price}`;
+      selectedPrice = price;
+      controlDiv.appendChild(priceSpan);
     }
 
-    // Quantity Controls
+    // ➖ button
     const minusBtn = document.createElement('button');
     minusBtn.textContent = '➖';
+    minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
+    controlDiv.appendChild(minusBtn);
+
+    // Qty display
     const qtySpan = document.createElement('span');
-    qtySpan.id = `${name}-qty`;
-    qtySpan.textContent = 0;
+    qtySpan.id = `${name}-${selectedPrice}-qty`;
+    qtySpan.textContent = '0';
+    controlDiv.appendChild(qtySpan);
+
+    // ➕ button
     const plusBtn = document.createElement('button');
     plusBtn.textContent = '➕';
+    plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
+    controlDiv.appendChild(plusBtn);
+
+    // 🛒 Add to cart button
     const cartBtn = document.createElement('button');
     cartBtn.textContent = '🛒';
+    cartBtn.onclick = () => addToCart(name, selectedPrice);
+    controlDiv.appendChild(cartBtn);
 
-    minusBtn.onclick = () => {
-      const qty = getCartQty(name, selectedType) - 1;
-      if (qty >= 0) updateCart(name, selectedType, priceValue, qty);
-      qtySpan.textContent = getCartQty(name, selectedType);
-    };
-    plusBtn.onclick = () => {
-      const qty = getCartQty(name, selectedType) + 1;
-      updateCart(name, selectedType, priceValue, qty);
-      qtySpan.textContent = getCartQty(name, selectedType);
-    };
-    cartBtn.onclick = () => {
-      const qty = getCartQty(name, selectedType);
-      if (qty > 0) alert(`${name} (${selectedType}) added to cart.`);
-    };
-
-    controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
-    item.innerHTML = ''; // Clear existing content
-    item.append(nameSpan, controlDiv);
+    item.appendChild(controlDiv);
   });
+});
+
+// Your existing cart logic
+const cart = {};
+
+function updateQty(name, price, delta) {
+  const key = `${name}__₹${price}`;
+  cart[key] = (cart[key] || 0) + delta;
+  if (cart[key] < 0) cart[key] = 0;
+
+  document.getElementById(`${name}-${price}-qty`).textContent = cart[key];
+  updateCartDisplay();
 }
 
-function getCartKey(name, type) {
-  return `${name} (${type})`;
-}
-
-function getCartQty(name, type) {
-  const key = getCartKey(name, type);
-  return cart[key]?.qty || 0;
-}
-
-function updateCart(name, type, price, qty) {
-  const key = getCartKey(name, type);
-  if (qty > 0) {
-    cart[key] = { name, type, price, qty };
-  } else {
-    delete cart[key];
-  }
+function addToCart(name, price) {
+  const key = `${name}__₹${price}`;
+  if (!cart[key]) cart[key] = 1;
   updateCartDisplay();
 }
 
 function updateCartDisplay() {
   let total = 0;
-  let message = `Please confirm order ASAP:\n`;
-  Object.values(cart).forEach(item => {
-    const itemTotal = item.qty * parseFloat(item.price);
-    total += itemTotal;
-    message += `• ${item.name} (${item.type}) x${item.qty} = ₹${itemTotal}\n`;
+  const cartList = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  const whatsappLink = document.getElementById('whatsapp-link');
+
+  if (cartList) cartList.innerHTML = '';
+
+  let message = '*Please confirm order ASAP*%0A';
+
+  Object.entries(cart).forEach(([key, qty]) => {
+    if (qty > 0) {
+      const [name, priceText] = key.split('__₹');
+      const price = parseInt(priceText);
+      const itemTotal = price * qty;
+      total += itemTotal;
+      message += `${name} - ₹${price} x ${qty} = ₹${itemTotal}%0A`;
+
+      if (cartList) {
+        const li = document.createElement('li');
+        li.textContent = `${name} - ₹${price} x ${qty} = ₹${itemTotal}`;
+        cartList.appendChild(li);
+      }
+    }
   });
 
-  document.getElementById('cart-total').textContent = `Total: ₹${total}`;
-  document.getElementById('whatsapp-link').href =
-    `https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(message)}`;
+  if (cartTotal) cartTotal.textContent = `Total: ₹${total}`;
+  if (whatsappLink) whatsappLink.href = `https://wa.me/91XXXXXXXXXX?text=${message}Total: ₹${total}`;
 }
-
-// Run on load
-document.addEventListener('DOMContentLoaded', createMenuUI);
 </script>
 </body>
 </html>
