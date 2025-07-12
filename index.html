@@ -891,41 +891,50 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       item.appendChild(selector);
-    } else {
-      const priceSpan = document.createElement('span');
-      priceSpan.textContent = `₹${price}`;
-      selectedPrice = price;
-      item.appendChild(priceSpan);
-    }
+} else {
+  // Wrap price and controls in a vertical layout
+  const priceCartWrapper = document.createElement('div');
+  priceCartWrapper.style.display = 'flex';
+  priceCartWrapper.style.flexDirection = 'column';
+  priceCartWrapper.style.alignItems = 'flex-start'; // or 'center' if preferred
+  priceCartWrapper.style.marginTop = '4px';
 
-    // Cart controls (bottom row)
-    const controlDiv = document.createElement('div');
-    controlDiv.style.display = 'flex';
-    controlDiv.style.alignItems = 'center';
-    controlDiv.style.justifyContent = 'start';
-    controlDiv.style.gap = '0.5rem';
-    controlDiv.style.marginTop = '5px';
+  // Price
+  const priceSpan = document.createElement('span');
+  priceSpan.textContent = `₹${price}`;
+  selectedPrice = price;
+  priceCartWrapper.appendChild(priceSpan);
 
-    const minusBtn = document.createElement('button');
-    minusBtn.textContent = '➖';
-    minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
+  // Cart controls
+  const controlDiv = document.createElement('div');
+  controlDiv.style.display = 'flex';
+  controlDiv.style.alignItems = 'center';
+  controlDiv.style.justifyContent = 'start';
+  controlDiv.style.gap = '0.5rem';
+  controlDiv.style.marginTop = '4px';
 
-    const qtySpan = document.createElement('span');
-    qtySpan.id = `${name}-${selectedPrice}-qty`;
-    qtySpan.textContent = '0';
+  const minusBtn = document.createElement('button');
+  minusBtn.textContent = '➖';
+  minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
 
-    const plusBtn = document.createElement('button');
-    plusBtn.textContent = '➕';
-    plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
+  const qtySpan = document.createElement('span');
+  qtySpan.id = `${name}-${selectedPrice}-qty`;
+  qtySpan.textContent = '0';
 
-    const cartBtn = document.createElement('button');
-    cartBtn.textContent = '🛒';
-    cartBtn.onclick = () => addToCart(name, selectedPrice);
+  const plusBtn = document.createElement('button');
+  plusBtn.textContent = '➕';
+  plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
 
-    controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
-    item.appendChild(controlDiv);
-  });
-});
+  const cartBtn = document.createElement('button');
+  cartBtn.textContent = '🛒';
+  cartBtn.onclick = () => addToCart(name, selectedPrice);
+
+  controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
+  priceCartWrapper.appendChild(controlDiv);
+
+  // Finally append the wrapper to the item
+  item.appendChild(priceCartWrapper);
+}
 
 // Global cart object
 const cart = {};
