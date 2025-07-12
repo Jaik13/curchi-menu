@@ -478,21 +478,21 @@ input:checked + .slider:before {
     <span>Half (6 Pcs) / Full (10 Pcs)</span>
   </div>
 
-  <div class="menu-item" data-name="🌿 Veg Steam Momos" data-price="75 / 125"></div>
-  <div class="menu-item" data-name="🌿 Veg Tandoori Momos" data-price="75 / 125"></div>
-  <div class="menu-item" data-name="🌿 Veg Golden Fries Momos" data-price="75 / 125"></div>
-  <div class="menu-item" data-name="🌿 Veg Afghani Momos" data-price="85 / 135"></div>
-  <div class="menu-item" data-name="🌿 Paneer Steam Momos" data-price="85 / 155"></div>
-  <div class="menu-item" data-name="🌿 Paneer Tandoori Momos" data-price="110 / 180"></div>
-  <div class="menu-item" data-name="🌿 Paneer Golden Fries Momos" data-price="85 / 155"></div>
-  <div class="menu-item" data-name="🌿 Paneer Afghani Momos" data-price="95 / 165"></div>
-  <div class="menu-item" data-name="🌿 Kurkure Veg Momos" data-price="80 / 160"></div>
-  <div class="menu-item" data-name="🌿 Kurkure Paneer Momos" data-price="90 / 170"></div>
-  <div class="menu-item" data-name="🍖 Chicken Steam Momos" data-price="125 / 195"></div>
-  <div class="menu-item" data-name="🍖 Chicken Golden Fries Momos" data-price="125 / 195"></div>
-  <div class="menu-item" data-name="🍖 Chicken Tandoori Momos" data-price="125 / 195"></div>
-  <div class="menu-item" data-name="🍖 Chicken Afghani Momos" data-price="135 / 205"></div>
-  <div class="menu-item" data-name="🍖 Kurkure Chicken Momos" data-price="100 / 195"></div>
+  <div class="menu-item" data-name="🌿 Veg Steam Momos" data-half="75" data-full="125"></div>
+<div class="menu-item" data-name="🌿 Veg Tandoori Momos" data-half="75" data-full="125"></div>
+<div class="menu-item" data-name="🌿 Veg Golden Fries Momos" data-half="75" data-full="125"></div>
+<div class="menu-item" data-name="🌿 Veg Afghani Momos" data-half="85" data-full="135"></div>
+<div class="menu-item" data-name="🌿 Paneer Steam Momos" data-half="85" data-full="155"></div>
+<div class="menu-item" data-name="🌿 Paneer Tandoori Momos" data-half="110" data-full="180"></div>
+<div class="menu-item" data-name="🌿 Paneer Golden Fries Momos" data-half="85" data-full="155"></div>
+<div class="menu-item" data-name="🌿 Paneer Afghani Momos" data-half="95" data-full="165"></div>
+<div class="menu-item" data-name="🌿 Kurkure Veg Momos" data-half="80" data-full="160"></div>
+<div class="menu-item" data-name="🌿 Kurkure Paneer Momos" data-half="90" data-full="170"></div>
+<div class="menu-item" data-name="🍖 Chicken Steam Momos" data-half="125" data-full="195"></div>
+<div class="menu-item" data-name="🍖 Chicken Golden Fries Momos" data-half="125" data-full="195"></div>
+<div class="menu-item" data-name="🍖 Chicken Tandoori Momos" data-half="125" data-full="195"></div>
+<div class="menu-item" data-name="🍖 Chicken Afghani Momos" data-half="135" data-full="205"></div>
+<div class="menu-item" data-name="🍖 Kurkure Chicken Momos" data-half="100" data-full="195"></div>
 </div>
     <div class="menu-column" id="combos">
   <h2>🍱 Combos</h2>
@@ -955,6 +955,118 @@ function removeFromCart(itemName) {
   delete cart[itemName];
   updateCartDisplay();
 }
+</script>
+  <script>
+const cart = {};
+
+function createMenuUI() {
+  const items = document.querySelectorAll('.menu-item');
+  items.forEach(item => {
+    const name = item.dataset.name;
+    const price = item.dataset.price;
+    const half = item.dataset.half;
+    const full = item.dataset.full;
+
+    // Create item display
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = name;
+
+    const controlDiv = document.createElement('div');
+    controlDiv.style.display = 'flex';
+    controlDiv.style.alignItems = 'center';
+    controlDiv.style.gap = '0.4rem';
+
+    let selectedType = 'Full';
+    let priceValue = price;
+
+    // If half/full prices available
+    if (half && full) {
+      const selector = document.createElement('select');
+      selector.innerHTML = `
+        <option value="Half">Half - ₹${half}</option>
+        <option value="Full">Full - ₹${full}</option>
+      `;
+      selector.onchange = () => {
+        selectedType = selector.value;
+        priceValue = selector.value === 'Half' ? half : full;
+        qtySpan.innerText = getCartQty(name, selectedType);
+        updateCartDisplay();
+      };
+      controlDiv.appendChild(selector);
+      priceValue = full; // Default to full
+    } else {
+      const priceTag = document.createElement('span');
+      priceTag.textContent = `₹${price}`;
+      controlDiv.appendChild(priceTag);
+    }
+
+    // Quantity Controls
+    const minusBtn = document.createElement('button');
+    minusBtn.textContent = '➖';
+    const qtySpan = document.createElement('span');
+    qtySpan.id = `${name}-qty`;
+    qtySpan.textContent = 0;
+    const plusBtn = document.createElement('button');
+    plusBtn.textContent = '➕';
+    const cartBtn = document.createElement('button');
+    cartBtn.textContent = '🛒';
+
+    minusBtn.onclick = () => {
+      const qty = getCartQty(name, selectedType) - 1;
+      if (qty >= 0) updateCart(name, selectedType, priceValue, qty);
+      qtySpan.textContent = getCartQty(name, selectedType);
+    };
+    plusBtn.onclick = () => {
+      const qty = getCartQty(name, selectedType) + 1;
+      updateCart(name, selectedType, priceValue, qty);
+      qtySpan.textContent = getCartQty(name, selectedType);
+    };
+    cartBtn.onclick = () => {
+      const qty = getCartQty(name, selectedType);
+      if (qty > 0) alert(`${name} (${selectedType}) added to cart.`);
+    };
+
+    controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
+    item.innerHTML = ''; // Clear existing content
+    item.append(nameSpan, controlDiv);
+  });
+}
+
+function getCartKey(name, type) {
+  return `${name} (${type})`;
+}
+
+function getCartQty(name, type) {
+  const key = getCartKey(name, type);
+  return cart[key]?.qty || 0;
+}
+
+function updateCart(name, type, price, qty) {
+  const key = getCartKey(name, type);
+  if (qty > 0) {
+    cart[key] = { name, type, price, qty };
+  } else {
+    delete cart[key];
+  }
+  updateCartDisplay();
+}
+
+function updateCartDisplay() {
+  let total = 0;
+  let message = `Please confirm order ASAP:\n`;
+  Object.values(cart).forEach(item => {
+    const itemTotal = item.qty * parseFloat(item.price);
+    total += itemTotal;
+    message += `• ${item.name} (${item.type}) x${item.qty} = ₹${itemTotal}\n`;
+  });
+
+  document.getElementById('cart-total').textContent = `Total: ₹${total}`;
+  document.getElementById('whatsapp-link').href =
+    `https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(message)}`;
+}
+
+// Run on load
+document.addEventListener('DOMContentLoaded', createMenuUI);
 </script>
 </body>
 </html>
