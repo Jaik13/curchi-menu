@@ -837,7 +837,10 @@ function launchBalloon() {
 <script>
  document.querySelectorAll('.menu-item').forEach(item => {
   const name = item.dataset.name;
-  const price = parseInt(item.dataset.price);
+  const price = parseFloat(item.dataset.price);
+
+  // Skip header rows or items without proper data
+  if (!name || isNaN(price)) return;
 
   const nameSpan = document.createElement('span');
   nameSpan.textContent = name;
