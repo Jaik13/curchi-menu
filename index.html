@@ -65,7 +65,34 @@ body.dark-mode .qty-cart-box button,
 body.dark-mode .qty-cart-box .qty-display {
   color: white;
 }
+.qty-cart-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 2px 6px;
+  background: transparent;
+  font-size: 0.8rem;
+}
 
+.qty-cart-group button,
+.qty-cart-group .qty-display {
+  background: none;
+  border: none;
+  color: #000;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 20px;
+  text-align: center;
+  padding: 2px;
+}
+
+/* Make qty white in dark mode */
+body.dark-mode .qty-cart-group button,
+body.dark-mode .qty-cart-group .qty-display {
+  color: #fff;
+}
 button {
   cursor: pointer;
 }
@@ -443,8 +470,8 @@ input:checked + .slider:before {
 </div>
 <div class="menu-item">
   <span>🌿 Soya Chaap Tikka Roll</span>
-  <span class="price">₹145</span>
-  <div class="qty-cart-box">
+  <span>₹145</span>
+  <div class="qty-cart-group">
     <button onclick="decreaseQty(this)">➖</button>
     <span class="qty-display">1</span>
     <button onclick="increaseQty(this)">➕</button>
@@ -897,46 +924,41 @@ function launchBalloon() {
     <script>
     const cart = {};
 
-   function addToCart(btn) {
+  function decreaseQty(btn) {
+  const container = btn.closest('.qty-cart-group');
+  const qtyDisplay = container.querySelector('.qty-display');
+  let qty = parseInt(qtyDisplay.textContent);
+
+  if (qty > 1) {
+    qty--;
+    qtyDisplay.textContent = qty;
+    updateQtyInCart(container, qty);
+  }
+}
+
+function increaseQty(btn) {
+  const container = btn.closest('.qty-cart-group');
+  const qtyDisplay = container.querySelector('.qty-display');
+  let qty = parseInt(qtyDisplay.textContent);
+  qty++;
+  qtyDisplay.textContent = qty;
+  updateQtyInCart(container, qty);
+}
+
+function addToCart(btn) {
   const menuItem = btn.closest('.menu-item');
   const itemName = menuItem.querySelector('span').textContent.trim();
-  const priceText = menuItem.innerText.match(/₹(\d+)/);
+  const priceText = menuItem.innerHTML.match(/₹(\d+)/);
   const price = priceText ? parseInt(priceText[1]) : 0;
   const qtyDisplay = menuItem.querySelector('.qty-display');
   const qty = parseInt(qtyDisplay.textContent);
-
-  if (!qty || qty < 1) {
-    alert("Please enter a valid quantity");
-    return;
-  }
 
   cart[itemName] = { price, qty };
   updateCartDisplay();
 }
 
-    function decreaseQty(btn) {
-  const menuItem = btn.closest('.menu-item');
-  const qtyDisplay = menuItem.querySelector('.qty-display');
-  let qty = parseInt(qtyDisplay.textContent);
-  if (qty > 1) {
-    qty -= 1;
-    qtyDisplay.textContent = qty;
-
-    const itemName = menuItem.querySelector('span').textContent.trim();
-    if (cart[itemName]) {
-      cart[itemName].qty = qty;
-      updateCartDisplay();
-    }
-  }
-}
-
-   function increaseQty(btn) {
-  const menuItem = btn.closest('.menu-item');
-  const qtyDisplay = menuItem.querySelector('.qty-display');
-  let qty = parseInt(qtyDisplay.textContent);
-  qty += 1;
-  qtyDisplay.textContent = qty;
-
+function updateQtyInCart(container, qty) {
+  const menuItem = container.closest('.menu-item');
   const itemName = menuItem.querySelector('span').textContent.trim();
   if (cart[itemName]) {
     cart[itemName].qty = qty;
