@@ -464,11 +464,11 @@ input:checked + .slider:before {
   <span>🌿 Veg Steam Momos</span>
   <span>₹75 / ₹125</span>
   <div class="qty-cart-box">
-    <button onclick="updateQty('Veg Steam Momos', -1)">➖</button>
-    <span id="Veg Steam Momos-qty">0</span>
-    <button onclick="updateQty('Veg Steam Momos', 1)">➕</button>
-    <button onclick="addToCart('Veg Steam Momos')">🛒</button>
-  </div>
+   <div style="display:flex; justify-content:center; align-items:center; gap:0.5rem;">
+  <button onclick="updateQty('🌿 Veg Steam Momos', -1)">➖</button>
+  <span id="🌿 Veg Steam Momos-qty">0</span>
+  <button onclick="updateQty('🌿 Veg Steam Momos', 1)">➕</button>
+  <button onclick="addToCart('🌿 Veg Steam Momos')">🛒</button>
 </div>
   <div class="menu-item"><span>🌿 Veg Tandoori Momos</span><span>₹75 / ₹125</span></div>
   <div class="menu-item"><span>🌿 Veg Golden Fries Momos</span><span>₹75 / ₹125</span></div>
@@ -872,7 +872,7 @@ function launchBalloon() {
       const li = document.createElement('li');
       li.innerHTML = `<span>${item} × ${qty}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
       cartList.appendChild(li);
-      message += `• ${item} × ${qty}\n`;
+      message += `• ${item} × ${qty} = ₹${itemTotal}\n`;
     });
 
     message += `\nPlease confirm order ASAP`;
