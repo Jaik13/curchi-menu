@@ -3,19 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Currchi Menu</title>
+  <title>Currchi | Best Momos, Rolls, Biryani & Tandoori in Ramesh Nagar, Karol Bagh, Rajouri Garden</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <meta name="description" content="Order Momos, Tandoori, Rolls, Biryani & Chinese from Currchi – Serving Ramesh Nagar, Karol Bagh, Punjabi Bagh, Moti Nagar, Rajouri Garden & nearby Delhi areas. Call or WhatsApp now!">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #111;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
-header {
-  background-color: #FFF9DC;
+  margin: 0;
+  padding: 0;
+  background-color: #111;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  padding-bottom: 300px; /* space for cart */
+}
+ #cart-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff8dc;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  z-index: 999;
+  max-width: 400px;
+  margin: 0 auto;
+  max-height: 250px;
+  overflow-y: auto;
+  display: none;
+  transition: all 0.3s ease-in-out;
+}
+
+#cart-panel::-webkit-scrollbar {
+  width: 6px;
+}
+#cart-panel::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 6px;
+}
+.qty-cart-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+}
+
+.qty-cart-box button,
+.qty-cart-box .qty-display {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.qty-display {
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Dark mode styles */
+body.dark-mode .qty-cart-box button,
+body.dark-mode .qty-cart-box .qty-display {
+  color: #fff;
+}
+button {
+  cursor: pointer;
+}
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+}
+.clear-btn {
+  background: #f44336;
+  color: white;
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+.whatsapp-btn {
+  background: green;
+  color: white;
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+   header {
+  background-color: #FFF7D6;
   text-align: center;
   padding: 0.5rem 0;
   display: flex;
@@ -25,8 +108,8 @@ header {
   overflow: hidden;
 }
 header img {
-  height: 160px;
-  width: 500px;
+  height: 120px;
+  width: 400px;
   object-fit: contain;
 }
     .nav-bar {
@@ -89,13 +172,13 @@ header img {
     }
 
     .section-image {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      object-fit: cover;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-    }
-
+  width: 100%;
+  height: 180px; /* set a fixed height */
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
     .footer {
       background: #000;
       text-align: center;
@@ -147,17 +230,16 @@ body, .menu-column, .footer, .nav-bar, .back-to-top {
     }
     /* Theme toggle button styles */
 #themeToggle {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 18px;
   background: #f0c75e;
   color: #000;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
   cursor: pointer;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s, transform 0.2s;
 }
-
 #themeToggle:hover {
   transform: scale(1.1);
 }
@@ -185,8 +267,140 @@ body.light-mode .back-to-top {
   background-color: #333;
   color: #fff;
 }
+    #balloon {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  font-size: 3rem;
+  animation: floatUp 2s ease-out forwards;
+  z-index: 9998;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% {
+    bottom: -100px;
+    opacity: 1;
+  }
+  100% {
+    bottom: 50%;
+    opacity: 0;
+  }
+}
+
+#sprinkles {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f0c75e 0%, #ff7f50 100%);
+  box-shadow:
+    0 0 10px 3px #ff7f50,
+    10px -10px #f0c75e,
+    -10px -10px #ff7f50,
+    10px 10px #f0c75e,
+    -10px 10px #ff7f50;
+  display: none;
+  animation: sprinkleBurst 0.8s ease-out forwards;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+@keyframes sprinkleBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+}
+  #bookmark-line.tilt {
+  transform: rotate(-2deg);
+  display: inline-block;
+}
+  .tilt-text {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #f0c75e;
+  text-align: center;
+  animation: tilt 1.5s infinite ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes tilt {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(3deg); }
+  50%  { transform: rotate(0deg); }
+  75%  { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
+}
+    .theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  background: url('toggle-day.png') no-repeat center;
+  background-size: cover;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 26px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background: url('toggle-night.png') no-repeat center;
+  background-size: cover;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+    #theme-toggle-checkbox {
+  width: 20px;
+  height: 20px;
+  transform: scale(0.8); /* Shrinks the checkbox */
+  cursor: pointer;
+}
   </style>
-</head>
+ </head>
 <body>
   <header id="top">
     <img src="logo.png" alt="Currchi Restaurant Logo">
@@ -194,39 +408,70 @@ body.light-mode .back-to-top {
 
   <!-- Navigation Bar -->
   <div class="nav-bar">
-    <button onclick="scrollToSection('starters')">🍢 Starters</button>
-    <button onclick="scrollToSection('momos')">🥟 Mo1mos</button>
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
+    <button onclick="scrollToSection('momos')">🥟 Momos</button>
     <button onclick="scrollToSection('soups')">🥣 Soups</button>
     <button onclick="scrollToSection('combos')">🍛 Combos</button>
     <button onclick="scrollToSection('rice-biryani')">🍜 Rice & Biryani</button>
-    <button onclick="scrollToSection('breads')">🍞 Breads</button>
+    <button onclick="scrollToSection('breads')">🫓 Breads</button>
     <button onclick="scrollToSection('chinese-starters')">🥢 Chinese</button>
+    <button onclick="scrollToSection('friedrice')">Fried Rice & Noodles</button>
     <button onclick="scrollToSection('tandoori-starters')">🔥 Tandoori</button>
-    <button onclick="scrollToSection('main-course')">🍽 Main</button>
+    <button onclick="scrollToSection('main-course')">🍽 Main Course</button>
     <button onclick="scrollToSection('raita-salad')">🥗 Raita & Salad</button>
-    <button onclick="generatePDF()">📄 PDF</button>
-    <a href="tel:+919999999999"><button>📞 Call</button></a>
-    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button> 💬 WhatsApp</button></a>
-    <button onclick="toggleTheme()" id="themeToggle">☽ Dark</button>
+    <button onclick="generatePDF()">📄 Download Menu</button>
+    <a href="tel:+919211791827"><button>📞 Call</button></a>
+    <a href="https://wa.me/919899427503?text=Hi%20Currchi%20-%20Full%20on%20Desi!!%20I%20want%20to%20place%20an%20order." target="_blank"><button> 💬 WhatsApp</button></a>
+    <div class="theme-switch-wrapper">
+  <label class="theme-switch">
+    <input type="checkbox" id="theme-toggle-checkbox">
+    <span class="slider"></span>
+  </label>
+</div>
   </div>
 
   <!-- Floating Call Buttons -->
   <div class="floating-call-buttons" id="floatingCallButtons">
-    <a href="tel:+919999999999"><button>📞 Call Us</button></a>
-    <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20order%20from%20Currchi!" target="_blank"><button> 💬 WhatsApp Us</button></a>
+    <a href="tel:+919211791827"><button>📞 Call Us</button></a>
+    <a href="https://wa.me/919899427503?text=Hi%20Currchi%20-%20Full%20on%20Desi!!%20I%20want%20to%20place%20an%20order." target="_blank"><button> 💬 WhatsApp Us</button></a>
   </div>
-
   <!-- Menu Sections -->
   <div class="menu-container" id="menu">
   <div class="menu-column" id="rolls">
   <h2>🌯 Rolls</h2>
   <img src="rolls.jpg" class="section-image" alt="Currchi Rolls">
-  <div class="menu-item"><span>🌱 Soya Chaap Tikka Roll</span><span>₹145</span></div>
-  <div class="menu-item"><span>🌱 Paneer Tikka Roll</span><span>₹145</span></div>
-  <div class="menu-item"><span>🌱 Afghani Malai Chaap Roll</span><span>₹155</span></div>
-  <div class="menu-item"><span>🌱 Malai Paneer Roll</span><span>₹155</span></div>
-  <div class="menu-item"><span>🌱 Chilli Paneer Roll</span><span>₹155</span></div>
+  <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
+  <span>Items</span>
+  <span>Price</span>
+</div>
+<div class="menu-item">
+  <div class="item-name-price">
+    <span>🌿 Soya Chaap Tikka Roll</span>
+    <span class="item-price">₹145</span>
+  </div>
+  <div class="qty-cart-box">
+    <button onclick="decreaseQty(this)">➖</button>
+    <span class="qty-display">1</span>
+    <button onclick="increaseQty(this)">➕</button>
+    <button class="cart-btn" onclick="addToCart(this)">🛒</button>
+  </div>
+</div>
+      <div class="menu-item">
+    <span>🌿 Paneer Tikka Roll</span>
+    <span class="qty-controls">
+      ₹145
+     <div class="qty-control">
+  <button onclick="decreaseQty(this)">➖</button>
+  <span class="qty-display">1</span>
+  <button onclick="increaseQty(this)">➕</button>
+</div>
+<button onclick="addToCart(this)">Add to Cart</button>
+      <button onclick="addToCart(this)">🛒</button>
+    </span>
+  </div>
+  <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
+  <div class="menu-item"><span>🌿 Malai Paneer Roll</span><span>₹155</span></div>
+  <div class="menu-item"><span>🌿 Chilli Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🍖 Spicy Chicken Tikka Roll</span><span>₹180</span></div>
   <div class="menu-item"><span>🍖 Kali Mirch Chicken Tikka Roll</span><span>₹180</span></div>
   <div class="menu-item"><span>🍖 Chilli Chicken Roll</span><span>₹180</span></div>
@@ -234,38 +479,48 @@ body.light-mode .back-to-top {
   <div class="menu-item"><span>🍖 Chicken Malai Tikka Roll</span><span>₹190</span></div>
   <div class="menu-item"><span>🍖 Mutton Seekh Roll</span><span>₹200</span></div>
 </div>
-
-    <div class="menu-column" id="momos">
+  <div class="menu-column" id="momos">
   <h2>🥟 Momos</h2>
   <img src="momos.jpg" class="section-image" alt="Currchi Momos">
    <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
-  <span>Item</span>
-  <span>Half (6 Pcs) / Full (10 Pcs)</span>
+  <span>Items</span>
+  <span>Half (6 Pcs) / Full (10 Pcs) Price</span>
 </div>
-  <div class="menu-item"><span>🌱 Veg Steam Momos</span><span>₹75 / ₹125</span></div>
-  <div class="menu-item"><span>🌱 Veg Tandoori Momos</span><span>₹75 / ₹125</span></div>
-  <div class="menu-item"><span>🌱 Veg Golden Fries Momos</span><span>₹75 / ₹125</span></div>
-  <div class="menu-item"><span>🌱 Veg Afghani Momos</span><span>₹85 / ₹135</span></div>
+  <div class="menu-item"><span>🌿 Veg Steam Momos</span><span>₹75 / ₹125</span></div>
+  <div class="menu-item"><span>🌿 Veg Tandoori Momos</span><span>₹75 / ₹125</span></div>
+  <div class="menu-item"><span>🌿 Veg Golden Fries Momos</span><span>₹75 / ₹125</span></div>
+  <div class="menu-item"><span>🌿 Veg Afghani Momos</span><span>₹85 / ₹135</span></div>
+  <div class="menu-item"><span>🌿 Paneer Steam Momos</span><span>₹85 / ₹155</span></div>
+  <div class="menu-item"><span>🌿 Paneer Tandoori Momos</span><span>₹110 / ₹180</span></div>
+  <div class="menu-item"><span>🌿 Paneer Golden Fries Momos</span><span>₹85 / ₹155</span></div>
+  <div class="menu-item"><span>🌿 Paneer Afghani Momos</span><span>₹95 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Kurkure Veg Momos</span><span>₹80 / ₹160</span></div>
+  <div class="menu-item"><span>🌿 Kurkure Paneer Momos</span><span>₹90 / ₹170</span></div>
   <div class="menu-item"><span>🍖 Chicken Steam Momos</span><span>₹125 / ₹195</span></div>
-  <div class="menu-item"><span>🍖 Chicken 2 Golden Fries Momos</span><span>₹125 / ₹195</span></div>
+  <div class="menu-item"><span>🍖 Chicken Golden Fries Momos</span><span>₹125 / ₹195</span></div>
   <div class="menu-item"><span>🍖 Chicken Tandoori Momos</span><span>₹125 / ₹195</span></div>
   <div class="menu-item"><span>🍖 Chicken Afghani Momos</span><span>₹135 / ₹205</span></div>
+  <div class="menu-item"><span>🍖 Kurkure Chicken Momos</span><span>₹100 / ₹195</span></div>
 </div>
 
     <div class="menu-column" id="combos">
   <h2>🍱 Combos</h2>
   <img src="combos.jpg" class="section-image" alt="Currchi Combo Meals">
-  <div class="menu-item"><span>🌱 Mix Veg Combo</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Yellow Dal Tadka Combo</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Soya Keema Matar Combo</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Kashmiri Rajma Masala Combo</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Pindi Channa Combo</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Dal Makhani Combo</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Veg Manchurian + Fried Rice</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Hakka Noodles + Manchurian</span><span>₹135</span></div>
-  <div class="menu-item"><span>🌱 Palak Paneer Combo</span><span>₹145</span></div>
-  <div class="menu-item"><span>🌱 Shahi Paneer Combo</span><span>₹145</span></div>
-  <div class="menu-item"><span>🌱 Kadai Paneer Combo</span><span>₹145</span></div>
+  <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
+  <span>Items</span>
+  <span>Price</span>
+</div>
+  <div class="menu-item"><span>🌿 Mix Veg Combo</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Yellow Dal Tadka Combo</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Soya Keema Matar Combo</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Kashmiri Rajma Masala Combo</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Pindi Channa Combo</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Dal Makhani Combo</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Veg Manchurian + Fried Rice</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Hakka Noodles + Manchurian</span><span>₹135</span></div>
+  <div class="menu-item"><span>🌿 Palak Paneer Combo</span><span>₹145</span></div>
+  <div class="menu-item"><span>🌿 Shahi Paneer Combo</span><span>₹145</span></div>
+  <div class="menu-item"><span>🌿 Kadai Paneer Combo</span><span>₹145</span></div>
   <div class="menu-item"><span>🍖 Kadai Chicken Combo</span><span>₹185</span></div>
   <div class="menu-item"><span>🍖 Butter Chicken Combo</span><span>₹185</span></div>
   <div class="menu-item"><span>🍖 Home Made Chicken Curry</span><span>₹185</span></div>
@@ -277,11 +532,15 @@ body.light-mode .back-to-top {
    <div class="menu-column" id="soups">
   <h2>🍲 Soups</h2>
   <img src="soups.jpg" class="section-image" alt="Currchi Soups">
-  <div class="menu-item"><span>🌱 Classic Sweetcorn Soup</span><span>₹75</span></div>
-  <div class="menu-item"><span>🌱 Spicy Hot N Sour </span><span>₹75</span></div>
-  <div class="menu-item"><span>🌱 Talumein Soup</span><span>₹75</span></div>
-  <div class="menu-item"><span>🌱 Manchow Soup</span><span>₹75</span></div>
-  <div class="menu-item"><span>🌱 Clear Soup</span><span>₹75</span></div>
+   <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
+  <span>Items</span>
+  <span>Price</span>
+</div>
+  <div class="menu-item"><span>🌿 Classic Sweetcorn Soup</span><span>₹75</span></div>
+  <div class="menu-item"><span>🌿 Spicy Hot N Sour </span><span>₹75</span></div>
+  <div class="menu-item"><span>🌿 Talumein Soup</span><span>₹75</span></div>
+  <div class="menu-item"><span>🌿 Manchow Soup</span><span>₹75</span></div>
+  <div class="menu-item"><span>🌿 Clear Soup</span><span>₹75</span></div>
   <div class="menu-item"><span>🍖 Classic Sweetcorn Soup</span><span>₹95</span></div>
   <div class="menu-item"><span>🍖 Spicy Hot N Sour</span><span>₹95</span></div>
   <div class="menu-item"><span>🍖 Talumein Soup</span><span>₹95</span></div>
@@ -290,8 +549,12 @@ body.light-mode .back-to-top {
 </div>
 
    <div class="menu-column" id="breads">
-  <h2>🍞 Breads 🌱 </h2>
+  <h2>🫓 Breads 🌿 </h2>
   <img src="breads.jpg" class="section-image" alt="Currchi Breads">
+  <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
+  <span>Items</span>
+  <span>Price</span>
+</div>
   <div class="menu-item"><span>Rumali Roti</span><span>₹10</span></div>
   <div class="menu-item"><span>Tandoori Roti</span><span>₹15</span></div>
   <div class="menu-item"><span>Tandoori Butter Roti</span><span>₹18</span></div>
@@ -314,20 +577,21 @@ body.light-mode .back-to-top {
   <h2>🍜 Chinese Starters</h2>
   <img src="chinese.jpg" class="section-image" alt="Currchi Chinese Starters">
   <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
-  <span>Item</span>
-  <span>Half / Full</span>
+  <span>Items</span>
+  <span>Half / Full Price</span>
 </div>
   <!-- Veg -->
-  <div class="menu-item"><span>🌱 Chatpata Chilli Potato</span><span>₹95 / ₹125</span></div>
-  <div class="menu-item"><span>🌱 Honey & Chilli Potato</span><span>₹95 / ₹125</span></div>
-  <div class="menu-item"><span>🌱 Crunchy Veg Spring Roll</span><span>₹99 / ₹199</span></div>
-  <div class="menu-item"><span>🌱 Crunchy Chilli Mushroom</span><span>₹125 / ₹165</span></div>
-  <div class="menu-item"><span>🌱 Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
-  <div class="menu-item"><span>🌱 Veg Dry Manchurian</span><span>₹125 / ₹165</span></div>
-  <div class="menu-item"><span>🌱 Crispy Corn</span><span>₹125 / ₹165</span></div>
-  <div class="menu-item"><span>🌱 Veg Salt & Pepper</span><span>₹125 / ₹165</span></div>
-  <div class="menu-item"><span>🌱 Honey Chilli Mushroom</span><span>₹125 / ₹165</span></div>
-  <div class="menu-item"><span>🌱 Honey Chilli Paneer</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Chatpata Chilli Potato</span><span>₹95 / ₹125</span></div>
+  <div class="menu-item"><span>🌿 Honey & Chilli Potato</span><span>₹95 / ₹125</span></div>
+  <div class="menu-item"><span>🌿 Crunchy Veg Spring Roll</span><span>₹99 / ₹199</span></div>
+  <div class="menu-item"><span>🌿 Crunchy Chilli Mushroom</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Chilli Paneer Dry</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Veg Dry Manchurian</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Crispy Corn</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Veg Salt & Pepper</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Honey Chilli Mushroom</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Honey Chilli Paneer</span><span>₹125 / ₹165</span></div>
+  <div class="menu-item"><span>🌿 Gobhi Manchurian</span><span>₹130 / ₹180</span></div>
   <!-- Non-Veg -->
   <div class="menu-item"><span>🍖 Chilli Chicken Dry</span><span>₹175 / ₹245</span></div>
   <div class="menu-item"><span>🍖 Chicken Salt N Pepper</span><span>₹175 / ₹245</span></div>
@@ -335,27 +599,53 @@ body.light-mode .back-to-top {
   <div class="menu-item"><span>🍖 Drumps of Haven Chicken</span><span>₹195 / ₹295</span></div>
   <div class="menu-item"><span>🍖 Fried Chicken Lolli Pop</span><span>₹195 / ₹295</span></div>
 </div>
+<div class="menu-column" id="friedrice">
+  <h2>🍜 Fried Rice & Noodles</h2>
+  <img src="friedrice.jpg" class="section-image" alt="Fried Rice and Noodles at Currchi">
+  
+  <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
+    <span>Items</span>
+    <span>Half / Full Price</span>
+  </div>
 
+  <div class="menu-item"><span>🌿 Veg Fried Rice</span><span>₹125 / ₹195</span></div>
+  <div class="menu-item"><span>🌿 Chilli Garlic Fried Rice</span><span>₹125 / ₹195</span></div>
+  <div class="menu-item"><span>🌿 Veg Hakka Noodles</span><span>₹125 / ₹195</span></div>
+  <div class="menu-item"><span>🌿 Chilli Garlic Noodles</span><span>₹125 / ₹195</span></div>
+  <div class="menu-item"><span>🌿 Butter Garlic Fried Rice</span><span>₹135 / ₹205</span></div>
+  <div class="menu-item"><span>🌿 Butter Garlic Fried Noodles</span><span>₹135 / ₹205</span></div>
+  <div class="menu-item"><span>🌿 Spicy Paneer Tikka Fried Rice</span><span>₹145 / ₹215</span></div>
+  <div class="menu-item"><span>🍖 Desi Chicken Chowmein</span><span>₹155 / ₹225</span></div>
+  <div class="menu-item"><span>🍖 Desi Chicken Fried Rice</span><span>₹155 / ₹225</span></div>
+  <div class="menu-item"><span>🍖 Chicken Hakka Noodles</span><span>₹155 / ₹225</span></div>
+  <div class="menu-item"><span>🍖 Chicken Fried Rice</span><span>₹155 / ₹225</span></div>
+  <div class="menu-item"><span>🍖 Chilli Chicken Garlic Fried Rice</span><span>₹155 / ₹225</span></div>
+  <div class="menu-item"><span>🍖 Chilli Chicken Garlic Noodles</span><span>₹155 / ₹225</span></div>
+  <div class="menu-item"><span>🍖 Chicken Butter Garlic Fried Rice</span><span>₹165 / ₹235</span></div>
+  <div class="menu-item"><span>🍖 Chicken Butter Garlic Noodles</span><span>₹165 / ₹235</span></div>
+</div>
     <div class="menu-column" id="tandoori-starters">
   <h2>🔥 Tandoori Starters</h2>
   <img src="tandoori.jpg" class="section-image" alt="Currchi Tandoori Starters">
     <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
-  <span>Item</span>
-  <span>Half / Full</span>
+  <span>Items</span>
+  <span>Half / Full Price</span>
 </div>
   <!-- Veg -->
-  <div class="menu-item"><span>🌱 Spicy Masala Soya Tikka</span><span>₹125 / ₹215</span></div>
-  <div class="menu-item"><span>🌱 Soya Chaap Kali Mirch Tikka</span><span>₹125 / ₹215</span></div>
-  <div class="menu-item"><span>🌱 Peri Peri Chaap Tikka</span><span>₹125 / ₹215</span></div>
-  <div class="menu-item"><span>🌱 Afghani Soya Chaap</span><span>₹135 / ₹225</span></div>
-  <div class="menu-item"><span>🌱 Spicy Paneer Tikka</span><span>₹135 / ₹225</span></div>
-  <div class="menu-item"><span>🌱 Peri Peri Paneer Tikka</span><span>₹145 / ₹225</span></div>
-  <div class="menu-item"><span>🌱 Mushroom Tikka</span><span>₹145 / ₹225</span></div>
-  <div class="menu-item"><span>🌱 Malai Paneer Tikka</span><span>₹155 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Desi Creamy Mushroom Tikka</span><span>₹155 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Crispy Paneer</span><span>₹165 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Spicy Masala Soya Tikka</span><span>₹125 / ₹215</span></div>
+  <div class="menu-item"><span>🌿 Soya Chaap Kali Mirch Tikka</span><span>₹125 / ₹215</span></div>
+  <div class="menu-item"><span>🌿 Peri Peri Chaap Tikka</span><span>₹125 / ₹215</span></div>
+  <div class="menu-item"><span>🌿 Afghani Soya Chaap</span><span>₹135 / ₹225</span></div>
+  <div class="menu-item"><span>🌿 Spicy Paneer Tikka</span><span>₹135 / ₹225</span></div>
+  <div class="menu-item"><span>🌿 Peri Peri Paneer Tikka</span><span>₹145 / ₹225</span></div>
+  <div class="menu-item"><span>🌿 Mushroom Tikka</span><span>₹145 / ₹225</span></div>
+  <div class="menu-item"><span>🌿 Malai Paneer Tikka</span><span>₹155 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Desi Creamy Mushroom Tikka</span><span>₹155 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Crispy Paneer</span><span>₹165 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Veg Hara Bhara Kabab</span><span>₹125 / ₹225</span></div>
   <!-- Non-Veg -->
   <div class="menu-item"><span>🍖 Chicken Malai Tikka</span><span>₹180 / ₹320</span></div>
+  <div class="menu-item"><span>🍖 Afghani Chicken</span><span>₹190 / ₹320</span></div>
   <div class="menu-item"><span>🍖 Tandoori Chicken</span><span>₹180 / ₹320</span></div>
   <div class="menu-item"><span>🍖 Chicken Kali Mirch</span><span>₹180 / ₹320</span></div>
   <div class="menu-item"><span>🍖 Spicy Chicken Tikka</span><span>₹180 / ₹320</span></div>
@@ -372,33 +662,33 @@ body.light-mode .back-to-top {
   <h2>🍽 Main Course</h2>
   <img src="maincourse.jpg" class="section-image" alt="Currchi Main Course Dishes">
     <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
-  <span>Item</span>
-  <span>Half / Full</span>
+  <span>Items</span>
+  <span>Half / Full Price</span>
 </div>
   <!-- Veg -->
-  <div class="menu-item"><span>🌱 Rajma Masala</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Pindi Channa</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Aloo Jeera</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Aloo Matar</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Yellow Dal Tadka</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Dal Makhani</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Mix Vegetable</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Aloo Gobi Adraki</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Soya Do Pyaza Curry</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Palak Chaap Curry</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Soya Chaap Butter Masala Curry</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Kadai Mushroom</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Bhuna Chaap Masala</span><span>₹125 / ₹235</span></div>
-  <div class="menu-item"><span>🌱 Shahi Paneer</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Kadai Paneer</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Paneer Bhurji</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Paneer Lababdar</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Palak Corn</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Matar Mushroom</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Mushroom Do Pyaza</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Paneer Butter Masala</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Rara Paneer</span><span>₹135 / ₹255</span></div>
-  <div class="menu-item"><span>🌱 Dal Makhani with Desi Tadka</span><span>₹140 / ₹260</span></div>
+  <div class="menu-item"><span>🌿 Rajma Masala</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Pindi Channa</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Aloo Jeera</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Aloo Matar</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Yellow Dal Tadka</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Dal Makhani</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Mix Vegetable</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Aloo Gobi Adraki</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Soya Do Pyaza Curry</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Palak Chaap Curry</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Soya Chaap Butter Masala Curry</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Kadai Mushroom</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Bhuna Chaap Masala</span><span>₹125 / ₹235</span></div>
+  <div class="menu-item"><span>🌿 Shahi Paneer</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Kadai Paneer</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Paneer Bhurji</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Paneer Lababdar</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Palak Corn</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Matar Mushroom</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Mushroom Do Pyaza</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Paneer Butter Masala</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Rara Paneer</span><span>₹135 / ₹255</span></div>
+  <div class="menu-item"><span>🌿 Dal Makhani with Desi Tadka</span><span>₹140 / ₹260</span></div>
   <!-- Non-Veg -->
   <div class="menu-item"><span>🍖 Butter Chicken</span><span>₹345 / ₹575</span></div>
   <div class="menu-item"><span>🍖 Kadai Chicken</span><span>₹345 / ₹575</span></div>
@@ -420,27 +710,27 @@ body.light-mode .back-to-top {
   <h2>🍚 Rice & Biryani</h2>
   <img src="rice.jpg" class="section-image" alt="Currchi Rice and Biryani">
     <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
-  <span>Item</span>
-  <span>Half / Full</span>
+  <span>Items</span>
+  <span>Half / Full Price</span>
 </div>
   <!-- Veg -->
-  <div class="menu-item"><span>🌱 Plain Rice</span><span>₹75 / ₹115</span></div>
-  <div class="menu-item"><span>🌱 Vegetable Pulao</span><span>₹115 / ₹145</span></div>
-  <div class="menu-item"><span>🌱 Peas Pulao</span><span>₹115 / ₹145</span></div>
-  <div class="menu-item"><span>🌱 Soya Pulao</span><span>₹115 / ₹145</span></div>
-  <div class="menu-item"><span>🌱 Shahi Subz Biryani</span><span>₹115 / ₹145</span></div>
-  <div class="menu-item"><span>🌱 Paneer Pulao</span><span>₹135 / ₹175</span></div>
+  <div class="menu-item"><span>🌿 Plain Rice</span><span>₹75 / ₹115</span></div>
+  <div class="menu-item"><span>🌿 Vegetable Pulao</span><span>₹115 / ₹145</span></div>
+  <div class="menu-item"><span>🌿 Peas Pulao</span><span>₹115 / ₹145</span></div>
+  <div class="menu-item"><span>🌿 Soya Pulao</span><span>₹115 / ₹145</span></div>
+  <div class="menu-item"><span>🌿 Shahi Subz Biryani</span><span>₹115 / ₹145</span></div>
+  <div class="menu-item"><span>🌿 Paneer Pulao</span><span>₹135 / ₹175</span></div>
   <!-- Non-Veg -->
   <div class="menu-item"><span>🍖 Chicken Biryani</span><span>₹225 / ₹425</span></div>
   <div class="menu-item"><span>🍖 Mutton Biryani</span><span>₹395 / ₹675</span></div>
 </div>
 
     <div class="menu-column" id="raita-salad">
-  <h2>🥗 Raita & Salad 🌱 </h2>
+  <h2>🥗 Raita & Salad 🌿 </h2>
   <img src="salad.jpg" class="section-image" alt="Currchi Raita and Salad">
     <div class="menu-item" style="font-weight: bold; border-bottom: 2px solid #f0c75e;">
-  <span>Item</span>
-  <span>Half / Full</span>
+  <span>Items</span>
+  <span>Half / Full Price</span>
 </div>
   <!-- Raita -->
   <div class="menu-item"><span>Plain Curd</span><span>₹45 / ₹65</span></div>
@@ -448,39 +738,27 @@ body.light-mode .back-to-top {
   <div class="menu-item"><span>Boondi Raita</span><span>₹45 / ₹65</span></div>
   <div class="menu-item"><span>Aloo Raita</span><span>₹45 / ₹65</span></div>
   <!-- Salad -->
-  <div class="menu-item"><span>Green Salad</span><span>- / ₹65</span></div>
+  <div class="menu-item"><span>Green Salad</span><span>-  / ₹65</span></div>
 </div>
 
     
   <!-- Footer -->
-  <div class="footer">
-    📍 CURRCHI || Ramesh Nagar, New Delhi || <br>
-    ⏰ Open Daily: 2:00 PM – 12:00 AM<br>
-        &#174; 2025 CURRCHI – Full on Desi
-  </div>
+<div class="footer">
+  <p>📍 <strong>CURRCHI</strong> || Ramesh Nagar, New Delhi ||</p>
+  <p>⏰ <strong>Open Daily:</strong> 2:00 PM – 12:00 AM</p>
+  <p>📞 <strong>Hosting a party? We cater events & bulk orders – Call us for deals! +91 9211791827</strong></p>
+  <p>💬 <em>Order Now via above WhatsApp or Call icons – We're Just a Tap Away!”</em></p>
+  <p>📍 <a href="https://maps.app.goo.gl/vV4UCGasmaPHKLAT8" target="_blank" style="color: inherit; text-decoration: underline;">Find us on Google Maps</a></p>
+  <p id="bookmark-line" class="tilt-text">📲 Bookmark this menu or Add to Home Screen for easy reorders!</p>  
+  <p><strong>&#174;</strong> 2025 CURRCHI – Full on Desi</p>
+  <p><em>Chal Currchi se khae yaar..</em></p>
+</div>
 
   <!-- Back to Top -->
   <button class="back-to-top" onclick="scrollToSection('top')">🔝</button>
 
-  <script>
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-function toggleTheme() {
-  const body = document.body;
-  const toggleBtn = document.getElementById("themeToggle");
-
-  body.classList.toggle("light-mode");
-
-  // Update icon and label based on current mode
-  if (body.classList.contains("light-mode")) {
-  toggleBtn.textContent = "☽ Dark";
-} else {
-  toggleBtn.textContent = "🌞 Light";
-}
-}
-    function generatePDF() {
+    <script>
+     function generatePDF() {
       const element = document.body.cloneNode(true);
       const extras = element.querySelectorAll('.nav-bar, .floating-call-buttons, .back-to-top');
       extras.forEach(e => e.remove());
@@ -503,6 +781,205 @@ function toggleTheme() {
         floatBtns.style.display = 'none';
       }
     });
+    let lastBurst = 0;
+
+window.addEventListener("scroll", () => {
+  if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 10) {
+    if (Date.now() - lastBurst > 4000) {
+      launchBalloon();
+      lastBurst = Date.now();
+    }
+  }
+});
+    window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const scrollHeight = document.documentElement.scrollHeight;
+  const clientHeight = window.innerHeight;
+  const bookmark = document.getElementById('bookmark-line');
+
+  if (scrollY + clientHeight >= scrollHeight - 150) {
+  bookmark.classList.add('tilt');
+} else {
+  bookmark.classList.remove('tilt');
+}
+});
+
+function launchBalloon() {
+  const balloon = document.getElementById("balloon");
+  const sprinkles = document.getElementById("sprinkles");
+ 
+  // Reset and show balloon
+  balloon.style.display = "block";
+  balloon.style.animation = "none";
+  sprinkles.style.display = "none";
+
+  void balloon.offsetWidth; // reflow trick to restart animation
+  balloon.style.animation = "floatUp 2s ease-out forwards";
+
+  // POP with sprinkles after 1.8s
+  setTimeout(() => {
+    balloon.style.display = "none";
+    sprinkles.style.display = "block";
+  }, 1800);
+
+  // Hide sprinkles after burst
+  setTimeout(() => {
+    sprinkles.style.display = "none";
+  }, 3000);
+}
   </script>
+    <!-- Balloon & Burst Elements -->
+<div id="balloon" style="display: none;">🎈🎈</div>
+<div id="sprinkles"></div>
+    <script>
+  document.getElementById('theme-toggle-checkbox').addEventListener('change', function () {
+    document.body.classList.toggle('light-mode');
+  });
+</script>
+ <script>
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+</script>
+    <!-- Cart Panel (Hidden by default) -->
+<div id="cart-panel" style="
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 280px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: #fff7d6;
+  color: #000;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  z-index: 9999;
+  font-size: 0.95rem;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #fff7d6;
+">
+  <strong>🛒 Your Cart:</strong>
+  <ul id="cart-items" style="margin: 0.5rem 0; padding: 0; list-style: none;"></ul>
+  <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
+
+<button onclick="clearCart()" style="
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.5rem;
+">🧹 Clear Cart</button>
+
+<a id="whatsapp-link" target="_blank">
+  <button style="
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+  ">Place Order on WhatsApp</button>
+</a>
+</div>
+    <div id="cart-panel" class="cart-panel">
+    <strong>🛒 Cart:</strong>
+    <ul id="cart-items"></ul>
+    <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
+    <a id="whatsapp-link" target="_blank">📲 Send Order on WhatsApp</a>
+  </div>
+    <script>
+    const cart = {};
+
+   function addToCart(btn) {
+  const menuItem = btn.closest('.menu-item');
+  const itemName = menuItem.querySelector('span').textContent.trim();
+  const priceText = menuItem.innerText.match(/₹(\d+)/);
+  const price = priceText ? parseInt(priceText[1]) : 0;
+  const qtyDisplay = menuItem.querySelector('.qty-display');
+  const qty = parseInt(qtyDisplay.textContent);
+
+  if (!qty || qty < 1) {
+    alert("Please enter a valid quantity");
+    return;
+  }
+
+  cart[itemName] = { price, qty };
+  updateCartDisplay();
+}
+
+    function decreaseQty(btn) {
+  const menuItem = btn.closest('.menu-item');
+  const qtyDisplay = menuItem.querySelector('.qty-display');
+  let qty = parseInt(qtyDisplay.textContent);
+  if (qty > 1) {
+    qty -= 1;
+    qtyDisplay.textContent = qty;
+
+    const itemName = menuItem.querySelector('span').textContent.trim();
+    if (cart[itemName]) {
+      cart[itemName].qty = qty;
+      updateCartDisplay();
+    }
+  }
+}
+
+   function increaseQty(btn) {
+  const menuItem = btn.closest('.menu-item');
+  const qtyDisplay = menuItem.querySelector('.qty-display');
+  let qty = parseInt(qtyDisplay.textContent);
+  qty += 1;
+  qtyDisplay.textContent = qty;
+
+  const itemName = menuItem.querySelector('span').textContent.trim();
+  if (cart[itemName]) {
+    cart[itemName].qty = qty;
+    updateCartDisplay();
+  }
+}
+
+    function updateCartDisplay() {
+      const cartList = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      const whatsappLink = document.getElementById('whatsapp-link');
+      const cartPanel = document.getElementById('cart-panel');
+
+      cartList.innerHTML = '';
+      let total = 0;
+      let message = `Hi Currchi - Full on Desi!! I want to place the following order:\n\n`;
+
+      for (let item in cart) {
+        const { price, qty } = cart[item];
+        const lineTotal = price * qty;
+        total += lineTotal;
+        message += `• ${item} x ${qty} = ₹${lineTotal}\n`;
+
+        const li = document.createElement('li');
+        li.innerHTML = `${item} x ${qty} = ₹${lineTotal} <button class="remove-btn" onclick="removeItem('${item}')">❌</button>`;
+        cartList.appendChild(li);
+      }
+
+      cartPanel.style.display = total > 0 ? 'block' : 'none';
+      cartTotal.textContent = total;
+      message += `\nTotal: ₹${total}\n\nPlease confirm order.`;
+      whatsappLink.href = `https://wa.me/919899427503?text=${encodeURIComponent(message)}`;
+    }
+
+    function removeItem(item) {
+      delete cart[item];
+      updateCartDisplay();
+    }
+  </script>
+       
 </body>
 </html>
