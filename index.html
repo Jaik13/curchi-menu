@@ -132,14 +132,16 @@ header img {
       margin: auto;
     }
 
-    .menu-column {
-      background-color: #1c1c1c;
-      border-radius: 8px;
-      padding: 1rem;
-      width: 300px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      text-align: center;
-    }
+ .menu-column {
+  background-color: #1c1c1c;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 500px; /* limits on large screens */
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  text-align: center;
+  flex: 1 1 100%;
+}
 
     .menu-column h2 {
       font-size: 1.5rem;
