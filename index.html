@@ -900,5 +900,57 @@ function launchBalloon() {
     whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
   }
 </script>
+    <script>
+document.querySelectorAll('.menu-item').forEach(item => {
+  const spans = item.querySelectorAll('span');
+  if (spans.length < 2) return; // skip header rows or malformed items
+
+  const itemName = spans[0].innerText.trim();
+  const priceText = spans[1].innerText.trim();
+
+  // Skip if controls already exist
+  if (item.querySelector('button')) return;
+
+  // Create container for controls
+  const controlDiv = document.createElement('div');
+  controlDiv.style.display = 'flex';
+  controlDiv.style.alignItems = 'center';
+  controlDiv.style.gap = '0.5rem';
+
+  // Create Price
+  const priceSpan = document.createElement('span');
+  priceSpan.textContent = priceText;
+
+  // ➖ Button
+  const minusBtn = document.createElement('button');
+  minusBtn.textContent = '➖';
+  minusBtn.onclick = () => updateQty(itemName, -1);
+
+  // Quantity Display
+  const qtySpan = document.createElement('span');
+  qtySpan.id = `${itemName}-qty`;
+  qtySpan.textContent = '0';
+
+  // ➕ Button
+  const plusBtn = document.createElement('button');
+  plusBtn.textContent = '➕';
+  plusBtn.onclick = () => updateQty(itemName, 1);
+
+  // 🛒 Button
+  const cartBtn = document.createElement('button');
+  cartBtn.textContent = '🛒';
+  cartBtn.onclick = () => addToCart(itemName);
+
+  // Append controls
+  controlDiv.appendChild(priceSpan);
+  controlDiv.appendChild(minusBtn);
+  controlDiv.appendChild(qtySpan);
+  controlDiv.appendChild(plusBtn);
+  controlDiv.appendChild(cartBtn);
+
+  // Replace the second span (price) with controlDiv
+  spans[1].replaceWith(controlDiv);
+});
+</script>
 </body>
 </html>
