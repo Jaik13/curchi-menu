@@ -857,81 +857,74 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuItems = document.querySelectorAll('.menu-item');
 
   menuItems.forEach(item => {
-  const name = item.dataset.name;
-  const price = item.dataset.price;
-  const halfPrice = item.dataset.half;
-  const fullPrice = item.dataset.full;
+    const name = item.dataset.name;
+    const price = item.dataset.price;
+    const halfPrice = item.dataset.half;
+    const fullPrice = item.dataset.full;
 
-  // Skip header rows
-  if (!name || (!price && (!halfPrice || !fullPrice))) return;
+    // Skip header rows
+    if (!name || (!price && (!halfPrice || !fullPrice))) return;
 
-  // Clear default content
-  item.innerHTML = '';
+    // Clear default content
+    item.innerHTML = '';
 
-  // Dish name
-  const nameSpan = document.createElement('span');
-  nameSpan.textContent = name;
-  nameSpan.style.fontWeight = '600';
-  item.appendChild(nameSpan);
+    // Dish name
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = name;
+    nameSpan.style.fontWeight = '600';
+    item.appendChild(nameSpan);
 
-  let selectedPrice = price;
+    let selectedPrice = price;
 
-  // Create wrapper to hold price + cart controls vertically
-  const priceCartWrapper = document.createElement('div');
-  priceCartWrapper.style.display = 'flex';
-  priceCartWrapper.style.flexDirection = 'column';
-  priceCartWrapper.style.alignItems = 'flex-start';
-  priceCartWrapper.style.marginTop = '4px';
+    // Price section (top row)
+    if (halfPrice && fullPrice) {
+      const selector = document.createElement('select');
+      selector.innerHTML = `
+        <option value="${halfPrice}">Half ₹${halfPrice}</option>
+        <option value="${fullPrice}">Full ₹${fullPrice}</option>
+      `;
+      selectedPrice = halfPrice;
 
-  if (halfPrice && fullPrice) {
-    const selector = document.createElement('select');
-    selector.innerHTML = `
-      <option value="${halfPrice}">Half ₹${halfPrice}</option>
-      <option value="${fullPrice}">Full ₹${fullPrice}</option>
-    `;
-    selectedPrice = halfPrice;
+      selector.addEventListener('change', () => {
+        selectedPrice = selector.value;
+        updateQtyDisplay(name, selectedPrice);
+      });
 
-    selector.addEventListener('change', () => {
-      selectedPrice = selector.value;
-      updateQtyDisplay(name, selectedPrice);
-    });
+      item.appendChild(selector);
+    } else {
+      const priceSpan = document.createElement('span');
+      priceSpan.textContent = `₹${price}`;
+      selectedPrice = price;
+      item.appendChild(priceSpan);
+    }
 
-    priceCartWrapper.appendChild(selector);
-  } else {
-    const priceSpan = document.createElement('span');
-    priceSpan.textContent = `₹${price}`;
-    selectedPrice = price;
-    priceCartWrapper.appendChild(priceSpan);
-  }
+    // Cart controls (bottom row)
+    const controlDiv = document.createElement('div');
+    controlDiv.style.display = 'flex';
+    controlDiv.style.alignItems = 'center';
+    controlDiv.style.justifyContent = 'start';
+    controlDiv.style.gap = '0.5rem';
+    controlDiv.style.marginTop = '5px';
 
-  // Cart controls (➖ 0 ➕ 🛒)
-  const controlDiv = document.createElement('div');
-  controlDiv.style.display = 'flex';
-  controlDiv.style.alignItems = 'center';
-  controlDiv.style.gap = '0.5rem';
-  controlDiv.style.marginTop = '4px';
+    const minusBtn = document.createElement('button');
+    minusBtn.textContent = '➖';
+    minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
 
-  const minusBtn = document.createElement('button');
-  minusBtn.textContent = '➖';
-  minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
+    const qtySpan = document.createElement('span');
+    qtySpan.id = `${name}-${selectedPrice}-qty`;
+    qtySpan.textContent = '0';
 
-  const qtySpan = document.createElement('span');
-  qtySpan.id = `${name}-${selectedPrice}-qty`;
-  qtySpan.textContent = '0';
+    const plusBtn = document.createElement('button');
+    plusBtn.textContent = '➕';
+    plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
 
-  const plusBtn = document.createElement('button');
-  plusBtn.textContent = '➕';
-  plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
+    const cartBtn = document.createElement('button');
+    cartBtn.textContent = '🛒';
+    cartBtn.onclick = () => addToCart(name, selectedPrice);
 
-  const cartBtn = document.createElement('button');
-  cartBtn.textContent = '🛒';
-  cartBtn.onclick = () => addToCart(name, selectedPrice);
-
-  controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
-  priceCartWrapper.appendChild(controlDiv);
-
-  // Add full priceCart section to the item
-  item.appendChild(priceCartWrapper);
+    controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
+    item.appendChild(controlDiv);
+  });
 });
 
 // Global cart object
