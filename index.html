@@ -35,9 +35,6 @@
   transition: all 0.3s ease-in-out;
 }
 
-#cart-panel::-webkit-scrollbar {
-  width: 6px;
-}
 #cart-panel::-webkit-scrollbar-thumb {
   background: #bbb;
   border-radius: 6px;
@@ -478,20 +475,16 @@ input:checked + .slider:before {
     <button onclick="addToCart(this)">🛒</button>
   </div>
 </div>
-      <div class="menu-item">
-    <span>🌿 Paneer Tikka Roll</span>
-    <span class="qty-controls">
-      ₹145
-     <div class="qty-control">
-  <button onclick="decreaseQty(this)">➖</button>
-  <span class="qty-display">1</span>
-  <button onclick="increaseQty(this)">➕</button>
+     <div class="menu-item">
+  <span>🌿 Paneer Tikka Roll</span>
+  <span class="qty-controls">
+    ₹145
+    <div class="qty-control">...</div>
+    <button onclick="addToCart(this)">Add to Cart</button>
+    <button onclick="addToCart(this)">🛒</button>
+  </span>
 </div>
-<button onclick="addToCart(this)">Add to Cart</button>
-      <button onclick="addToCart(this)">🛒</button>
-    </span>
-  </div>
-  <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
+   <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Malai Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Chilli Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🍖 Spicy Chicken Tikka Roll</span><span>₹180</span></div>
@@ -913,13 +906,6 @@ function launchBalloon() {
     width: 100%;
   ">Place Order on WhatsApp</button>
 </a>
-</div>
-  <div id="cart-panel" class="cart-panel">
-  <strong>🛒 Cart:</strong>
-  <ul id="cart-items"></ul>
-  <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
-  <button onclick="clearCart()">🗑️ Clear Cart</button>
-  <a id="whatsapp-link" target="_blank">📲 Send Order on WhatsApp</a>
 </div>
     <script>
     const cart = {};
