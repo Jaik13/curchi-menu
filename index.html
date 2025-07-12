@@ -956,5 +956,43 @@ function launchBalloon() {
     whatsappLink.href = `https://wa.me/?text=${encodedMsg}`;
   }
 </script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll(".menu-item");
+
+  items.forEach(item => {
+    const nameSpan = item.querySelector(".item-name");
+    const priceSpan = item.querySelector(".item-price");
+
+    if (!nameSpan || !priceSpan) return;
+
+    const itemName = nameSpan.innerText;
+    const itemIdSafe = itemName.replace(/[^a-zA-Z0-9]/g, ""); // sanitized ID
+
+    // Avoid duplicating if buttons already exist
+    if (item.innerHTML.includes("addToCart")) return;
+
+    // Create controls
+    const controls = document.createElement("div");
+    controls.style.display = "flex";
+    controls.style.alignItems = "center";
+    controls.style.gap = "0.25rem";
+
+    priceSpan.id = `${itemName}-price`;
+
+    controls.innerHTML = `
+      <span id="${itemName}-price">${priceSpan.innerText}</span>
+      <button onclick="updateQty('${itemName}', -1)">➖</button>
+      <span id="${itemName}-qty">0</span>
+      <button onclick="updateQty('${itemName}', 1)">➕</button>
+      <button onclick="addToCart('${itemName}')">🛒</button>
+    `;
+
+    // Replace priceSpan with the control group
+    priceSpan.replaceWith(controls);
+  });
+});
+</script>
+
   </body>
 </html>
