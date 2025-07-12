@@ -480,11 +480,11 @@ input:checked + .slider:before {
     <button onclick="addToCart('🌿 Paneer Tikka Roll')">🛒</button>
   </div>
 </div>
-  <div class="menu-item"><span class="item-name">🌿 Afghani Malai Chaap Roll</span><span class="item-price">₹155</span></div>
-  <div class="menu-item"><span class="item-name">🌿 Malai Paneer Roll</span><span class="item-price">₹155</span></div>
-  <div class="menu-item"><span class="item-name">🌿 Chilli Paneer Roll</span><span class="item-price">₹155</span></div>
-  <div class="menu-item"><span class="item-name">🍖 Spicy Chicken Tikka Roll</span><span class="item-price">₹180</span></div>
-  <div class="menu-item"><span class="item-name">🍖 Kali Mirch Chicken Tikka Roll</span><span class="item-price">₹180</span></div>
+  <div class="menu-item"><span class="item-name">🌿 Afghani Malai Chaap Roll</span><span class="item-price" id="🌿 Afghani Malai Chaap Roll-price">₹155</span></div>
+  <div class="menu-item"><span class="item-name">🌿 Malai Paneer Roll</span><span class="item-price" id="🌿 Malai Paneer Roll-price">₹155</span></div>
+  <div class="menu-item"><span class="item-name">🌿 Chilli Paneer Roll</span><span class="item-price" id="🌿 Chilli Paneer Roll-price">₹155</span></div>
+  <div class="menu-item"><span class="item-name">🍖 Spicy Chicken Tikka Roll</span><span class="item-price" id="🍖 Spicy Chicken Tikka Roll-price">₹180</span></div>
+  <div class="menu-item"><span class="item-name">🍖 Kali Mirch Chicken Tikka Roll</span><span class="item-price" id="🍖 Kali Mirch Chicken Tikka Roll-price">₹180</span></div>
   <div class="menu-item"><span>🌿 Afghani Malai Chaap Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Malai Paneer Roll</span><span>₹155</span></div>
   <div class="menu-item"><span>🌿 Chilli Paneer Roll</span><span>₹155</span></div>
@@ -878,89 +878,90 @@ function launchBalloon() {
 <script>
   const cart = {};
 
-  function updateQty(item, change) {
-    const span = document.getElementById(item + "-qty");
-    if (!span) return;
-    let qty = parseInt(span.textContent) || 0;
-    qty += change;
-    if (qty < 0) qty = 0;
-    span.textContent = qty;
+  function updateQty(itemName, change) {
+    const qtySpan = document.getElementById(`${itemName}-qty`);
+    let qty = parseInt(qtySpan.innerText || '0');
+    qty = Math.max(0, qty + change);
+    qtySpan.innerText = qty;
+
+    // Auto-add or remove from cart based on quantity
+    if (qty > 0) {
+      cart[itemName] = qty;
+    } else {
+      delete cart[itemName];
+    }
+
+    updateCartDisplay();
   }
 
-  function addToCart(item) {
-    const qty = parseInt(document.getElementById(item + "-qty").textContent);
+  function addToCart(itemName) {
+    const qtySpan = document.getElementById(`${itemName}-qty`);
+    const qty = parseInt(qtySpan.innerText || '0');
     if (qty > 0) {
-      cart[item] = qty;
-    } else {
-      delete cart[item];
+      cart[itemName] = qty;
     }
     updateCartDisplay();
   }
 
-  function removeFromCart(item) {
-    delete cart[item];
-    document.getElementById(item + "-qty").textContent = 0;
+  function removeFromCart(itemName) {
+    delete cart[itemName];
+    const qtySpan = document.getElementById(`${itemName}-qty`);
+    if (qtySpan) qtySpan.innerText = '0';
     updateCartDisplay();
   }
 
   function updateCartDisplay() {
-    const cartList = document.getElementById('cart-items');
-    const whatsappLink = document.getElementById('whatsapp-order-btn');
+    const cartPanel = document.getElementById('cart-panel');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    const whatsappLink = document.getElementById('whatsapp-link');
 
-    cartList.innerHTML = '';
-    let message = 'Hi Currchi! I want to order:\n';
+    if (Object.keys(cart).length === 0) {
+      cartPanel.style.display = 'none';
+      return;
+    } else {
+      cartPanel.style.display = 'block';
+    }
 
-    Object.entries(cart).forEach(([item, qty]) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${item} × ${qty}</span> <button onclick="removeFromCart('${item}')">Remove</button>`;
-      cartList.appendChild(li);
-      message += `• ${item} × ${qty} = ₹${itemTotal}\n`;
-    });
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+    let message = '*Order Details:*\n';
 
-    message += `\nPlease confirm order ASAP`;
+    for (let item in cart) {
+      const qty = cart[item];
+      const itemElem = document.querySelector(`span.item-name:contains("${item}")`);
+      const priceElem = document.querySelector(`span#${item}-price`);
+      let price = 0;
+
+      // Try getting price from the UI
+      const priceText = priceElem?.innerText || '';
+      if (priceText.includes('₹')) {
+        price = parseInt(priceText.replace('₹', '').trim());
+      }
+
+      const itemTotal = qty * price;
+      total += itemTotal;
+
+      const li = document.createElement('div');
+      li.innerHTML = `${item} x ${qty} = ₹${itemTotal} <button onclick="removeFromCart('${item}')">❌</button>`;
+      cartItemsContainer.appendChild(li);
+
+      message += `${item} x ${qty} = ₹${itemTotal}\n`;
+    }
+
+    message += `\n*Total:* ₹${total}\n\nPlease confirm order ASAP`;
+    cartTotalEl.innerText = `₹${total}`;
+
     const encodedMsg = encodeURIComponent(message);
-    whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
+    whatsappLink.href = `https://wa.me/?text=${encodedMsg}`;
   }
-  </script>
-    <script>
-  document.querySelectorAll('.menu-item').forEach(item => {
-    const nameEl = item.querySelector('.item-name');
-    const priceEl = item.querySelector('.item-price');
-
-    if (!nameEl || !priceEl) return;
-
-    const name = nameEl.innerText.trim();
-    const qtyId = `${name}-qty`;
-
-    const controlDiv = document.createElement('div');
-    controlDiv.className = 'menu-buttons';
-    controlDiv.style.display = 'flex';
-    controlDiv.style.alignItems = 'center';
-    controlDiv.style.gap = '2px';
-    controlDiv.style.marginTop = '4px';
-
-    controlDiv.innerHTML = `
-      <button style="padding: 2px 5px; font-size: 0.9rem;" onclick="updateQty('${name}', -1)">➖</button>
-      <span id="${qtyId}" class="qty" style="font-size: 0.8rem;">0</span>
-      <button style="padding: 2px 5px; font-size: 0.9rem;" onclick="updateQty('${name}', 1)">➕</button>
-      <button style="padding: 2px 5px; font-size: 0.9rem;" onclick="addToCart('${name}')">🛒</button>
-    `;
-
-    item.appendChild(controlDiv);
-  });
 </script>
-    <script>
-function updateQty(itemName, change) {
-  const qtySpan = document.getElementById(`${itemName}-qty`);
-  let qty = parseInt(qtySpan.innerText || '0');
-  qty = Math.max(0, qty + change);
-  qtySpan.innerText = qty;
-}
-
-function addToCart(itemName) {
-  // Later, update this to add to cart array
-  alert(itemName + " added to cart!");
-}
-</script>
+    <div id="cart-panel" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #222; color: white; padding: 1rem; z-index: 9999;">
+  <div id="cart-items"></div>
+  <p>Total: <span id="cart-total">₹0</span></p>
+  <a id="whatsapp-link" href="#" target="_blank">
+    <button style="background: #25D366; color: white; padding: 8px 16px; border: none; border-radius: 5px;">Place Order on WhatsApp</button>
+  </a>
+</div>
 </body>
 </html>
