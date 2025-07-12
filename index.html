@@ -9,6 +9,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
+    .menu-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.menu-buttons button {
+  padding: 2px 5px;
+  font-size: 0.9rem;
+}
+
+.menu-buttons span.qty {
+  font-size: 0.8rem;
+}
 .qty-cart-box {
   display: flex;
   align-items: center;
@@ -455,14 +469,8 @@ input:checked + .slider:before {
   <span>Price</span>
 </div>
 <div class="menu-item">
-  <span>🌿 Soya Chaap Tikka Roll</span>
-  <div style="display: flex; align-items: center; gap: 2px;">
-    <span>₹145</span>
-    <button style="padding: 2px 5px; font-size: 0.9rem;" onclick="updateQty('🌿 Soya Chaap Tikka Roll', -1)">➖</button>
-    <span id="🌿 Soya Chaap Tikka Roll-qty" style="font-size: 0.8rem;">0</span>
-    <button style="padding: 2px 5px; font-size: 0.9rem;" onclick="updateQty('🌿 Soya Chaap Tikka Roll', 1)">➕</button>
-    <button style="padding: 2px 5px; font-size: 0.9rem;" onclick="addToCart('🌿 Soya Chaap Tikka Roll')">🛒</button>
-  </div>
+  <span class="item-name">🌿 Soya Chaap Tikka Roll</span>
+  <span class="item-price">₹145</span>
 </div>
 <div class="menu-item">
   <span>🌿 Paneer Tikka Roll</span>
@@ -910,6 +918,27 @@ function launchBalloon() {
     const encodedMsg = encodeURIComponent(message);
     whatsappLink.href = `https://wa.me/919899427503?text=${encodedMsg}`;
   }
+  
+</script>
+    <script>
+  document.querySelectorAll('.menu-item').forEach(item => {
+    const name = item.querySelector('.item-name')?.innerText.trim();
+    const price = item.querySelector('.item-price')?.innerText.trim();
+    
+    if (!name || !price) return;
+
+    const qtyDiv = document.createElement('div');
+    qtyDiv.className = 'menu-buttons';
+
+    qtyDiv.innerHTML = `
+      <button onclick="updateQty('${name}', -1)">➖</button>
+      <span id="${name}-qty" class="qty">0</span>
+      <button onclick="updateQty('${name}', 1)">➕</button>
+      <button onclick="addToCart('${name}')">🛒</button>
+    `;
+
+    item.appendChild(qtyDiv);
+  });
 </script>
 </body>
 </html>
