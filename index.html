@@ -42,17 +42,21 @@
 
 /* Cart Panel Styling */
 .cart-panel {
-  display: none; /* <-- hide by default */
   position: fixed;
-  bottom: 60px;
+  bottom: 0;
   left: 0;
   right: 0;
   background: #1c1c1c;
   color: #fff;
   padding: 1rem;
   z-index: 999;
-  box-shadow: 0 -2px 6px rgba(0,0,0,0.5);
   font-size: 0.95rem;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  visibility: hidden; /* keep hidden until item is added */
+  transition: visibility 0.3s ease, transform 0.3s ease;
 }
 
 .cart-panel ul {
@@ -90,7 +94,7 @@
 }
 
     body {
-      padding-bottom: 120px; /* pushes up content so footer/menu is not hidden */
+      padding-bottom: 180px; /* pushes up content so footer/menu is not hidden */
       margin: 0;
       padding: 0;
       background-color: #111;
@@ -1004,10 +1008,9 @@ function updateCartDisplay() {
 
   // ✅ Show or hide cart panel
   if (Object.values(cart).some(qty => qty > 0)) {
-    cartPanel.style.display = 'block';
-  } else {
-    cartPanel.style.display = 'none';
-  }
+  cartPanel.style.visibility = 'visible';
+} else {
+  cartPanel.style.visibility = 'hidden';
 }
 
 function removeFromCart(key) {
