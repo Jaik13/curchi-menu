@@ -901,7 +901,13 @@ controlDiv.style.width = '100%';
 // Buttons
 const minusBtn = document.createElement('button');
 minusBtn.textContent = '➖';
-minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
+minusBtn.onclick = () => {
+  if (halfPrice && fullPrice) {
+    openPortionModal(name, parseInt(halfPrice), parseInt(fullPrice), 'minus');
+  } else {
+    updateQty(name, selectedPrice, -1);
+  }
+};
 
 const qtySpan = document.createElement('span');
 qtySpan.id = `${name.replace(/[^a-zA-Z0-9]/g, '')}-${selectedPrice}-qty`;
@@ -1059,19 +1065,29 @@ function confirmPortionSelection() {
 
   const key = `${modalItemName}__₹${price}`;
   if (pendingAction === 'add') {
-    if (!cart[key]) cart[key] = 1;
-  } else if (pendingAction === 'plus') {
-    cart[key] = (cart[key] || 0) + 1;
-  }
+  if (!cart[key]) cart[key] = 1;
+} else if (pendingAction === 'plus') {
+  cart[key] = (cart[key] || 0) + 1;
+} else if (pendingAction === 'minus') {
+  cart[key] = Math.max((cart[key] || 0) - 1, 0);
+}
 
   // ✅ Update the cart panel
   updateCartDisplay();
 
   // ✅ Get total quantity (half + full) of this item
   const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
-  const totalQty = Object.entries(cart).reduce((sum, [k, v]) => {
-    return k.startsWith(`${modalItemName}__₹`) ? sum + v : sum;
-  }, 0);
+const possibleSpans = document.querySelectorAll(`[id^="${idSafeName}-"][id$="-qty"]`);
+let totalQty = 0;
+
+[modalHalf, modalFull].forEach(p => {
+  const k = `${modalItemName}__₹${p}`;
+  totalQty += cart[k] || 0;
+});
+
+possibleSpans.forEach(span => {
+  span.textContent = totalQty;
+});
 
   // ✅ Update all matching qty spans for this item
   const qtySpans = document.querySelectorAll(`[id^="${idSafeName}-"][id$="-qty"]`);
