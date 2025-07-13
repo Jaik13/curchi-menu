@@ -841,134 +841,85 @@ function launchBalloon() {
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const menuItems = document.querySelectorAll('.menu-item');
+menuItems.forEach(item => {
+  const name = item.dataset.name;
+  const price = item.dataset.price;
+  const halfPrice = item.dataset.half;
+  const fullPrice = item.dataset.full;
 
-  menuItems.forEach(item => {
-    const name = item.dataset.name;
-    const price = item.dataset.price;
-    const halfPrice = item.dataset.half;
-    const fullPrice = item.dataset.full;
+  if (!name || (!price && (!halfPrice || !fullPrice))) return;
 
-    // Skip header rows
-    if (!name || (!price && (!halfPrice || !fullPrice))) return;
+  item.innerHTML = '';
 
-    // Clear default content
-    item.innerHTML = '';
+  // Dish Name
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = name;
+  nameSpan.style.fontWeight = '600';
+  item.appendChild(nameSpan);
 
-    // Dish name
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = name;
-    nameSpan.style.fontWeight = '600';
-    item.appendChild(nameSpan);
-
-    let selectedPrice = price;
-
-    // Price section (top row)
-   if (halfPrice && fullPrice) {
-  // Show name and price line
-  const priceLine = document.createElement('span');
-  priceLine.textContent = `₹${halfPrice} / ₹${fullPrice}`;
+  // Show dual prices if present
+  const priceLine = document.createElement('div');
+  priceLine.style.margin = '2px 0';
+  if (halfPrice && fullPrice) {
+    priceLine.textContent = `₹${halfPrice} / ₹${fullPrice}`;
+  } else {
+    priceLine.textContent = `₹${price}`;
+  }
   item.appendChild(priceLine);
 
-  // ➕ Button to expand selection
-  const plusBtn = document.createElement('button');
-  plusBtn.textContent = '➕';
-  plusBtn.onclick = () => {
-    if (!item.querySelector('.portion-select')) {
-      showPortionOptions(name, halfPrice, fullPrice, item);
-    }
-  };
-  item.appendChild(plusBtn);
-}
-    function showPortionOptions(name, halfPrice, fullPrice, container) {
-  const portionDiv = document.createElement('div');
-  portionDiv.className = 'portion-select';
-  portionDiv.style.marginTop = '0.5rem';
-
-  // Half Button
-  const halfBtn = document.createElement('button');
-  halfBtn.textContent = `Half ₹${halfPrice}`;
-  halfBtn.onclick = () => {
-    portionDiv.remove(); // Remove choice once selected
-    createQtySelector(name, halfPrice, container);
-  };
-
-  // Full Button
-  const fullBtn = document.createElement('button');
-  fullBtn.textContent = `Full ₹${fullPrice}`;
-  fullBtn.onclick = () => {
-    portionDiv.remove();
-    createQtySelector(name, fullPrice, container);
-  };
-
-  portionDiv.appendChild(halfBtn);
-  portionDiv.appendChild(fullBtn);
-  container.appendChild(portionDiv);
-}
-    function createQtySelector(name, price, container) {
+  // Cart controls (➖ qty ➕ 🛒)
   const controlDiv = document.createElement('div');
   controlDiv.style.display = 'flex';
   controlDiv.style.alignItems = 'center';
-  controlDiv.style.justifyContent = 'flex-end';
   controlDiv.style.gap = '0.5rem';
-  controlDiv.style.marginTop = '6px';
 
   const minusBtn = document.createElement('button');
   minusBtn.textContent = '➖';
-  minusBtn.onclick = () => updateQty(name, price, -1);
+  minusBtn.disabled = true;
 
   const qtySpan = document.createElement('span');
-  qtySpan.id = `${name.replace(/[^a-zA-Z0-9]/g, '')}-${price}-qty`;
-  qtySpan.textContent = cart[`${name}__₹${price}`] || 0;
+  qtySpan.textContent = '0';
 
   const plusBtn = document.createElement('button');
   plusBtn.textContent = '➕';
-  plusBtn.onclick = () => updateQty(name, price, 1);
+  plusBtn.disabled = true;
 
   const cartBtn = document.createElement('button');
   cartBtn.textContent = '🛒';
-  cartBtn.onclick = () => addToCart(name, price);
+  cartBtn.onclick = () => {
+    let portion = null;
+    if (halfPrice && fullPrice) {
+      portion = prompt(`Select portion for ${name}:\nType "half" or "full"`).toLowerCase();
+      if (portion !== 'half' && portion !== 'full') return alert('Invalid selection');
+    }
+
+    const selectedPrice = portion === 'half' ? halfPrice : portion === 'full' ? fullPrice : price;
+    const key = `${name}__₹${selectedPrice}`;
+    cart[key] = (cart[key] || 0) + 1;
+    updateCartDisplay();
+
+    qtySpan.textContent = cart[key];
+    minusBtn.disabled = false;
+    plusBtn.disabled = false;
+
+    // Enable +/- logic
+    minusBtn.onclick = () => {
+      if (cart[key] > 0) {
+        cart[key]--;
+        qtySpan.textContent = cart[key];
+        if (cart[key] === 0) minusBtn.disabled = true;
+        updateCartDisplay();
+      }
+    };
+    plusBtn.onclick = () => {
+      cart[key]++;
+      qtySpan.textContent = cart[key];
+      updateCartDisplay();
+    };
+  };
 
   controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
-  container.appendChild(controlDiv);
-}
-    // Cart controls (new line below price)
-const controlDiv = document.createElement('div');
-controlDiv.style.display = 'flex';
-controlDiv.style.alignItems = 'center';
-controlDiv.style.justifyContent = 'flex-end';
-controlDiv.style.gap = '0.5rem';
-controlDiv.style.marginTop = '6px';
-controlDiv.style.width = '100%';
-
-// Buttons
-const minusBtn = document.createElement('button');
-minusBtn.textContent = '➖';
-minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
-
-const qtySpan = document.createElement('span');
-qtySpan.id = `${name.replace(/[^a-zA-Z0-9]/g, '')}-${selectedPrice}-qty`;
-qtySpan.textContent = '0';
-
-const plusBtn = document.createElement('button');
-plusBtn.textContent = '➕';
-plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
-
-const cartBtn = document.createElement('button');
-cartBtn.textContent = '🛒';
-cartBtn.onclick = () => addToCart(name, selectedPrice);
-
-controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
-
-// ✅ This wrapper ensures it's on the next line
-const bottomRow = document.createElement('div');
-bottomRow.style.width = '100%';
-bottomRow.appendChild(controlDiv);
-
-// 👇 Add this new row to the item
-item.appendChild(bottomRow);
-  });
+  item.appendChild(controlDiv);
 });
 
 // Global cart object
