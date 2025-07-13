@@ -1007,10 +1007,10 @@ function updateCartDisplay() {
   if (whatsappLink) whatsappLink.href = `https://wa.me/919899427503?text=${message}`;
 
   // ✅ Show or hide cart panel
-  if (Object.values(cart).some(qty => qty > 0)) {
-  cartPanel.style.visibility = 'visible';
+if (Object.values(cart).some(qty => qty > 0)) {
+  cartPanel.style.display = 'block';
 } else {
-  cartPanel.style.visibility = 'hidden';
+  cartPanel.style.display = 'none';
 }
 
 function removeFromCart(key) {
