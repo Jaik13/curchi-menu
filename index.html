@@ -964,21 +964,33 @@ function updateCartDisplay() {
   let message = `Hi Currchi - Full on Desi!!%0A`;
   message += `I want to place the orders for below items:%0A%0A`;
 
-  Object.entries(cart).forEach(([key, qty]) => {
-    if (qty > 0) {
-      const [name, priceText] = key.split('__₹');
-      const price = parseInt(priceText);
-      const itemTotal = price * qty;
-      total += itemTotal;
+ Object.entries(cart).forEach(([key, qty]) => {
+  if (qty > 0) {
+    const [name, priceText] = key.split('__₹');
+    const price = parseInt(priceText);
+    const itemTotal = price * qty;
+    total += itemTotal;
 
-      const li = document.createElement('li');
-      li.innerHTML = `${name} - ₹${price} x ${qty} = ₹${itemTotal}
-        <button onclick="removeFromCart('${key}')">Remove</button>`;
-      if (cartList) cartList.appendChild(li);
-
-      message += `${name} - ₹${price} x ${qty} = ₹${itemTotal}%0A`;
+    // 🆕 Determine portion type
+    let portion = '';
+    const item = Array.from(document.querySelectorAll('.menu-item')).find(el => el.dataset.name === name);
+    if (item) {
+      const half = parseInt(item.dataset.half);
+      const full = parseInt(item.dataset.full);
+      if (!isNaN(half) && !isNaN(full)) {
+        portion = price === half ? ' (Half)' : price === full ? ' (Full)' : '';
+      }
     }
-  });
+
+    // 💬 Update cart UI and message
+    const li = document.createElement('li');
+    li.innerHTML = `${name}${portion} - ₹${price} x ${qty} = ₹${itemTotal}
+      <button onclick="removeFromCart('${key}')">Remove</button>`;
+    if (cartList) cartList.appendChild(li);
+
+    message += `${name}${portion} - ₹${price} x ${qty} = ₹${itemTotal}%0A`;
+  }
+});
 
   message += `%0A🧾 Total: ₹${total}%0A%0APlease confirm the order.`;
 
