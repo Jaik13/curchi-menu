@@ -865,20 +865,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedPrice = price;
 
     // Price section (top row)
-    if (halfPrice && fullPrice) {
-      const selector = document.createElement('select');
-      selector.innerHTML = `
-        <option value="${halfPrice}">Half ₹${halfPrice}</option>
-        <option value="${fullPrice}">Full ₹${fullPrice}</option>
-      `;
-      selectedPrice = halfPrice;
-
-      selector.addEventListener('change', () => {
-        selectedPrice = selector.value;
-        updateQtyDisplay(name, selectedPrice);
-      });
-
-      item.appendChild(selector);
+   if (halfPrice && fullPrice) {
+  const priceDisplay = document.createElement('div');
+  priceDisplay.textContent = `₹${halfPrice} / ₹${fullPrice}`;
+  priceDisplay.style.fontWeight = '500';
+  priceDisplay.style.marginBottom = '0.2rem';
+  item.appendChild(priceDisplay);
+}
     } else {
       const priceSpan = document.createElement('span');
       priceSpan.textContent = `₹${price}`;
