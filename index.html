@@ -281,57 +281,36 @@ body.light-mode .back-to-top {
   background-color: #333;
   color: #fff;
 }
-    #balloon {
+ #balloon {
   position: fixed;
-  bottom: -100px;
+  bottom: 20px;
   left: 50%;
-  font-size: 3rem;
-  animation: floatUp 2s ease-out forwards;
-  z-index: 9998;
   transform: translateX(-50%);
+  font-size: 3rem;
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+}
+
+#sprinkles {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  z-index: 9999;
+  display: none;
   pointer-events: none;
 }
 
 @keyframes floatUp {
   0% {
-    bottom: -100px;
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
   100% {
-    bottom: 50%;
+    transform: translateX(-50%) translateY(-200px);
     opacity: 0;
-  }
-}
-
-#sprinkles {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #f0c75e 0%, #ff7f50 100%);
-  box-shadow:
-    0 0 10px 3px #ff7f50,
-    10px -10px #f0c75e,
-    -10px -10px #ff7f50,
-    10px 10px #f0c75e,
-    -10px 10px #ff7f50;
-  display: none;
-  animation: sprinkleBurst 0.8s ease-out forwards;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  pointer-events: none;
-}
-
-@keyframes sprinkleBurst {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2.5);
   }
 }
   #bookmark-line.tilt {
@@ -786,6 +765,7 @@ input:checked + .slider:before {
       }).from(element).save();
     }
 
+      let lastBurst = 0;
     // Show only call buttons when scrolled past nav
   window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
