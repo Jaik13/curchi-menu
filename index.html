@@ -997,19 +997,11 @@ if (Object.values(cart).some(qty => qty > 0)) {
 
 // ✅ Now define removeFromCart globally
 function removeFromCart(key) {
-  const [name, priceText] = key.split('__₹');
-
   delete cart[key];
-
-  // Optional: if it was the last item of this name
-  const relatedKeys = Object.keys(cart).filter(k => k.startsWith(`${name}__₹`));
-  if (relatedKeys.length === 0) {
-    const idSafeName = name.replace(/[^a-zA-Z0-9]/g, '');
-    const qtySpan = document.getElementById(`${idSafeName}-${priceText}-qty`);
-    if (qtySpan) qtySpan.textContent = '0';
-  }
-
   updateCartDisplay();
+
+  // ✅ Don't reset the main screen qty
+  // If you ever want to reset it selectively (e.g. if user manually sets qty to 0), handle it in updateQty
 }
   let modalItemName = '';
 let modalHalf = 0;
