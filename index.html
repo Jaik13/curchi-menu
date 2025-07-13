@@ -836,7 +836,17 @@ function launchBalloon() {
 </script>
     <!-- Cart Panel -->
 <div id="cart-panel" class="cart-panel">
-  <h3>Your Cart  🛒</h3>
+  <!-- ❌ Close button -->
+<div style="display: flex; justify-content: flex-end;">
+  <button id="close-cart-btn" style="
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    color: #000;
+    cursor: pointer;
+  ">❌</button>
+</div>
+  <h3>Your Cart    🛒</h3>
   <ul id="cart-items"></ul>
   <p id="cart-total" style="margin: 0.5rem 0; font-weight: bold;">Total: ₹0</p>
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
@@ -919,7 +929,12 @@ bottomRow.appendChild(controlDiv);
 
 // 👇 Add this new row to the item
 item.appendChild(bottomRow);
-  });
+    });
+  // ❌ Close cart button
+  document.getElementById('close-cart-btn').onclick = () => {
+    document.getElementById('cart-panel').style.display = 'none';
+    document.body.classList.remove('cart-open');
+  };
 });
 
 // Global cart object
