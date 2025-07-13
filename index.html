@@ -835,7 +835,7 @@ function launchBalloon() {
 </script>
     <!-- Cart Panel -->
 <div id="cart-panel" class="cart-panel">
-  <h3>Your Cart 🛒</h3>
+  <h3>Your Cart  🛒</h3>
   <ul id="cart-items"></ul>
   <p id="cart-total" style="margin: 0.5rem 0; font-weight: bold;">Total: ₹0</p>
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
@@ -894,7 +894,7 @@ minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
 
 const qtySpan = document.createElement('span');
 qtySpan.id = `${name.replace(/[^a-zA-Z0-9]/g, '')}-${selectedPrice}-qty`;
-qtySpan.textContent = '0';
+qtySpan.textContent = '1';
 
 const plusBtn = document.createElement('button');
 plusBtn.textContent = '➕';
