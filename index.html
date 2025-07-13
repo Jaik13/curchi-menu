@@ -906,12 +906,17 @@ qtySpan.textContent = '0';
 
 const plusBtn = document.createElement('button');
 plusBtn.textContent = '➕';
-plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
 
 const cartBtn = document.createElement('button');
 cartBtn.textContent = '🛒';
-cartBtn.onclick = () => addToCart(name, selectedPrice);
 
+if (halfPrice && fullPrice) {
+  plusBtn.onclick = () => openPortionModal(name, parseInt(halfPrice), parseInt(fullPrice), 'plus');
+  cartBtn.onclick = () => openPortionModal(name, parseInt(halfPrice), parseInt(fullPrice), 'add');
+} else {
+  plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
+  cartBtn.onclick = () => addToCart(name, selectedPrice);
+}
 controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
 
 // ✅ This wrapper ensures it's on the next line
@@ -1007,11 +1012,60 @@ function removeFromCart(key) {
   const qtySpan = document.getElementById(`${idSafeName}-${priceText}-qty`);
   if (qtySpan) qtySpan.textContent = '0';
 }
+  let modalItemName = '';
+let modalHalf = 0;
+let modalFull = 0;
+let pendingAction = null; // 'add' or 'plus'
+
+function openPortionModal(name, half, full, actionType) {
+  modalItemName = name;
+  modalHalf = half;
+  modalFull = full;
+  pendingAction = actionType;
+
+  document.getElementById('modal-half-price').textContent = `₹${half}`;
+  document.getElementById('modal-full-price').textContent = `₹${full}`;
+
+  document.getElementById('portion-modal').style.display = 'block';
+}
+
+function confirmPortionSelection() {
+  const selected = document.querySelector('input[name="portion-option"]:checked');
+  if (!selected) return alert("Please select a portion.");
+
+  const portion = selected.value;
+  const price = portion === 'half' ? modalHalf : modalFull;
+
+  const key = `${modalItemName}__₹${price}`;
+  if (pendingAction === 'add') {
+    if (!cart[key]) cart[key] = 1;
+  } else if (pendingAction === 'plus') {
+    cart[key] = (cart[key] || 0) + 1;
+  }
+
+  updateCartDisplay();
+
+  // Update qty on screen
+  const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
+  const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
+  if (qtySpan) qtySpan.textContent = cart[key];
+
+  document.getElementById('portion-modal').style.display = 'none';
+}
 </script>
    <style>
  body {
   padding-bottom: 250px; /* This clears space for the cart-panel */
 }
+  <div id="portion-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+ background:#222; color:white; padding:1rem 1.5rem; border-radius:10px; z-index:2000; box-shadow:0 0 15px rgba(0,0,0,0.6);">
+  <h3 style="margin-top:0;">🛍️ Select Portion</h3>
+  <div style="margin: 1rem 0;">
+    <label><input type="radio" name="portion-option" value="half"> Half (<span id="modal-half-price">₹0</span>)</label><br>
+    <label><input type="radio" name="portion-option" value="full"> Full (<span id="modal-full-price">₹0</span>)</label>
+  </div>
+  <button onclick="confirmPortionSelection()">Confirm</button>
+</div>
 </style>
 </body>
 </html>
