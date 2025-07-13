@@ -933,6 +933,7 @@ item.appendChild(bottomRow);
   // ❌ Close cart button
   document.getElementById('close-cart-btn').onclick = () => {
     document.getElementById('cart-panel').style.display = 'none';
+    document.getElementById('close-cart-btn').style.display = 'none';
     document.body.classList.remove('cart-open');
   };
 });
@@ -977,7 +978,7 @@ function updateCartDisplay() {
 
   // ✅ Structured WhatsApp message
   let message = `Hi Currchi - Full on Desi!!%0A`;
-  message += `I want to place the orders for below items:%0A%0A`;
+  message += `I'd like to place the order for below items:%0A%0A`;
 
  Object.entries(cart).forEach(([key, qty]) => {
   if (qty > 0) {
@@ -1015,9 +1016,11 @@ function updateCartDisplay() {
   // ✅ Show or hide cart panel
 if (Object.values(cart).some(qty => qty > 0)) {
   cartPanel.style.display = 'block';
+   document.getElementById('close-cart-btn').style.display = 'block';  // 👈 Show ❌
   document.body.classList.add('cart-open');
 } else {
   cartPanel.style.display = 'none';
+  document.getElementById('close-cart-btn').style.display = 'none';  // 👈 Hide ❌
   document.body.classList.remove('cart-open');
 }
 }  // ✅ Close updateCartDisplay here
@@ -1085,5 +1088,17 @@ function confirmPortionSelection() {
   </div>
   <button onclick="confirmPortionSelection()">Confirm</button>
 </div>
+   <button id="close-cart-btn" style="
+  display: none;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #f0c75e;
+  z-index: 2001;
+  cursor: pointer;
+">❌</button>
 </body>
 </html>
