@@ -1063,6 +1063,18 @@ function confirmPortionSelection() {
   } else if (pendingAction === 'plus') {
     cart[key] = (cart[key] || 0) + 1;
   }
+  // After updating cart[key]...
+updateCartDisplay();
+
+// ✅ Update qty in the menu for dual price item
+const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
+const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
+if (qtySpan) {
+  qtySpan.textContent = cart[key] || 1;
+}
+
+// ✅ Close the modal
+document.getElementById('portion-modal').style.display = 'none';  
 
   updateCartDisplay();
 
