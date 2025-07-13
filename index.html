@@ -949,7 +949,8 @@ function updateQty(name, price, delta) {
   cart[key] = (cart[key] || 0) + delta;
   if (cart[key] < 0) cart[key] = 0;
 
-  const qtySpan = document.getElementById(`${name}-${price}-qty`);
+  const idSafeName = name.replace(/[^a-zA-Z0-9]/g, '');
+  const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
   if (qtySpan) qtySpan.textContent = cart[key];
 
   updateCartDisplay();
@@ -962,7 +963,8 @@ function addToCart(name, price) {
 }
 
 function updateQtyDisplay(name, price) {
-  const qtySpan = document.getElementById(`${name}-${price}-qty`);
+  const idSafeName = name.replace(/[^a-zA-Z0-9]/g, '');
+  const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
   if (qtySpan) {
     qtySpan.textContent = cart[`${name}__₹${price}`] || 0;
   }
@@ -1004,17 +1006,20 @@ function updateCartDisplay() {
 
   // ✅ Show or hide cart panel
 if (Object.values(cart).some(qty => qty > 0)) {
-  cartPanel.style.display = 'block';
-} else {
-  cartPanel.style.display = 'none';
-}
+    cartPanel.style.display = 'block';
+  } else {
+    cartPanel.style.display = 'none';
+  }
+}  // ✅ Close updateCartDisplay here
 
+// ✅ Now define removeFromCart globally
 function removeFromCart(key) {
   delete cart[key];
   updateCartDisplay();
 
   const [name, priceText] = key.split('__₹');
-  const qtySpan = document.getElementById(`${name}-${priceText}-qty`);
+  const idSafeName = name.replace(/[^a-zA-Z0-9]/g, '');
+  const qtySpan = document.getElementById(`${idSafeName}-${priceText}-qty`);
   if (qtySpan) qtySpan.textContent = '0';
 }
 </script>
