@@ -1063,26 +1063,26 @@ function confirmPortionSelection() {
   } else if (pendingAction === 'plus') {
     cart[key] = (cart[key] || 0) + 1;
   }
-  // After updating cart[key]...
-updateCartDisplay();
 
-// ✅ Update qty in the menu for dual price item
-const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
-const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
-if (qtySpan) {
-  qtySpan.textContent = cart[key] || 1;
-}
-
-// ✅ Close the modal
-document.getElementById('portion-modal').style.display = 'none';  
-
+  // ✅ Update the cart panel
   updateCartDisplay();
 
-  // Update qty on screen
+  // ✅ Update qty in the menu for dual price item
   const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
   const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
-  if (qtySpan) qtySpan.textContent = cart[key];
+  if (qtySpan) {
+    qtySpan.textContent = cart[key];
+  } else {
+    // fallback: scan possible spans
+    const possibleSpans = document.querySelectorAll(`[id^="${idSafeName}-"][id$="-qty"]`);
+    possibleSpans.forEach(span => {
+      if (span.id.includes(price)) {
+        span.textContent = cart[key];
+      }
+    });
+  }
 
+  // ✅ Close the modal
   document.getElementById('portion-modal').style.display = 'none';
 }
 </script>
