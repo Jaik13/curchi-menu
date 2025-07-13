@@ -728,7 +728,7 @@ input:checked + .slider:before {
   <div class="menu-item" data-name="Aloo Raita" data-half="45" data-full="65"></div>
 
   <!-- Salad -->
-  <div class="menu-item" data-name="Green Salad" data-price=="65"></div>
+ <div class="menu-item" data-name="Green Salad" data-price="65"></div>
 </div>
 
     
@@ -835,20 +835,18 @@ function launchBalloon() {
   }
 </script>
     <!-- Cart Panel -->
-<div id="cart-panel" class="cart-panel" style="position: fixed; bottom: 0; width: 100%; background: #f0c75e; padding: 10px; text-align: center; z-index: 999;">
-
-  <!-- ❌ Close button at top-right inside panel -->
-  <div style="display: flex; justify-content: flex-end;">
-    <button id="close-cart-btn" style="
-      font-size: 1.3rem;
-      background: none;
-      border: none;
-      color: #000;
-      cursor: pointer;
-    ">❌</button>
-  </div>
-
-  <h3>Your Cart 🛒</h3>
+<div id="cart-panel" class="cart-panel">
+  <!-- ❌ Close button -->
+<div style="display: flex; justify-content: flex-end;">
+  <button id="close-cart-btn" style="
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    color: #000;
+    cursor: pointer;
+  ">❌</button>
+</div>
+  <h3>Your Cart    🛒</h3>
   <ul id="cart-items"></ul>
   <p id="cart-total" style="margin: 0.5rem 0; font-weight: bold;">Total: ₹0</p>
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
@@ -1090,5 +1088,17 @@ function confirmPortionSelection() {
   </div>
   <button onclick="confirmPortionSelection()">Confirm</button>
 </div>
+   <button id="close-cart-btn" style="
+  display: none;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #f0c75e;
+  z-index: 2001;
+  cursor: pointer;
+">❌</button>
 </body>
 </html>
