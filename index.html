@@ -1067,20 +1067,17 @@ function confirmPortionSelection() {
   // ✅ Update the cart panel
   updateCartDisplay();
 
-  // ✅ Update qty in the menu for dual price item
+  // ✅ Get total quantity (half + full) of this item
   const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
-  const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
-  if (qtySpan) {
-    qtySpan.textContent = cart[key];
-  } else {
-    // fallback: scan possible spans
-    const possibleSpans = document.querySelectorAll(`[id^="${idSafeName}-"][id$="-qty"]`);
-    possibleSpans.forEach(span => {
-      if (span.id.includes(price)) {
-        span.textContent = cart[key];
-      }
-    });
-  }
+  const totalQty = Object.entries(cart).reduce((sum, [k, v]) => {
+    return k.startsWith(`${modalItemName}__₹`) ? sum + v : sum;
+  }, 0);
+
+  // ✅ Update all matching qty spans for this item
+  const qtySpans = document.querySelectorAll(`[id^="${idSafeName}-"][id$="-qty"]`);
+  qtySpans.forEach(span => {
+    span.textContent = totalQty;
+  });
 
   // ✅ Close the modal
   document.getElementById('portion-modal').style.display = 'none';
