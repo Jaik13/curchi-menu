@@ -1006,10 +1006,12 @@ function updateCartDisplay() {
 
   // ✅ Show or hide cart panel
 if (Object.values(cart).some(qty => qty > 0)) {
-    cartPanel.style.display = 'block';
-  } else {
-    cartPanel.style.display = 'none';
-  }
+  cartPanel.style.display = 'block';
+  document.body.classList.add('cart-open');
+} else {
+  cartPanel.style.display = 'none';
+  document.body.classList.remove('cart-open');
+}
 }  // ✅ Close updateCartDisplay here
 
 // ✅ Now define removeFromCart globally
@@ -1023,5 +1025,10 @@ function removeFromCart(key) {
   if (qtySpan) qtySpan.textContent = '0';
 }
 </script>
+   <style>
+ body {
+  padding-bottom: 120px; /* This clears space for the cart-panel */
+}
+</style>
 </body>
 </html>
