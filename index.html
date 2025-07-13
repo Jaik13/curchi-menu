@@ -836,21 +836,24 @@ function launchBalloon() {
 </script>
     <!-- Cart Panel -->
 <div id="cart-panel" class="cart-panel">
-  <!-- ❌ Close button -->
-<div style="display: flex; justify-content: flex-end;">
-  <button id="close-cart-btn" style="
-    background: transparent;
-    border: none;
-    font-size: 1.3rem;
-    color: #000;
-    cursor: pointer;
-  ">❌</button>
-</div>
-  <h3>Your Cart    🛒</h3>
+   <h3>Your Cart    🛒</h3>
   <ul id="cart-items"></ul>
   <p id="cart-total" style="margin: 0.5rem 0; font-weight: bold;">Total: ₹0</p>
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
 </div>
+   <!-- ❌ Close button - OUTSIDE the cart panel -->
+<button id="close-cart-btn" style="
+  display: none;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #f0c75e;
+  z-index: 2001;
+  cursor: pointer;
+">❌</button>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const menuItems = document.querySelectorAll('.menu-item');
@@ -1088,17 +1091,5 @@ function confirmPortionSelection() {
   </div>
   <button onclick="confirmPortionSelection()">Confirm</button>
 </div>
-   <button id="close-cart-btn" style="
-  display: none;
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: #f0c75e;
-  z-index: 2001;
-  cursor: pointer;
-">❌</button>
 </body>
 </html>
