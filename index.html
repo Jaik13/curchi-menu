@@ -841,85 +841,87 @@ function launchBalloon() {
   <a id="whatsapp-order-btn" class="floating-order-button" target="_blank">🛒 Place Order via WhatsApp</a>
 </div>
 <script>
-menuItems.forEach(item => {
-  const name = item.dataset.name;
-  const price = item.dataset.price;
-  const halfPrice = item.dataset.half;
-  const fullPrice = item.dataset.full;
+document.addEventListener('DOMContentLoaded', () => {
+  const menuItems = document.querySelectorAll('.menu-item');
 
-  if (!name || (!price && (!halfPrice || !fullPrice))) return;
+  menuItems.forEach(item => {
+    const name = item.dataset.name;
+    const price = item.dataset.price;
+    const halfPrice = item.dataset.half;
+    const fullPrice = item.dataset.full;
 
-  item.innerHTML = '';
+    // Skip header rows
+    if (!name || (!price && (!halfPrice || !fullPrice))) return;
 
-  // Dish Name
-  const nameSpan = document.createElement('span');
-  nameSpan.textContent = name;
-  nameSpan.style.fontWeight = '600';
-  item.appendChild(nameSpan);
+    // Clear default content
+    item.innerHTML = '';
 
-  // Show dual prices if present
-  const priceLine = document.createElement('div');
-  priceLine.style.margin = '2px 0';
-  if (halfPrice && fullPrice) {
-    priceLine.textContent = `₹${halfPrice} / ₹${fullPrice}`;
-  } else {
-    priceLine.textContent = `₹${price}`;
-  }
-  item.appendChild(priceLine);
+    // Dish name
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = name;
+    nameSpan.style.fontWeight = '600';
+    item.appendChild(nameSpan);
 
-  // Cart controls (➖ qty ➕ 🛒)
-  const controlDiv = document.createElement('div');
-  controlDiv.style.display = 'flex';
-  controlDiv.style.alignItems = 'center';
-  controlDiv.style.gap = '0.5rem';
+    let selectedPrice = price;
 
-  const minusBtn = document.createElement('button');
-  minusBtn.textContent = '➖';
-  minusBtn.disabled = true;
-
-  const qtySpan = document.createElement('span');
-  qtySpan.textContent = '0';
-
-  const plusBtn = document.createElement('button');
-  plusBtn.textContent = '➕';
-  plusBtn.disabled = true;
-
-  const cartBtn = document.createElement('button');
-  cartBtn.textContent = '🛒';
-  cartBtn.onclick = () => {
-    let portion = null;
+    // Price section (top row)
     if (halfPrice && fullPrice) {
-      portion = prompt(`Select portion for ${name}:\nType "half" or "full"`).toLowerCase();
-      if (portion !== 'half' && portion !== 'full') return alert('Invalid selection');
+      const selector = document.createElement('select');
+      selector.innerHTML = `
+        <option value="${halfPrice}">Half ₹${halfPrice}</option>
+        <option value="${fullPrice}">Full ₹${fullPrice}</option>
+      `;
+      selectedPrice = halfPrice;
+
+      selector.addEventListener('change', () => {
+        selectedPrice = selector.value;
+        updateQtyDisplay(name, selectedPrice);
+      });
+
+      item.appendChild(selector);
+    } else {
+      const priceSpan = document.createElement('span');
+      priceSpan.textContent = `₹${price}`;
+      selectedPrice = price;
+      item.appendChild(priceSpan);
     }
 
-    const selectedPrice = portion === 'half' ? halfPrice : portion === 'full' ? fullPrice : price;
-    const key = `${name}__₹${selectedPrice}`;
-    cart[key] = (cart[key] || 0) + 1;
-    updateCartDisplay();
+    // Cart controls (new line below price)
+const controlDiv = document.createElement('div');
+controlDiv.style.display = 'flex';
+controlDiv.style.alignItems = 'center';
+controlDiv.style.justifyContent = 'flex-end';
+controlDiv.style.gap = '0.5rem';
+controlDiv.style.marginTop = '6px';
+controlDiv.style.width = '100%';
 
-    qtySpan.textContent = cart[key];
-    minusBtn.disabled = false;
-    plusBtn.disabled = false;
+// Buttons
+const minusBtn = document.createElement('button');
+minusBtn.textContent = '➖';
+minusBtn.onclick = () => updateQty(name, selectedPrice, -1);
 
-    // Enable +/- logic
-    minusBtn.onclick = () => {
-      if (cart[key] > 0) {
-        cart[key]--;
-        qtySpan.textContent = cart[key];
-        if (cart[key] === 0) minusBtn.disabled = true;
-        updateCartDisplay();
-      }
-    };
-    plusBtn.onclick = () => {
-      cart[key]++;
-      qtySpan.textContent = cart[key];
-      updateCartDisplay();
-    };
-  };
+const qtySpan = document.createElement('span');
+qtySpan.id = `${name.replace(/[^a-zA-Z0-9]/g, '')}-${selectedPrice}-qty`;
+qtySpan.textContent = '0';
 
-  controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
-  item.appendChild(controlDiv);
+const plusBtn = document.createElement('button');
+plusBtn.textContent = '➕';
+plusBtn.onclick = () => updateQty(name, selectedPrice, 1);
+
+const cartBtn = document.createElement('button');
+cartBtn.textContent = '🛒';
+cartBtn.onclick = () => addToCart(name, selectedPrice);
+
+controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
+
+// ✅ This wrapper ensures it's on the next line
+const bottomRow = document.createElement('div');
+bottomRow.style.width = '100%';
+bottomRow.appendChild(controlDiv);
+
+// 👇 Add this new row to the item
+item.appendChild(bottomRow);
+  });
 });
 
 // Global cart object
