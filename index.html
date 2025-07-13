@@ -956,6 +956,12 @@ function updateQty(name, price, delta) {
 function addToCart(name, price) {
   const key = `${name}__₹${price}`;
   if (!cart[key]) cart[key] = 1;
+
+  // ✅ Update qty display in menu
+  const idSafeName = name.replace(/[^a-zA-Z0-9]/g, '');
+  const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
+  if (qtySpan) qtySpan.textContent = cart[key];
+
   updateCartDisplay();
 }
 
@@ -1064,15 +1070,40 @@ function confirmPortionSelection() {
     cart[key] = (cart[key] || 0) + 1;
   }
 
-  updateCartDisplay();
-
-  // Update qty on screen
+  // ✅ ⬇️ Add this block RIGHT AFTER setting the cart[key] value
   const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
   const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
-  if (qtySpan) qtySpan.textContent = cart[key];
+  if (qtySpan) {
+    qtySpan.textContent = cart[key];
+  } else {
+    // fallback: scan all qty spans that match the item
+    const possibleSpans = document.querySelectorAll(`[id^="${idSafeName}-"][id$="-qty"]`);
+    possibleSpans.forEach(span => {
+      if (span.id.includes(price)) {
+        span.textContent = cart[key];
+      }
+    });
+  }
 
+  updateCartDisplay();
   document.getElementById('portion-modal').style.display = 'none';
 }
+  // Update qty on screen
+ const idSafeName = modalItemName.replace(/[^a-zA-Z0-9]/g, '');
+const qtySpan = document.getElementById(`${idSafeName}-${price}-qty`);
+if (qtySpan) {
+  qtySpan.textContent = cart[key];
+} else {
+  // Fallback: scan all qty spans matching this item and update if price matches
+  const possibleSpans = document.querySelectorAll(`[id^="${idSafeName}-"][id$="-qty"]`);
+  possibleSpans.forEach(span => {
+    if (span.id.includes(price)) {
+      span.textContent = cart[key];
+    }
+  });
+}
+
+document.getElementById('portion-modal').style.display = 'none';
 </script>
    <style>
  body {
