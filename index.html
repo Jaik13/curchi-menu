@@ -865,27 +865,74 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedPrice = price;
 
     // Price section (top row)
-    if (halfPrice && fullPrice) {
-      const selector = document.createElement('select');
-      selector.innerHTML = `
-        <option value="${halfPrice}">Half ₹${halfPrice}</option>
-        <option value="${fullPrice}">Full ₹${fullPrice}</option>
-      `;
-      selectedPrice = halfPrice;
+   if (halfPrice && fullPrice) {
+  // Show name and price line
+  const priceLine = document.createElement('span');
+  priceLine.textContent = `₹${halfPrice} / ₹${fullPrice}`;
+  item.appendChild(priceLine);
 
-      selector.addEventListener('change', () => {
-        selectedPrice = selector.value;
-        updateQtyDisplay(name, selectedPrice);
-      });
-
-      item.appendChild(selector);
-    } else {
-      const priceSpan = document.createElement('span');
-      priceSpan.textContent = `₹${price}`;
-      selectedPrice = price;
-      item.appendChild(priceSpan);
+  // ➕ Button to expand selection
+  const plusBtn = document.createElement('button');
+  plusBtn.textContent = '➕';
+  plusBtn.onclick = () => {
+    if (!item.querySelector('.portion-select')) {
+      showPortionOptions(name, halfPrice, fullPrice, item);
     }
+  };
+  item.appendChild(plusBtn);
+}
+    function showPortionOptions(name, halfPrice, fullPrice, container) {
+  const portionDiv = document.createElement('div');
+  portionDiv.className = 'portion-select';
+  portionDiv.style.marginTop = '0.5rem';
 
+  // Half Button
+  const halfBtn = document.createElement('button');
+  halfBtn.textContent = `Half ₹${halfPrice}`;
+  halfBtn.onclick = () => {
+    portionDiv.remove(); // Remove choice once selected
+    createQtySelector(name, halfPrice, container);
+  };
+
+  // Full Button
+  const fullBtn = document.createElement('button');
+  fullBtn.textContent = `Full ₹${fullPrice}`;
+  fullBtn.onclick = () => {
+    portionDiv.remove();
+    createQtySelector(name, fullPrice, container);
+  };
+
+  portionDiv.appendChild(halfBtn);
+  portionDiv.appendChild(fullBtn);
+  container.appendChild(portionDiv);
+}
+    function createQtySelector(name, price, container) {
+  const controlDiv = document.createElement('div');
+  controlDiv.style.display = 'flex';
+  controlDiv.style.alignItems = 'center';
+  controlDiv.style.justifyContent = 'flex-end';
+  controlDiv.style.gap = '0.5rem';
+  controlDiv.style.marginTop = '6px';
+
+  const minusBtn = document.createElement('button');
+  minusBtn.textContent = '➖';
+  minusBtn.onclick = () => updateQty(name, price, -1);
+
+  const qtySpan = document.createElement('span');
+  qtySpan.id = `${name.replace(/[^a-zA-Z0-9]/g, '')}-${price}-qty`;
+  qtySpan.textContent = cart[`${name}__₹${price}`] || 0;
+
+  const plusBtn = document.createElement('button');
+  plusBtn.textContent = '➕';
+  plusBtn.onclick = () => updateQty(name, price, 1);
+
+  const cartBtn = document.createElement('button');
+  cartBtn.textContent = '🛒';
+  cartBtn.onclick = () => addToCart(name, price);
+
+  controlDiv.append(minusBtn, qtySpan, plusBtn, cartBtn);
+  container.appendChild(controlDiv);
+}
     // Cart controls (new line below price)
 const controlDiv = document.createElement('div');
 controlDiv.style.display = 'flex';
