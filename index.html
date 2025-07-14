@@ -398,13 +398,30 @@ input:checked + .slider:before {
 .menu-item span {
   color: inherit;
 }
+  .menu-ticker {
+  background: #222;
+  color: #f0c75e;
+  padding: 8px 12px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f0c75e;
+  text-align: center;
+}
+.menu-ticker marquee {
+  white-space: nowrap;
+}
   </style>
  </head>
 <body>
   <header id="top">
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
-
+<!-- 🔔 Ticker -->
+<div class="menu-ticker">
+  <marquee behavior="scroll" direction="left">
+    📌 Bookmark this link for quick orders – Fresh Momos, Rolls & More!
+  </marquee>
+</div>
   <!-- Navigation Bar -->
   <div class="nav-bar">
     <button onclick="scrollToSection('rolls')">🌯 Rolls</button>
