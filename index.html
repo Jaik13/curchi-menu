@@ -398,7 +398,7 @@ input:checked + .slider:before {
 .menu-item span {
   color: inherit;
 }
- .rotating-ticker {
+.rotating-ticker {
   background: #222;
   color: #f0c75e;
   padding: 8px 12px;
@@ -411,9 +411,9 @@ input:checked + .slider:before {
 
 #ticker-message {
   opacity: 0;
-  animation: fadeInOut 12s infinite;
+  transition: opacity 0.6s ease;
 }
-
+    
 @keyframes fadeInOut {
   0% { opacity: 0; }
   10% { opacity: 1; }
@@ -428,7 +428,7 @@ input:checked + .slider:before {
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
 <div class="rotating-ticker">
-  <div id="ticker-message">📌 Add Currchi to your home screen for 1-tap orders. – Fresh Momos, Rolls & More!</div>
+  <div id="ticker-message"></div>
 </div>
   <!-- Navigation Bar -->
   <div class="nav-bar">
@@ -1155,6 +1155,7 @@ const messages = [
   "✅ Add Currchi to your home screen for 1-tap orders!",
   "🍲 Don’t miss our spicy Tandoori specials today!",
   "🔥 Try our Chicken Malai Tikka – Most Loved!",
+  "📌 Bookmark this link for quick orders",
   "🛵 Fast Delivery in Ramesh Nagar & nearby!",
   "✨ Currchi – Taste that makes you say WOW!"
 ];
@@ -1162,14 +1163,20 @@ const messages = [
 let current = 0;
 const ticker = document.getElementById("ticker-message");
 
-setInterval(() => {
-  current = (current + 1) % messages.length;
-  ticker.style.opacity = 0;
-  setTimeout(() => {
-    ticker.textContent = messages[current];
-    ticker.style.opacity = 1;
-  }, 600);
-}, 3000);
+// Start after 2 seconds
+setTimeout(() => {
+  ticker.textContent = messages[current];
+  ticker.style.opacity = 1;
+
+  setInterval(() => {
+    ticker.style.opacity = 0;
+    setTimeout(() => {
+      current = (current + 1) % messages.length;
+      ticker.textContent = messages[current];
+      ticker.style.opacity = 1;
+    }, 600); // fade out duration
+  }, 3000); // 3 sec interval
+}, 2000); // initial delay
 </script>
 </body>
 </html>
