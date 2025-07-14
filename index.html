@@ -415,10 +415,10 @@ input:checked + .slider:before {
 }
     
 @keyframes fadeInOut {
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  40% { opacity: 1; }
-  50% { opacity: 0; }
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  90%  { opacity: 0; }
   100% { opacity: 0; }
 }
   </style>
@@ -1163,20 +1163,22 @@ const messages = [
 let current = 0;
 const ticker = document.getElementById("ticker-message");
 
-// Start after 2 seconds
+// ⏱ Initial delay before first message appears (2s)
 setTimeout(() => {
   ticker.textContent = messages[current];
   ticker.style.opacity = 1;
 
+  // 🔁 Start rotating messages every 5 seconds
   setInterval(() => {
     ticker.style.opacity = 0;
+
     setTimeout(() => {
       current = (current + 1) % messages.length;
       ticker.textContent = messages[current];
       ticker.style.opacity = 1;
-    }, 600); // fade out duration
-  }, 3000); // 3 sec interval
-}, 2000); // initial delay
+    }, 800); // ⏳ Fade-out duration
+  }, 5000); // 💡 Total duration per message
+}, 2000); // ⏳ Delay before first message
 </script>
 </body>
 </html>
