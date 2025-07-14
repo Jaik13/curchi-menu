@@ -398,17 +398,28 @@ input:checked + .slider:before {
 .menu-item span {
   color: inherit;
 }
-  .menu-ticker {
+ .rotating-ticker {
   background: #222;
   color: #f0c75e;
   padding: 8px 12px;
+  text-align: center;
   font-weight: 500;
   font-size: 0.95rem;
   border-bottom: 1px solid #f0c75e;
-  text-align: center;
+  position: relative;
 }
-.menu-ticker marquee {
-  white-space: nowrap;
+
+#ticker-message {
+  opacity: 0;
+  animation: fadeInOut 12s infinite;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  40% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
 }
   </style>
  </head>
@@ -416,11 +427,8 @@ input:checked + .slider:before {
   <header id="top">
     <img src="logo.png" alt="Currchi Restaurant Logo">
   </header>
-<!-- 🔔 Ticker -->
-<div class="menu-ticker">
-  <marquee behavior="scroll" direction="left">
-    📌 Bookmark this link for quick orders – Fresh Momos, Rolls & More!
-  </marquee>
+<div class="rotating-ticker">
+  <div id="ticker-message">📌 Bookmark this link for quick orders – Fresh Momos, Rolls & More!</div>
 </div>
   <!-- Navigation Bar -->
   <div class="nav-bar">
@@ -1142,5 +1150,25 @@ possibleSpans.forEach(span => {
   z-index: 2001;
   cursor: pointer;
 ">❌</button>
+   <script>
+const messages = [
+  "📌 Bookmark this link for quick orders – Fresh Momos, Rolls & More!",
+  "🍲 Don’t miss our spicy Tandoori specials today!",
+  "🛵 Fast Delivery in Ramesh Nagar, Karol Bagh & nearby!",
+  "✨ Currchi – Taste that makes you say WOW!"
+];
+
+let current = 0;
+const ticker = document.getElementById("ticker-message");
+
+setInterval(() => {
+  current = (current + 1) % messages.length;
+  ticker.style.opacity = 0;
+  setTimeout(() => {
+    ticker.textContent = messages[current];
+    ticker.style.opacity = 1;
+  }, 600);
+}, 5000);
+</script>
 </body>
 </html>
