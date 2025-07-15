@@ -410,9 +410,9 @@ input:checked + .slider:before {
 }
 #ticker-message {
   opacity: 0;
-  animation: fadeInOut 7s infinite; /* 7s to allow 2s fade + 3s visible */
   transition: opacity 2s ease-in-out;
-  }  
+} 
+    
 @keyframes fadeInOut {
   0%   { opacity: 0; }
   20%  { opacity: 1; }
@@ -1159,23 +1159,25 @@ possibleSpans.forEach(span => {
 ];
 
 let current = 0;
-const ticker = document.getElementById("ticker-message");
+  const ticker = document.getElementById("ticker-message");
 
-setTimeout(() => {
-  ticker.textContent = messages[current];
-  ticker.style.opacity = 1;
+  function showNextMessage() {
+    ticker.style.opacity = 0; // Start fade out
 
-  setInterval(() => {
-    ticker.style.opacity = 0;
-
-    // ⏳ Wait for 2s fade-out before changing text
     setTimeout(() => {
+      // Switch message after fade out
       current = (current + 1) % messages.length;
       ticker.textContent = messages[current];
-      ticker.style.opacity = 1;
-    }, 2000); // 2 seconds fade-out
-  }, 7000); // 2s fade-out + 3s visible + 2s fade-in
-}, 2000); // 2s initial delay
+      ticker.style.opacity = 1; // Fade in
+    }, 2000); // Wait for 2s fade out
+  }
+
+  // Show first message after 2s, then cycle
+  setTimeout(() => {
+    ticker.textContent = messages[current];
+    ticker.style.opacity = 1;
+    setInterval(showNextMessage, 6500); // Total time per message
+  }, 2000);
 </script>
 </body>
 </html>
