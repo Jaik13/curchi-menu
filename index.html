@@ -409,17 +409,17 @@ input:checked + .slider:before {
   position: relative;
 }
 
-#ticker-message {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-    
 @keyframes fadeInOut {
   0%   { opacity: 0; }
-  10%  { opacity: 1; }
+  20%  { opacity: 1; }
   80%  { opacity: 1; }
-  90%  { opacity: 0; }
   100% { opacity: 0; }
+}
+
+#ticker-message {
+  opacity: 0;
+  animation: fadeInOut 7s infinite; /* 7s to allow 2s fade + 3s visible */
+  transition: opacity 2s ease-in-out;
 }
   </style>
  </head>
@@ -1152,33 +1152,32 @@ possibleSpans.forEach(span => {
 ">❌</button>
    <script>
 const messages = [
+  "✨ Currchi – Taste that makes you say WOW!"
   "✅ Add Currchi to your home screen for 1-tap orders!",
   "🍲 Don’t miss our spicy Tandoori specials today!",
   "🔥 Try our Chicken Malai Tikka – Most Loved!",
   "📌 Bookmark this link for quick orders",
   "🛵 Fast Delivery in Ramesh Nagar & nearby!",
-  "✨ Currchi – Taste that makes you say WOW!"
 ];
 
 let current = 0;
 const ticker = document.getElementById("ticker-message");
 
-// ⏱ Initial delay before first message appears (2s)
 setTimeout(() => {
   ticker.textContent = messages[current];
   ticker.style.opacity = 1;
 
-  // 🔁 Start rotating messages every 5 seconds
   setInterval(() => {
     ticker.style.opacity = 0;
 
+    // ⏳ Wait for 2s fade-out before changing text
     setTimeout(() => {
       current = (current + 1) % messages.length;
       ticker.textContent = messages[current];
       ticker.style.opacity = 1;
-    }, 800); // ⏳ Fade-out duration
-  }, 5000); // 💡 Total duration per message
-}, 2000); // ⏳ Delay before first message
+    }, 2000); // 2 seconds fade-out
+  }, 7000); // 2s fade-out + 3s visible + 2s fade-in
+}, 2000); // 2s initial delay
 </script>
 </body>
 </html>
