@@ -408,18 +408,17 @@ input:checked + .slider:before {
   border-bottom: 1px solid #f0c75e;
   position: relative;
 }
-
+#ticker-message {
+  opacity: 0;
+  animation: fadeInOut 7s infinite; /* 7s to allow 2s fade + 3s visible */
+  transition: opacity 2s ease-in-out;
+  }  
 @keyframes fadeInOut {
   0%   { opacity: 0; }
   20%  { opacity: 1; }
   80%  { opacity: 1; }
   100% { opacity: 0; }
 }
-
-#ticker-message {
-  opacity: 0;
-  animation: fadeInOut 7s infinite; /* 7s to allow 2s fade + 3s visible */
-  transition: opacity 2s ease-in-out;
  </style>
  </head>
 <body>
@@ -1150,8 +1149,8 @@ possibleSpans.forEach(span => {
   cursor: pointer;
 ">❌</button>
    <script>
-const messages = [
-  "✨ Currchi – Taste that makes you say WOW!"
+  const messages = [
+  "✨ Currchi – Taste that makes you say WOW!",
   "✅ Add Currchi to your home screen for 1-tap orders!",
   "🍲 Don’t miss our spicy Tandoori specials today!",
   "🔥 Try our Chicken Malai Tikka – Most Loved!",
