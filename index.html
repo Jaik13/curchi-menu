@@ -451,6 +451,20 @@ input:checked + .slider:before {
   cursor: pointer;
   color: red;
 }
+  #veg-toggle {
+  background-color: #a8e6a1;
+  color: #000;
+}
+
+#nonveg-toggle {
+  background-color: #f9a3a3;
+  color: #000;
+}
+
+.filter-btn.active {
+  background-color: #25d366 !important;
+  color: white !important;
+}
  </style>
  </head>
 <body>
@@ -1214,50 +1228,44 @@ let current = 0;
   }, 2000);
 </script>
   <script>
-const vegBtn = document.getElementById("veg-toggle");
-const nonvegBtn = document.getElementById("nonveg-toggle");
-const menuColumns = document.querySelectorAll(".menu-column");
+  const vegToggle = document.getElementById('veg-toggle');
+  const nonvegToggle = document.getElementById('nonveg-toggle');
 
-vegBtn.onclick = () => {
-  vegBtn.classList.add("active");
-  nonvegBtn.classList.remove("active");
-  filterMenu("veg");
-};
-
-nonvegBtn.onclick = () => {
-  nonvegBtn.classList.add("active");
-  vegBtn.classList.remove("active");
-  filterMenu("nonveg");
-};
-
-function clearFilter() {
-  vegBtn.classList.remove("active");
-  nonvegBtn.classList.remove("active");
-  menuColumns.forEach(col => col.style.display = "block");
-}
-
-function filterMenu(type) {
-  menuColumns.forEach(col => {
-    const heading = col.querySelector("h2")?.textContent || "";
-    const isVegCategory = heading.includes("🌿") || heading.includes("🥗") || heading.includes("🫓");
-
-    if (type === "veg") {
-      if (isVegCategory || col.innerText.includes("🌿")) {
-        col.style.display = "block";
-      } else {
-        col.style.display = "none";
-      }
-    }
-
-    if (type === "nonveg") {
-      if (col.innerText.includes("🍖")) {
-        col.style.display = "block";
-      } else {
-        col.style.display = "none";
-      }
-    }
+  vegToggle.addEventListener('click', () => {
+    vegToggle.classList.toggle('active');
+    nonvegToggle.classList.remove('active');
+    filterDishes('veg');
   });
-}
+
+  nonvegToggle.addEventListener('click', () => {
+    nonvegToggle.classList.toggle('active');
+    vegToggle.classList.remove('active');
+    filterDishes('nonveg');
+  });
+
+  function clearFilter() {
+    vegToggle.classList.remove('active');
+    nonvegToggle.classList.remove('active');
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.style.display = '';
+    });
+  }
+
+  function filterDishes(type) {
+    document.querySelectorAll('.menu-item').forEach(item => {
+      const text = item.innerText;
+      const section = item.closest('.menu-column')?.querySelector('h2')?.innerText || '';
+
+      const isVeg = text.includes('🌿') || section.includes('🥗') || section.includes('🫓');
+      const isNonVeg = text.includes('🍖');
+
+      if (type === 'veg') {
+        item.style.display = isVeg ? '' : 'none';
+      } else if (type === 'nonveg') {
+        item.style.display = isNonVeg ? '' : 'none';
+      }
+    });
+  }
 </script>
 </body>
 </html>
