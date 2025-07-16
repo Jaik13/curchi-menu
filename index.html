@@ -498,8 +498,16 @@ input:checked + .slider:before {
 </div>
   </div>
   <div class="filter-toggle">
-  <button id="veg-toggle" class="filter-btn">🌿 Veg <span class="close-btn" onclick="clearFilter()">✖</span></button>
-  <button id="nonveg-toggle" class="filter-btn">🍖 Non-Veg <span class="close-btn" onclick="clearFilter()">✖</span></button>
+    <!-- 🌿 Veg Button -->
+  <button id="veg-toggle" class="filter-btn">
+  🌿 Veg
+  <span class="close-btn" id="veg-clear">✖</span>
+</button>
+ <!-- 🍖 Non-Veg Button -->
+<button id="nonveg-toggle" class="filter-btn">
+  🍖 Non-Veg
+  <span class="close-btn" id="nonveg-clear">✖</span>
+</button>
 </div>
   <!-- Floating Call Buttons -->
   <div class="floating-call-buttons" id="floatingCallButtons">
@@ -1230,17 +1238,33 @@ let current = 0;
   <script>
   const vegToggle = document.getElementById('veg-toggle');
   const nonvegToggle = document.getElementById('nonveg-toggle');
+  const vegClear = document.getElementById('veg-clear');
+  const nonvegClear = document.getElementById('nonveg-clear');
 
-  vegToggle.addEventListener('click', () => {
+  // Clicking the toggle itself
+  vegToggle.addEventListener('click', (e) => {
+    if (e.target === vegClear) return; // don't toggle when ✖ clicked
     vegToggle.classList.toggle('active');
     nonvegToggle.classList.remove('active');
     filterDishes('veg');
   });
 
-  nonvegToggle.addEventListener('click', () => {
+  nonvegToggle.addEventListener('click', (e) => {
+    if (e.target === nonvegClear) return;
     nonvegToggle.classList.toggle('active');
     vegToggle.classList.remove('active');
     filterDishes('nonveg');
+  });
+
+  // Clicking ✖ to reset filters
+  vegClear.addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearFilter();
+  });
+
+  nonvegClear.addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearFilter();
   });
 
   function clearFilter() {
