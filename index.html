@@ -419,6 +419,38 @@ input:checked + .slider:before {
   80%  { opacity: 1; }
   100% { opacity: 0; }
 }
+    .filter-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem auto;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background-color: #f0c75e;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.filter-btn.active {
+  background-color: #25d366;
+  color: white;
+}
+
+.close-btn {
+  margin-left: 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: red;
+}
  </style>
  </head>
 <body>
@@ -451,7 +483,10 @@ input:checked + .slider:before {
   </label>
 </div>
   </div>
-
+  <div class="filter-toggle">
+  <button id="veg-toggle" class="filter-btn">🌿 Veg <span class="close-btn" onclick="clearFilter()">✖</span></button>
+  <button id="nonveg-toggle" class="filter-btn">🍖 Non-Veg <span class="close-btn" onclick="clearFilter()">✖</span></button>
+</div>
   <!-- Floating Call Buttons -->
   <div class="floating-call-buttons" id="floatingCallButtons">
     <a href="tel:+919211791827"><button>📞 Call Us</button></a>
@@ -1177,6 +1212,52 @@ let current = 0;
     ticker.style.opacity = 1;
     setInterval(showNextMessage, 6500); // Total time per message
   }, 2000);
+</script>
+  <script>
+const vegBtn = document.getElementById("veg-toggle");
+const nonvegBtn = document.getElementById("nonveg-toggle");
+const menuColumns = document.querySelectorAll(".menu-column");
+
+vegBtn.onclick = () => {
+  vegBtn.classList.add("active");
+  nonvegBtn.classList.remove("active");
+  filterMenu("veg");
+};
+
+nonvegBtn.onclick = () => {
+  nonvegBtn.classList.add("active");
+  vegBtn.classList.remove("active");
+  filterMenu("nonveg");
+};
+
+function clearFilter() {
+  vegBtn.classList.remove("active");
+  nonvegBtn.classList.remove("active");
+  menuColumns.forEach(col => col.style.display = "block");
+}
+
+function filterMenu(type) {
+  menuColumns.forEach(col => {
+    const heading = col.querySelector("h2")?.textContent || "";
+    const isVegCategory = heading.includes("🌿") || heading.includes("🥗") || heading.includes("🫓");
+
+    if (type === "veg") {
+      if (isVegCategory || col.innerText.includes("🌿")) {
+        col.style.display = "block";
+      } else {
+        col.style.display = "none";
+      }
+    }
+
+    if (type === "nonveg") {
+      if (col.innerText.includes("🍖")) {
+        col.style.display = "block";
+      } else {
+        col.style.display = "none";
+      }
+    }
+  });
+}
 </script>
 </body>
 </html>
