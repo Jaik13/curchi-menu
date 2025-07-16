@@ -451,19 +451,19 @@ input:checked + .slider:before {
   cursor: pointer;
   color: red;
 }
-  #veg-toggle {
-  background-color: #a8e6a1;
-  color: #000;
-}
-
-#nonveg-toggle {
-  background-color: #db0909;
-  color: #000;
-}
-
+  #/* Reset common active styles */
 .filter-btn.active {
-  background-color: #25d366 !important;
-  color: white !important;
+  color: white;
+}
+
+/* 🌿 Veg Active - Light Green */
+#veg-toggle.active {
+  background-color: #4CAF50;  /* green */
+}
+
+/* 🍖 Non-Veg Active - Red */
+#nonveg-toggle.active {
+  background-color: #e74c3c;  /* red */
 }
  </style>
  </head>
